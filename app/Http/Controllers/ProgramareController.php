@@ -197,7 +197,7 @@ class ProgramareController extends Controller
             $this->trimiteSms('programari', 'inregistrare', $programare->id, [$programare->telefon], $mesaj);
         }
 
-        // Trimitere sms la finalozare lucrare
+        // Trimitere sms daca s-a finalozat lucrarea si nu a fost deja trimis un sms anterior
         if (($request->stare_masina == 3) && (!$programare->sms_finalizare->count())){
             $mesaj = 'Masina dumneavoastra cu numarul ' . $programare->nr_auto . ' este gata si o puteti ridica de la service. Cu stima, AutoGNS +40723114595!';
             // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:

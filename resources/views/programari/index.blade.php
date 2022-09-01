@@ -227,18 +227,12 @@
                                                 }
                                             @endphp
                                             {!! $mesaj !!}
-                                            {{-- @if (is_null($programare->confirmare))
-                                                <i class="fa-solid fa-question text-warning fs-4"></i>
-                                            @elseif ($programare->confirmare == 0)
-                                                <i class="fa-solid fa-thumbs-down text-danger fs-4" title="{{ \Carbon\Carbon::parse($programare->confirmare_client_timestamp)->isoFormat('DD.MM.YYYY HH:mm') }}"></i>
-                                            @elseif ($programare->confirmare == 1)
-                                                <i class="fa-solid fa-thumbs-up text-success fs-4" title="{{ \Carbon\Carbon::parse($programare->confirmare_client_timestamp)->isoFormat('DD.MM.YYYY HH:mm') }}"></i>
-                                            @endif --}}
-                                            @if (auth()->user()->id === 1)
+
+                                            {{-- @if (auth()->user()->id === 1)
                                                 <a href="/programare-cerere-confirmare-sms/{{$programare->cheie_unica}}" class="flex me-1" title="Cere Confirmare">
                                                     C
                                                 </a>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                         <div style="white-space: nowrap;">
                                             <span class="bg-secondary text-white px-1" title="Smsuri inregistrare confirmare finalizare trimise" style="">
