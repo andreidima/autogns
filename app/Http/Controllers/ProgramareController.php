@@ -186,6 +186,17 @@ class ProgramareController extends Controller
     {
         $programare->update($this->validateRequest($request));
 
+        // Trimitere sms daca a fost schimbata data_ora_programare
+        if ($programare->wasChanged('data_ora_programare')){
+            $mesaj = 'Masina \'' . $programare->nr_auto . '\' a fost reprogramata. ' .
+                        'Va asteptam la service in data de ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
+                        ', la ora ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') . '. ' .
+                        'Cu stima, AutoGNS +40723114595!';
+            // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
+            $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+            $this->trimiteSms('programari', 'inregistrare', $programare->id, [$programare->telefon], $mesaj);
+        }
+
         // Trimitere sms la finalozare lucrare
         if (($request->stare_masina == 3) && (!$programare->sms_finalizare->count())){
             $mesaj = 'Masina dumneavoastra cu numarul ' . $programare->nr_auto . ' este gata si o puteti ridica de la service. Cu stima, AutoGNS +40723114595!';
@@ -230,7 +241,7 @@ class ProgramareController extends Controller
                 'client' => 'required|max:500',
                 'telefon' => 'nullable|max:500',
                 'email' => 'nullable|max:500',
-                'data_ora_programare' => '',
+                'data_ora_programare' => 'required',
                 'data_ora_finalizare' => '',
                 'masina' => 'nullable|max:500',
                 'nr_auto' => 'nullable|max:500',
