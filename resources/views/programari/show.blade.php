@@ -157,7 +157,7 @@
                                     Data introducere programare
                                 </td>
                                 <td>
-                                    {{ $programare->created_at }}
+                                    {{ $programare->created_at ? \Carbon\Carbon::parse($programare->created_at)->isoFormat('DD.MM.YYYY HH:mm') : '' }}
                                 </td>
                             </tr>
                         </table>
