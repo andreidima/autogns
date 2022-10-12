@@ -152,6 +152,14 @@
                                     {{ $programare->observatii }}
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="pe-4">
+                                    Data introducere programare
+                                </td>
+                                <td>
+                                    {{ $programare->created_at }}
+                                </td>
+                            </tr>
                         </table>
                     </div>
 

@@ -61,7 +61,8 @@ class ProgramareController extends Controller
                                 ->whereDate('data_ora_finalizare', '>=', $search_data);
                         });
                     })
-                    ->orderBy('data_ora_programare');
+                    // ->orderBy('data_ora_programare');
+                    ->orderBy('created_at');
                 })
                  ->when(!$search_data, function ($query){
                      $query->latest();
