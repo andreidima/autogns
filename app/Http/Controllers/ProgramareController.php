@@ -113,9 +113,11 @@ class ProgramareController extends Controller
      */
     public function create(Request $request)
     {
+        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto')->whereNotNull('nr_auto')->get();
+// dd($programari);
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
-        return view('programari.create');
+        return view('programari.create', compact('programari'));
     }
 
     /**

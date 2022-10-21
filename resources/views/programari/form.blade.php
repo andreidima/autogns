@@ -1,9 +1,17 @@
 @csrf
-
+{{-- @php
+    dd($programari);
+@endphp --}}
+<script type="application/javascript">
+    programariVechi = {!! json_encode($programari) !!}
+</script>
 <div class="row mb-0 p-3 d-flex border-radius: 0px 0px 40px 40px">
     <div class="col-lg-12 mb-0">
-
         <div class="row mb-0" id="programari">
+{{-- <div v-for="programare in programari">
+    @{{ programare[client] }}
+
+</div> --}}
             <div class="col-lg-4 mb-5 mx-auto">
                 <label for="client" class="mb-0 ps-3">Client<span class="text-danger">*</span></label>
                 <input
