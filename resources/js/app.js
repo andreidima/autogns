@@ -49,8 +49,6 @@ import VueDatepickerNext from './components/DatePicker.vue';
 const programari = createApp({
     data() {
         return {
-            programari: programariVechi,
-
             // message: 'Hello root Component 1'
         };
     },
@@ -60,6 +58,57 @@ const programari = createApp({
     },
 });
 
-// if (document.getElementById('programari') != null) {
+if (document.getElementById('programari') != null) {
     programari.mount('#programari');
-// }
+}
+
+
+
+const programariForm = createApp({
+    data() {
+        return {
+            programari: programariVechi,
+
+            programari_lista_autocomplete: [],
+
+            client: clientVechi,
+            nr_auto: nr_autoVechi,
+
+
+            // message: 'Hello root Component 1'
+        };
+    },
+    components: {
+        'vue-datepicker-next': VueDatepickerNext,
+        // 'example-component-2': VueDatepickerNext,
+    },
+    methods: {
+        // autocomplete($value) {
+        autocomplete() {
+            console.log(this.nr_auto);
+            this.programari_lista_autocomplete = [];
+            // nr_auto = this.nr_auto;
+            // var nume_camp = this.nume_camp;
+            // var valoare_camp = this.valoare_camp.split(/[\s,]+/).pop(); // se imparte stringul dupa virgule, si se ia ultimul element
+            // var camp = $value;
+            // var camp = '';
+            // console.log(nume_camp);
+            // if (autor_autocomplete.length > 2) {
+            for (var i = 0; i < this.programari.length; i++) {
+                // console.log(this.carti[i][nume_camp]);
+                if (this.programari[i].nr_auto) {
+                    if (this.nr_auto) {
+                        if (this.programari[i].nr_auto.toLowerCase().includes(this.nr_auto.toLowerCase())) {
+                            this.programari_lista_autocomplete.push(this.programari[i]);
+                        }
+                    }
+                }
+            }
+            // }
+        },
+    }
+});
+
+if (document.getElementById('programariForm') != null) {
+    programariForm.mount('#programariForm');
+}

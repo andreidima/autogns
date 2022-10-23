@@ -1,25 +1,28 @@
 @csrf
-{{-- @php
-    dd($programari);
-@endphp --}}
+@php
+    echo 'Old nr auto ' . old('nr_auto');
+@endphp
 <script type="application/javascript">
     programariVechi = {!! json_encode($programari) !!}
+    clientVechi={!! json_encode(old('client', $programare->client)) !!}
+    telefonVechi={!! json_encode(old('telefon', $programare->telefon)) !!}
+    emailVechi={!! json_encode(old('email', $programare->email)) !!}
+    masinaVechi={!! json_encode(old('masina', $programare->masina)) !!}
+    nr_autoVechi={!! json_encode(old('nr_auto', $programare->nr_auto)) !!}
 </script>
 <div class="row mb-0 p-3 d-flex border-radius: 0px 0px 40px 40px">
     <div class="col-lg-12 mb-0">
-        <div class="row mb-0" id="programari">
-{{-- <div v-for="programare in programari">
-    @{{ programare[client] }}
+        <div class="row mb-0" id="programariForm">
 
-</div> --}}
             <div class="col-lg-4 mb-5 mx-auto">
                 <label for="client" class="mb-0 ps-3">Client<span class="text-danger">*</span></label>
                 <input
                     type="text"
                     class="form-control bg-white rounded-3 {{ $errors->has('client') ? 'is-invalid' : '' }}"
                     name="client"
+                    v-model="client"
                     placeholder=""
-                    value="{{ old('client', $programare->client) }}"
+                    {{-- value="{{ old('client', $programare->client) }}" --}}
                     required>
             </div>
             <div class="col-lg-4 mb-5 mx-auto">
@@ -28,8 +31,9 @@
                     type="text"
                     class="form-control bg-white rounded-3 {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
                     name="telefon"
+                    v-model="telefon"
                     placeholder=""
-                    value="{{ old('telefon', $programare->telefon) }}"
+                    {{-- value="{{ old('telefon', $programare->telefon) }}" --}}
                     required>
             </div>
             <div class="col-lg-4 mb-5 mx-auto">
@@ -38,8 +42,9 @@
                     type="text"
                     class="form-control bg-white rounded-3 {{ $errors->has('email') ? 'is-invalid' : '' }}"
                     name="email"
+                    v-model="email"
                     placeholder=""
-                    value="{{ old('email', $programare->email) }}"
+                    {{-- value="{{ old('email', $programare->email) }}" --}}
                     required>
             </div>
             <div class="col-lg-4 mb-5 mx-auto">
@@ -48,8 +53,9 @@
                     type="text"
                     class="form-control bg-white rounded-3 {{ $errors->has('masina') ? 'is-invalid' : '' }}"
                     name="masina"
+                    v-model="masina"
                     placeholder=""
-                    value="{{ old('masina', $programare->masina) }}"
+                    {{-- value="{{ old('masina', $programare->masina) }}" --}}
                     required>
             </div>
             <div class="col-lg-2 mb-5 mx-auto">
@@ -58,9 +64,32 @@
                     type="text"
                     class="form-control bg-white rounded-3 {{ $errors->has('nr_auto') ? 'is-invalid' : '' }}"
                     name="nr_auto"
+                    v-model="nr_auto"
                     placeholder=""
-                    value="{{ old('nr_auto', $programare->nr_auto) }}"
-                    required>
+                    {{-- value="{{ old('nr_auto', $programare->nr_auto) }}" --}}
+                    required
+                    autocomplete="off"
+                    v-on:keyup="autocomplete()"
+                    >
+                <div v-cloak v-if="programari_lista_autocomplete.length" class="panel-footer">
+                    <div class="list-group">
+                            <button type="button" class="list-group-item list-group-item list-group-item-action py-0"
+                                v-for="programare in programari_lista_autocomplete"
+                                v-on:click="
+                                    client = programare.client;
+                                    nr_auto = programare.nr_auto;
+                                    telefon = programare.telefon;
+                                    email = programare.email;
+                                    masina = programare.masina;
+
+                                    programari_lista_autocomplete = ''
+                                "
+                                >
+                                    @{{ programare.nr_auto }}
+                            </button>
+                        </li>
+                    </div>
+                </div>
             </div>
             @php
                 // $zile_nelucratoare = App\Models\ZiNelucratoare::select('data')->get()->pluck('data');
