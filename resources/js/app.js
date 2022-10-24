@@ -72,6 +72,9 @@ const programariForm = createApp({
             programari_lista_autocomplete: [],
 
             client: clientVechi,
+            telefon: telefonVechi,
+            email: emailVechi,
+            masina: masinaVechi,
             nr_auto: nr_autoVechi,
 
 
