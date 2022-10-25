@@ -1,7 +1,5 @@
 @csrf
-@php
-    echo 'Old nr auto ' . old('nr_auto');
-@endphp
+
 <script type="application/javascript">
     programariVechi = {!! json_encode($programari) !!}
     clientVechi={!! json_encode(old('client', $programare->client)) !!}
@@ -71,7 +69,7 @@
                     autocomplete="off"
                     v-on:keyup="autocomplete()"
                     >
-                <div v-cloak v-if="programari_lista_autocomplete.length" class="panel-footer">
+                <div v-cloak v-if="programari_lista_autocomplete.length" class="panel-footer overflow-auto" style="max-height: 200px;">
                     <div class="list-group">
                             <button type="button" class="list-group-item list-group-item list-group-item-action py-0"
                                 v-for="programare in programari_lista_autocomplete"

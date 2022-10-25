@@ -88,7 +88,7 @@ const programariForm = createApp({
     methods: {
         // autocomplete($value) {
         autocomplete() {
-            console.log(this.nr_auto);
+            // console.log(this.nr_auto);
             this.programari_lista_autocomplete = [];
             // nr_auto = this.nr_auto;
             // var nume_camp = this.nume_camp;
