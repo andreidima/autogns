@@ -189,10 +189,17 @@ WHERE t2.nr_auto IS NULL
      */
     public function edit(Request $request, Programare $programare)
     {
+        $programari = DB::select('
+                SELECT t1.*
+        FROM programari t1
+        LEFT OUTER JOIN programari t2
+            ON (t1.nr_auto = t2.nr_auto AND t1.created_at < t2.created_at)
+        WHERE t2.nr_auto IS NULL
+        ');
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
-        return view('programari.edit', compact('programare'));
+        return view('programari.edit', compact('programare', 'programari'));
     }
 
     /**
