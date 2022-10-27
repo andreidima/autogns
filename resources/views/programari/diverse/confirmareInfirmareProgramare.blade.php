@@ -87,7 +87,7 @@
                                     <div class="col-8">
                                         <label for="data" class="col-form-label">
                                             <b>
-                                                {{ \Carbon\Carbon::parse($programare->data_ora_programare)->dayName }}, {{ \Carbon\Carbon::parse($programare->data)->isoFormat('DD MMMM YYYY') }}
+                                                {{ \Carbon\Carbon::parse($programare->data_ora_programare)->dayName }}, {{ \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD MMMM YYYY') }}
                                             </b>
                                         </label>
                                     </div>
