@@ -9,6 +9,8 @@ class ProgramareIstoric extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = 'programari_istoric';
     protected $guarded = [];
 

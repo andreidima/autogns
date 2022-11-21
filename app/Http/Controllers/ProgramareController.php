@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Models\Programare;
+use App\Models\ProgramareIstoric;
 
 use App\Traits\TrimiteSmsTrait;
 
@@ -147,6 +148,13 @@ WHERE t2.nr_auto IS NULL
     {
         $programare = Programare::create($this->validateRequest($request));
 
+        // Salvare in istoric
+        $programare_istoric = new ProgramareIstoric;
+        $programare_istoric->fill($programare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
+        $programare_istoric->operatie = 'Adaugare';
+        $programare_istoric->operatie_user_id = auth()->user()->id ?? null;
+        $programare_istoric->save();
+
         // Trimitere Sms la inregistrare
         $mesaj = 'Programarea pentru masina \'' . $programare->nr_auto . '\' a fost inregistrata. ' .
                     'Va asteptam la service in data de ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
@@ -213,6 +221,13 @@ WHERE t2.nr_auto IS NULL
     {
         $programare->update($this->validateRequest($request));
 
+        // Salvare in istoric
+        $programare_istoric = new ProgramareIstoric;
+        $programare_istoric->fill($programare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
+        $programare_istoric->operatie = 'Modificare';
+        $programare_istoric->operatie_user_id = auth()->user()->id ?? null;
+        $programare_istoric->save();
+
         // Trimitere sms daca a fost schimbata data_ora_programare
         if ($programare->wasChanged('data_ora_programare')){
             $mesaj = 'Masina \'' . $programare->nr_auto . '\' a fost reprogramata. ' .
@@ -245,7 +260,13 @@ WHERE t2.nr_auto IS NULL
     public function destroy(Request $request, Programare $programare)
     {
         $programare->delete();
-        \App\Models\ProgramareIstoric::where('id', $programare->id)->where('operatie', 'Stergere')->update(['user_id' => $request->user()->id]);
+
+        // Salvare in istoric
+        $programare_istoric = new ProgramareIstoric;
+        $programare_istoric->fill($programare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
+        $programare_istoric->operatie = 'Stergere';
+        $programare_istoric->operatie_user_id = auth()->user()->id ?? null;
+        $programare_istoric->save();
 
         return back()->with('status', 'Programarea pentru mașina „' . ($programare->masina ?? '') . '” a fost ștearsă cu succes!');
     }
@@ -257,7 +278,10 @@ WHERE t2.nr_auto IS NULL
      */
     protected function validateRequest(Request $request)
     {
-        $request->request->add(['user_id' => $request->user()->id]);
+        // Se adauga userul doar la adaugare, iar la modificare nu se schimba
+        if ($request->isMethod('post')) {
+            $request->request->add(['user_id' => $request->user()->id]);
+        }
 
         if ($request->isMethod('post')) {
             $request->request->add(['cheie_unica' => uniqid()]);

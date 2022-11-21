@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use App\Models\Programare;
+use App\Models\ProgramareIstoric;
 
 use App\Traits\TrimiteSmsTrait;
 
@@ -41,6 +42,12 @@ class ProgramareConfirmareController extends Controller
                     $programare->confirmare_client_timestamp = Carbon::now();
                     $programare->save();
                 }
+                // Salvare in istoric
+                $programare_istoric = new ProgramareIstoric;
+                $programare_istoric->fill($programare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
+                $programare_istoric->operatie = 'Confirmare Infirmare';
+                $programare_istoric->operatie_user_id = auth()->user()->id ?? null;
+                $programare_istoric->save();
             $confirmat_deja = true;
             }
         }
