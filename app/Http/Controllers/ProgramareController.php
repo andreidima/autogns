@@ -281,9 +281,6 @@ WHERE t2.nr_auto IS NULL
         // Se adauga userul doar la adaugare, iar la modificare nu se schimba
         if ($request->isMethod('post')) {
             $request->request->add(['user_id' => $request->user()->id]);
-        }
-
-        if ($request->isMethod('post')) {
             $request->request->add(['cheie_unica' => uniqid()]);
         }
 
