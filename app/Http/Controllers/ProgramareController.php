@@ -278,7 +278,7 @@ WHERE t2.nr_auto IS NULL
      */
     protected function validateRequest(Request $request)
     {
-        // Se adauga userul doar la adaugare, iar la modificare nu se schimba
+        // Se adauga doar la adaugare, iar la modificare nu se schimba
         if ($request->isMethod('post')) {
             $request->request->add(['user_id' => $request->user()->id]);
             $request->request->add(['cheie_unica' => uniqid()]);
