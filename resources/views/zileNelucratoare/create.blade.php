@@ -18,7 +18,7 @@
                 >
                     <form  class="needs-validation" novalidate method="POST" action="/zile-nelucratoare">
 
-                                @include ('zilenelucratoare.form', [
+                                @include ('zileNelucratoare.form', [
                                     'programare' => new App\Models\ZiNelucratoare,
                                     'buttonText' => 'Adaugă Zi Nelucrătoare'
                                 ])
