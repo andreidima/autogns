@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Programare;
 use App\Models\ProgramareIstoric;
+use App\Models\User;
 
 use App\Traits\TrimiteSmsTrait;
 
@@ -133,9 +134,12 @@ WHERE t2.nr_auto IS NULL
 //     echo $nr++ . '. ' . $programare->nr_auto . '&nbsp&nbsp&nbsp&nbsp&nbsp' . $programare->created_at . '<br>';
 // }
 // dd($programari);
+
+        $mecanici = User::where('role', 'mecanic')->get();
+
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
-        return view('programari.create', compact('programari'));
+        return view('programari.create', compact('programari', 'mecanici'));
     }
 
     /**
@@ -205,9 +209,11 @@ WHERE t2.nr_auto IS NULL
         WHERE t2.nr_auto IS NULL
         ');
 
+        $mecanici = User::where('role', 'mecanic')->get();
+
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
-        return view('programari.edit', compact('programare', 'programari'));
+        return view('programari.edit', compact('programare', 'programari', 'mecanici'));
     }
 
     /**
@@ -303,7 +309,9 @@ WHERE t2.nr_auto IS NULL
                 'user_id' => '',
                 'confirmare' => '',
                 'cheie_unica' => '',
-                'sms_revizie_ulei_filtre' => ''
+                'sms_revizie_ulei_filtre' => '',
+                'mecanic_user_id' => '',
+                'pret' => ''
             ],
             [
 

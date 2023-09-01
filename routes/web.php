@@ -30,7 +30,9 @@ Route::any('/cron-jobs/trimitere-sms-revizie-ulei-filtre/{key}', [CronJobTrimite
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/acasa', 'acasa');
+});
 
+Route::group(['middleware' => 'role:admin'], function () {
     Route::get('programari/afisare-calendar', [ProgramareController::class, 'index'])->name('programari.afisareCalendar');
     Route::resource('/programari', ProgramareController::class,  ['parameters' => ['programari' => 'programare']]);
 
@@ -39,14 +41,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('zile-nelucratoare', ZiNelucratoareController::class)->parameters(['zile-nelucratoare' => 'zi_nelucratoare']);
 
     Route::get('programare-cerere-confirmare-sms/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'cerereConfirmareSms']);
-
-
-    // Route::get('creare-key-unice', function(){
-    //     $programari = App\Models\Programare::all();
-    //     foreach ($programari as $programare){
-    //         $programare->cheie_unica = uniqid();
-    //         $programare->save();
-    //     }
-    // });
 });
 

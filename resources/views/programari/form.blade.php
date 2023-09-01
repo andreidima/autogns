@@ -12,7 +12,7 @@
     <div class="col-lg-12 mb-0">
         <div class="row mb-0" id="programariForm">
 
-            <div class="col-lg-4 mb-5 mx-auto">
+            <div class="col-lg-4 mb-4 mx-auto">
                 <label for="client" class="mb-0 ps-3">Client<span class="text-danger">*</span></label>
                 <input
                     type="text"
@@ -23,7 +23,7 @@
                     {{-- value="{{ old('client', $programare->client) }}" --}}
                     required>
             </div>
-            <div class="col-lg-4 mb-5 mx-auto">
+            <div class="col-lg-4 mb-4 mx-auto">
                 <label for="telefon" class="mb-0 ps-3">Telefon</label>
                 <input
                     type="text"
@@ -34,7 +34,7 @@
                     {{-- value="{{ old('telefon', $programare->telefon) }}" --}}
                     required>
             </div>
-            <div class="col-lg-4 mb-5 mx-auto">
+            <div class="col-lg-4 mb-4 mx-auto">
                 <label for="email" class="mb-0 ps-3">Email</label>
                 <input
                     type="text"
@@ -45,7 +45,7 @@
                     {{-- value="{{ old('email', $programare->email) }}" --}}
                     required>
             </div>
-            <div class="col-lg-4 mb-5 mx-auto">
+            <div class="col-lg-4 mb-4 mx-auto">
                 <label for="masina" class="mb-0 ps-3">Mașina</label>
                 <input
                     type="text"
@@ -56,7 +56,7 @@
                     {{-- value="{{ old('masina', $programare->masina) }}" --}}
                     required>
             </div>
-            <div class="col-lg-2 mb-5 mx-auto">
+            <div class="col-lg-2 mb-4 mx-auto">
                 <label for="nr_auto" class="mb-0 ps-3">Nr. auto</label>
                 <input
                     type="text"
@@ -93,7 +93,7 @@
                 // $zile_nelucratoare = App\Models\ZiNelucratoare::select('data')->get()->pluck('data');
                 // dd(App\Models\ZiNelucratoare::select('data')->get()->pluck('data'));
             @endphp
-            <div class="col-lg-3 mb-5 mx-auto d-flex justify-content-start">
+            <div class="col-lg-3 mb-4 mx-auto d-flex justify-content-start">
                 <div>
                     <label for="data_ora_programare" class="mb-0 ps-xxl-2"><small>Dată și oră programare</small></label>
                     <vue-datepicker-next
@@ -110,7 +110,7 @@
                     ></vue-datepicker-next>
                 </div>
             </div>
-            <div class="col-lg-3 mb-5 mx-auto d-flex justify-content-start">
+            <div class="col-lg-3 mb-4 mx-auto d-flex justify-content-start">
                 <div>
                     <label for="data_ora_finalizare" class="mb-0 ps-xxl-2"><small>Dată și oră finalizare</small></label>
                     <vue-datepicker-next
@@ -127,12 +127,12 @@
                     ></vue-datepicker-next>
                 </div>
             </div>
-            <div class="col-lg-6 mb-5 mx-auto">
+            <div class="col-lg-6 mb-4 mx-auto">
                 <label for="lucrare" class="form-label mb-0 ps-3">Lucrare</label>
                 <textarea class="form-control bg-white {{ $errors->has('lucrare') ? 'is-invalid' : '' }}"
                     name="lucrare" rows="4">{{ old('lucrare', $programare->lucrare) }}</textarea>
             </div>
-            <div class="col-lg-4 mb-5 ps-s mx-auto d-flex align-items-center">
+            <div class="col-lg-4 mb-4 ps-s mx-auto d-flex align-items-center">
                 <div>
                     <div class="form-check">
                         <input class="form-check-input" type="hidden" name="geometrie_turism" value="0" />
@@ -154,7 +154,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 mb-5 ps-s mx-auto d-flex align-items-center" style="">
+            <div class="col-lg-2 mb-4 ps-s mx-auto d-flex align-items-center" style="">
                 <div>
                     Piese:
                     <br>
@@ -180,7 +180,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 mb-5 ps-s mx-auto d-flex">
+            <div class="col-lg-3 mb-4 ps-s mx-auto d-flex">
                 <div>
                     Stare mașină:
                     <br>
@@ -206,7 +206,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 mb-5 ps-s mx-auto d-flex">
+            <div class="col-lg-2 mb-4 ps-s mx-auto d-flex">
                 <div>
                     Confirmare:
                     <div class="form-check">
@@ -226,12 +226,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 mb-5 mx-auto">
+            <div class="col-lg-4 mb-4 mx-auto">
                 <label for="observatii" class="form-label mb-0 ps-3">Observații</label>
                 <textarea class="form-control bg-white {{ $errors->has('observatii') ? 'is-invalid' : '' }}"
                     name="observatii" rows="4">{{ old('observatii', $programare->observatii) }}</textarea>
             </div>
-            <div class="col-lg-3 mb-5 ps-s mx-auto d-flex align-items-center">
+            <div class="col-lg-3 mb-4 ps-s mx-auto d-flex align-items-center">
                 <div>
                     <div class="form-check">
                         <input class="form-check-input" type="hidden" name="sms_revizie_ulei_filtre" value="0" />
@@ -241,6 +241,26 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+                    <div class="col-lg-5 mb-4 py-2 align-items-center rounded-3" style="background-color:rgb(120, 255, 253)">
+                        <label for="mecanic_user_id" class="mb-0 ps-3">Mecanic</label>
+                        <select name="mecanic_user_id" class="form-select bg-white rounded-3 {{ $errors->has('mecanic_user_id') ? 'is-invalid' : '' }}">
+                            <option selected></option>
+                            @foreach ($mecanici as $mecanic)
+                                <option value="{{ $mecanic->id }}" {{ ($mecanic->id == old('mecanic_user_id', $programare->mecanic_user_id)) ? 'selected' : '' }}>{{ $mecanic->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-2 mb-4 py-2 align-items-center rounded-3" style="background-color:rgb(120, 255, 253)">
+                        <label for="pret" class="mb-0 ps-3">Preț</label>
+                        <input
+                            type="text"
+                            class="form-control bg-white rounded-3 {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
+                            name="pret"
+                            value="{{ old('pret', $programare->pret) }}"
+                            required>
+                    </div>
         </div>
         <div class="row">
             <div class="col-lg-12 mb-2 d-flex justify-content-center">
