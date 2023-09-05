@@ -115,3 +115,36 @@ const programariForm = createApp({
 if (document.getElementById('programariForm') != null) {
     programariForm.mount('#programariForm');
 }
+
+// Formular adaugare manopere
+const manopereFormularProgramare = createApp({
+    el: '#manopereFormularProgramare',
+    data() {
+        return {
+            // recoltariSangeProduse: recoltariSangeProduse,
+            // recoltariSangeGrupe: recoltariSangeGrupe,
+            // nrPungi: nrPungi,
+            // nrManopere: nrManopere,
+            // manopere: pungi,
+            mecanici: mecanici,
+            manopere: manopere,
+        }
+    },
+    watch: {
+    },
+    created: function () {
+        // this.adaugaManoperaGoalaInArray();
+    },
+    methods: {
+        adaugaManoperaGoalaInArray() {
+            this.manopere.push({ id: '', mecanic_id: '', denumire: '', pret: '', bonus_mecanic: '', observatii: '', mecanic_timp: '', mecanic_consumabile: '', mecanic_observatii: '' });
+        },
+        stergeManopera(index) {
+            this.manopere.splice(index, 1);
+        }
+    }
+});
+manopereFormularProgramare.component('vue-datepicker-next', VueDatepickerNext);
+if (document.getElementById('manopereFormularProgramare') != null) {
+    manopereFormularProgramare.mount('#manopereFormularProgramare');
+}

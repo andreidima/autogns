@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Models\Programare;
+use App\Models\Manopera;
 use App\Models\ProgramareIstoric;
 use App\Models\User;
 
@@ -150,7 +151,9 @@ WHERE t2.nr_auto IS NULL
      */
     public function store(Request $request)
     {
-        $programare = Programare::create($this->validateRequest($request));
+        $this->validateRequest($request);
+
+        $programare = Programare::create($request->except('manopere', 'date'));
 
         // Salvare in istoric
         $programare_istoric = new ProgramareIstoric;
@@ -158,6 +161,18 @@ WHERE t2.nr_auto IS NULL
         $programare_istoric->operatie = 'Adaugare';
         $programare_istoric->operatie_user_id = auth()->user()->id ?? null;
         $programare_istoric->save();
+
+        // Salvarea manoperelor
+        foreach($request->manopere as $manopera){
+            $manoperaDB = new Manopera;
+            $manoperaDB->programare_id = $programare->id;
+            $manoperaDB->mecanic_id = $manopera['mecanic_id'];
+            $manoperaDB->denumire = $manopera['denumire'];
+            $manoperaDB->pret = $manopera['pret'];
+            $manoperaDB->bonus_mecanic = $manopera['bonus_mecanic'];
+            $manoperaDB->observatii = $manopera['observatii'];
+            $manoperaDB->save();
+        }
 
         // Trimitere Sms la inregistrare
         $mesaj = 'Programarea pentru masina \'' . $programare->nr_auto . '\' a fost inregistrata. ' .
@@ -225,7 +240,9 @@ WHERE t2.nr_auto IS NULL
      */
     public function update(Request $request, Programare $programare)
     {
-        $programare->update($this->validateRequest($request));
+        $this->validateRequest($request);
+
+        $programare->update($request->except('manopere', 'date'));
 
         // Salvare in istoric
         $programare_istoric = new ProgramareIstoric;
@@ -233,6 +250,41 @@ WHERE t2.nr_auto IS NULL
         $programare_istoric->operatie = 'Modificare';
         $programare_istoric->operatie_user_id = auth()->user()->id ?? null;
         $programare_istoric->save();
+
+
+        // Actualizarea manoperelor
+        // 1 - Create 3 auxiliary variables to items with id, items without id and items id. Note that we use collect() method to help us to handle the arrays:
+        $items_without_id = collect($request->manopere)->where('id', '');
+        $items_with_id = (clone collect($request->manopere))->where('id', '!=', '');
+        $items_ids  = $items_with_id->pluck('id');
+
+        // 2 - Update the items with id:
+        foreach ($items_with_id as $manopera) {
+            $obj = Manopera::find($manopera['id']);
+            $obj->programare_id = $programare->id;
+            $obj->mecanic_id = $manopera['mecanic_id'];
+            $obj->denumire = $manopera['denumire'];
+            $obj->pret = $manopera['pret'];
+            $obj->bonus_mecanic = $manopera['bonus_mecanic'];
+            $obj->observatii = $manopera['observatii'];
+            $obj->save();
+        }
+
+        // 3 - Remove items that don't came into the array, we supposed that these items have to be deleted:
+        $programare->manopere()->whereNotIn('id', $items_ids)->delete();
+
+        // 4 - Finally insert items that came without id. We supposed that these items has to be added:
+        $items_without_id->each(function ($item) use ($manopera) {
+            $obj = new Manopera();
+            $obj->name = $item['name'];
+            $obj->price = $item['price'];
+            $obj->quantity = $item['quantity'];
+            $obj->product_id = $product->id;
+            $obj->save();
+        });
+
+
+
 
         // Trimitere sms daca a fost schimbata data_ora_programare
         if ($programare->wasChanged('data_ora_programare')){
@@ -310,8 +362,13 @@ WHERE t2.nr_auto IS NULL
                 'confirmare' => '',
                 'cheie_unica' => '',
                 'sms_revizie_ulei_filtre' => '',
-                'mecanic_user_id' => '',
-                'pret' => ''
+
+
+                'manopere.*.denumire' => 'required',
+                'manopere.*.mecanic_id' => '',
+                'manopere.*.pret' => '',
+                'manopere.*.bonus_mecanic' => '',
+                'manopere.*.observatii' => '',
             ],
             [
 

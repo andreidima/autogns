@@ -1,5 +1,7 @@
 @csrf
-
+@php
+    // dd($programare->manopere()->get());
+@endphp
 <script type="application/javascript">
     programariVechi = {!! json_encode($programari) !!}
     clientVechi={!! json_encode(old('client', $programare->client)) !!}
@@ -7,6 +9,10 @@
     emailVechi={!! json_encode(old('email', $programare->email)) !!}
     masinaVechi={!! json_encode(old('masina', $programare->masina)) !!}
     nr_autoVechi={!! json_encode(old('nr_auto', $programare->nr_auto)) !!}
+
+    // Variabile pentru manopere
+    mecanici = {!! json_encode($mecanici) !!}
+    manopere = {!! json_encode(old('manopere', $programare->manopere()->get()) ?? []) !!}
 </script>
 <div class="row mb-0 p-3 d-flex border-radius: 0px 0px 40px 40px">
     <div class="col-lg-12 mb-0">
@@ -242,30 +248,84 @@
                 </div>
             </div>
         </div>
-        <div class="row d-flex justify-content-center">
-                    <div class="col-lg-5 mb-4 py-2 align-items-center rounded-3" style="background-color:rgb(120, 255, 253)">
-                        <label for="mecanic_user_id" class="mb-0 ps-3">Mecanic</label>
-                        <select name="mecanic_user_id" class="form-select bg-white rounded-3 {{ $errors->has('mecanic_user_id') ? 'is-invalid' : '' }}">
-                            <option selected></option>
-                            @foreach ($mecanici as $mecanic)
-                                <option value="{{ $mecanic->id }}" {{ ($mecanic->id == old('mecanic_user_id', $programare->mecanic_user_id)) ? 'selected' : '' }}>{{ $mecanic->name }}</option>
-                            @endforeach
-                        </select>
+        <div class="row mb-4 d-flex justify-content-center" id="manopereFormularProgramare">
+            <div class="col-lg-12">
+                <div class="row px-2 pt-0 pb-0 d-flex justify-content-center">
+                    <div class="col-lg-12 mb-0 text-center">
+                        <span class="fs-4 badge text-black" style="background-color:#B8FFB8;">Manopere</span>
                     </div>
-                    <div class="col-lg-2 mb-4 py-2 align-items-center rounded-3" style="background-color:rgb(120, 255, 253)">
-                        <label for="pret" class="mb-0 ps-3">Preț</label>
-                        <input
-                            type="text"
-                            class="form-control bg-white rounded-3 {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
-                            name="pret"
-                            value="{{ old('pret', $programare->pret) }}"
-                            required>
+                </div>
+                <div class="row px-2 pt-0 pb-1 d-flex justify-content-center" style="background-color:#B8FFB8;">
+                    {{-- <div class="col-lg-12 mb-4 text-center">
+                        <span class="fs-4 badge text-white" style="background-color:mediumseagreen;">Manopere</span>
+                    </div> --}}
+                    <div class="col-lg-12 mb-0">
+                        <div v-for="(manopera, index) in manopere" :key="manopera" class="row my-2" style="border:2px solid mediumseagreen;">
+                            <div class="col-lg-5 mb-2">
+                                <label for="denumire" class="mb-0 ps-3">Denumire<span class="text-danger">*</span></label>
+                                <input
+                                    type="text"
+                                    class="form-control bg-white rounded-3"
+                                    :name="'manopere[' + index + '][denumire]'"
+                                    v-model="manopere[index].denumire">
+                            </div>
+                            <div class="col-lg-3 mb-2">
+                                <label for="mecanic_id" class="mb-0 ps-3">Mecanic</label>
+                                <select :name="'manopere[' + index + '][mecanic_id]'" v-model="manopere[index].mecanic_id" class="form-select bg-white rounded-3 {{ $errors->has('mecanic_id') ? 'is-invalid' : '' }}">
+                                    <option selected></option>
+                                    <option
+                                        v-for='mecanic in mecanici'
+                                        :value='mecanic.id'
+                                        >
+                                            @{{mecanic.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 mb-2">
+                                <label for="pret" class="mb-0 ps-3">Preț</label>
+                                <input
+                                    type="text"
+                                    class="form-control bg-white rounded-3"
+                                    :name="'manopere[' + index + '][pret]'"
+                                    v-model="manopere[index].pret">
+                            </div>
+                            <div class="col-lg-2 mb-2">
+                                <label for="bonus_mecanic" class="mb-0 ps-3">Bonus mecanic</label>
+                                <input
+                                    type="text"
+                                    class="form-control bg-white rounded-3"
+                                    :name="'manopere[' + index + '][bonus_mecanic]'"
+                                    v-model="manopere[index].bonus_mecanic">
+                            </div>
+                            <div class="col-lg-10 mb-2">
+                                <label for="observații" class="mb-0 ps-3">Observații</label>
+                                <input
+                                    type="text"
+                                    class="form-control bg-white rounded-3"
+                                    :name="'manopere[' + index + '][observatii]'"
+                                    v-model="manopere[index].observatii">
+                            </div>
+                            <div class="col-lg-2 mb-2 d-flex justify-content-center align-items-end">
+                                <button type="button" class="btn btn-danger text-white rounded-3" @click="stergeManopera(index)">
+                                    Șterge manopera
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col-lg-12 d-flex justify-content-center py-1">
+                                <button type="button" class="btn btn-success text-white" @click="adaugaManoperaGoalaInArray()">
+                                    <i class="fas fa-plus-square text-white me-1"></i>Adaugă manoperă
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 mb-2 d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary text-white me-3 rounded-3">{{ $buttonText }}</button>
-                <a class="btn btn-secondary rounded-3" href="{{ Session::get('programare_return_url') }}">Renunță</a>
+            <div class="col-lg-12 my-2 d-flex justify-content-center">
+                <button type="submit" class="btn btn-lg btn-primary text-white me-3 rounded-3">{{ $buttonText }}</button>
+                <a class="btn btn-lg btn-secondary rounded-3" href="{{ Session::get('programare_return_url') }}">Renunță</a>
             </div>
         </div>
     </div>

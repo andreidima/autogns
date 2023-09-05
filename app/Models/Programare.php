@@ -61,4 +61,9 @@ class Programare extends Model
     {
         return $this->hasMany(ProgramareIstoric::class, 'id', 'id');
     }
+
+    public function manopere()
+    {
+        return $this->hasMany(Manopera::class, 'programare_id', 'id');
+    }
 }
