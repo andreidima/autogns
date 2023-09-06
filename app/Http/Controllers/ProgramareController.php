@@ -253,12 +253,11 @@ WHERE t2.nr_auto IS NULL
         $programare_istoric->operatie_user_id = auth()->user()->id ?? null;
         $programare_istoric->save();
 
-
         // Actualizarea manoperelor
+        // Se sterg manoperele care nu mai sunt la update
+        $programare->manopere()->whereNotIn('id', collect($request->manopere)->where('id')->pluck('id'))->delete();
+        // Se adauga/ modifica manoperele din request
         if ($request->manopere) {
-            // Se sterg manoperele care nu mai sunt la update
-            $programare->manopere()->whereNotIn('id', collect($request->manopere)->where('id')->pluck('id'))->delete();
-
             foreach ($request->manopere as $manopera){
                 $manopera['id'] ? ($manoperaDB = Manopera::find($manopera['id'])) : ($manoperaDB = new Manopera());
                 $manoperaDB->programare_id = $programare->id;
