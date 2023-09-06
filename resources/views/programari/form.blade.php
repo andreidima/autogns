@@ -262,6 +262,11 @@
                     <div class="col-lg-12 mb-0">
                         <div v-for="(manopera, index) in manopere" :key="manopera" class="row my-2" style="border:2px solid mediumseagreen;">
                             <div class="col-lg-5 mb-2">
+                                <input
+                                    type="hidden"
+                                    class="form-control bg-white rounded-3"
+                                    :name="'manopere[' + index + '][id]'"
+                                    v-model="manopere[index].id">
                                 <label for="denumire" class="mb-0 ps-3">Denumire<span class="text-danger">*</span></label>
                                 <input
                                     type="text"

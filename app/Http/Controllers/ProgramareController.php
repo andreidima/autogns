@@ -255,35 +255,41 @@ WHERE t2.nr_auto IS NULL
 
 
         // Actualizarea manoperelor
-        // 1 - Create 3 auxiliary variables to items with id, items without id and items id. Note that we use collect() method to help us to handle the arrays:
-        $items_without_id = collect($request->manopere)->where('id', '');
-        $items_with_id = (clone collect($request->manopere))->where('id', '!=', '');
-        $items_ids  = $items_with_id->pluck('id');
+        // if ($request->manopere) {
+        //     // Se sterg manoperele care nu mai sunt la update
+        //     $programare->manopere()->whereNotIn('id', collect($request->manopere)->where('id')->pluck('id'))->delete();
 
-        // 2 - Update the items with id:
-        foreach ($items_with_id as $manopera) {
-            $obj = Manopera::find($manopera['id']);
-            $obj->programare_id = $programare->id;
-            $obj->mecanic_id = $manopera['mecanic_id'];
-            $obj->denumire = $manopera['denumire'];
-            $obj->pret = $manopera['pret'];
-            $obj->bonus_mecanic = $manopera['bonus_mecanic'];
-            $obj->observatii = $manopera['observatii'];
-            $obj->save();
-        }
+        //     foreach ($request->manopere as $manopera)
+        //     // 1 - Create 3 auxiliary variables to items with id, items without id and items id. Note that we use collect() method to help us to handle the arrays:
+        //     $items_without_id = collect($request->manopere)->where('id', '');
+        //     $items_with_id = (clone collect($request->manopere))->where('id', '!=', '');
+        //     $items_ids  = $items_with_id->pluck('id');
 
-        // 3 - Remove items that don't came into the array, we supposed that these items have to be deleted:
-        $programare->manopere()->whereNotIn('id', $items_ids)->delete();
+        //     // 2 - Update the items with id:
+        //     foreach ($items_with_id as $manopera) {
+        //         $obj = Manopera::find($manopera['id']);
+        //         $obj->programare_id = $programare->id;
+        //         $obj->mecanic_id = $manopera['mecanic_id'];
+        //         $obj->denumire = $manopera['denumire'];
+        //         $obj->pret = $manopera['pret'];
+        //         $obj->bonus_mecanic = $manopera['bonus_mecanic'];
+        //         $obj->observatii = $manopera['observatii'];
+        //         $obj->save();
+        //     }
 
-        // 4 - Finally insert items that came without id. We supposed that these items has to be added:
-        $items_without_id->each(function ($item) use ($manopera) {
-            $obj = new Manopera();
-            $obj->name = $item['name'];
-            $obj->price = $item['price'];
-            $obj->quantity = $item['quantity'];
-            $obj->product_id = $product->id;
-            $obj->save();
-        });
+        //     // 3 - Remove items that don't came into the array, we supposed that these items have to be deleted:
+        //     $programare->manopere()->whereNotIn('id', $items_ids)->delete();
+
+        //     // 4 - Finally insert items that came without id. We supposed that these items has to be added:
+        //     $items_without_id->each(function ($item) use ($manopera) {
+        //         $obj = new Manopera();
+        //         $obj->name = $item['name'];
+        //         $obj->price = $item['price'];
+        //         $obj->quantity = $item['quantity'];
+        //         $obj->product_id = $product->id;
+        //         $obj->save();
+        //     });
+        // }
 
 
 
