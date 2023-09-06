@@ -163,15 +163,17 @@ WHERE t2.nr_auto IS NULL
         $programare_istoric->save();
 
         // Salvarea manoperelor
-        foreach($request->manopere as $manopera){
-            $manoperaDB = new Manopera;
-            $manoperaDB->programare_id = $programare->id;
-            $manoperaDB->mecanic_id = $manopera['mecanic_id'];
-            $manoperaDB->denumire = $manopera['denumire'];
-            $manoperaDB->pret = $manopera['pret'];
-            $manoperaDB->bonus_mecanic = $manopera['bonus_mecanic'];
-            $manoperaDB->observatii = $manopera['observatii'];
-            $manoperaDB->save();
+        if ($request->manopere) {
+            foreach($request->manopere as $manopera){
+                $manoperaDB = new Manopera;
+                $manoperaDB->programare_id = $programare->id;
+                $manoperaDB->mecanic_id = $manopera['mecanic_id'];
+                $manoperaDB->denumire = $manopera['denumire'];
+                $manoperaDB->pret = $manopera['pret'];
+                $manoperaDB->bonus_mecanic = $manopera['bonus_mecanic'];
+                $manoperaDB->observatii = $manopera['observatii'];
+                $manoperaDB->save();
+            }
         }
 
         // Trimitere Sms la inregistrare
