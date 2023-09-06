@@ -12,7 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 
-class MecanicProgramareController extends Controller
+class MecanicBonusController extends Controller
 {
 
     /**
@@ -26,37 +26,42 @@ class MecanicProgramareController extends Controller
         $search_data = \Request::get('search_data') ?? Carbon::today();
         switch ($request->input('schimba_ziua')) {
             case 'o_zi_inapoi':
-                $search_data = \Carbon\Carbon::parse($search_data)->subDay()->toDateString();
+                $search_data = \Carbon\Carbon::parse($search_data)->subDay();
                 break;
             case 'o_zi_inainte':
-                $search_data = \Carbon\Carbon::parse($search_data)->addDay()->toDateString();
+                $search_data = \Carbon\Carbon::parse($search_data)->addDay();
                 break;
         }
+        $dataInceputLuna = \Carbon\Carbon::parse($search_data)->startOfMonth();
+        $dataSfarsitLuna = \Carbon\Carbon::parse($search_data)->endOfMonth();
 
         $programari = Programare::with('user', 'manopere')
             ->when($search_data, function ($query, $search_data) {
                 $query->where(function($query) use ($search_data){
                     $query->where(function($query) use ($search_data){
-                        $query->whereNull('data_ora_programare')
-                            ->whereDate('data_ora_finalizare', '=', $search_data);
+                        $query
+                            // ->whereNull('data_ora_programare')
+                            ->whereMonth('data_ora_finalizare', '=', $search_data->month)
+                            ->whereYear('data_ora_finalizare', '=', $search_data->year);
                     });
                     $query->orwhere(function($query) use ($search_data){
                         $query->whereNull('data_ora_finalizare')
-                            ->whereDate('data_ora_programare', '=', $search_data);
+                            ->whereMonth('data_ora_programare', '=', $search_data->month)
+                            ->whereYear('data_ora_programare', '=', $search_data->year);
                     });
-                    $query->orwhere(function($query) use ($search_data){
-                        $query->whereDate('data_ora_programare', '<=', $search_data)
-                            ->whereDate('data_ora_finalizare', '>=', $search_data);
-                    });
+                    // $query->orwhere(function($query) use ($search_data){
+                    //     $query->whereDate('data_ora_programare', '<=', $search_data)
+                    //         ->whereDate('data_ora_finalizare', '>=', $search_data);
+                    // });
                 })
-                ->orderBy('data_ora_programare');
+                ->orderBy('data_ora_finalizare');
             })
             ->whereHas('manopere', function (Builder $query){
                 $query->where('mecanic_id', auth()->user()->id);
             })
             ->get();
-// dd($programari);
-            return view('mecanici.programari.index', compact('programari', 'search_data'));
+
+            return view('mecanici.bonusuri.index', compact('programari', 'search_data'));
     }
 
     /**

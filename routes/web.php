@@ -8,6 +8,7 @@ use App\Http\Controllers\MesajTrimisSmsController;
 use App\Http\Controllers\CronJobTrimitereController;
 use App\Http\Controllers\ZiNelucratoareController;
 use App\Http\Controllers\MecanicProgramareController;
+use App\Http\Controllers\MecanicBonusController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,4 +48,6 @@ Route::group(['middleware' => 'role:admin'], function () {
 
 Route::group(['middleware' => 'role:mecanic'], function () {
     Route::resource('/mecanici/programari-mecanici', MecanicProgramareController::class,  ['parameters' => ['programari_mecanici' => 'programare']]);
+
+    Route::get('/mecanici/bonusuri-mecanici', [MecanicBonusController::class, 'index']);
 });

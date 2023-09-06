@@ -102,8 +102,13 @@
                                 // dd(auth()->user()->manopere, auth()->user()->manopere->first()->programare);
                             @endphp
                             <li class="nav-item me-3">
-                                <a class="nav-link active" aria-current="page" href="/mecanici/programari">
+                                <a class="nav-link active" aria-current="page" href="/mecanici/programari-mecanici">
                                     <i class="fa-solid fa-calendar-check me-1"></i>Programări
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link active" aria-current="page" href="/mecanici/bonusuri-mecanici">
+                                    <i class="fa-solid fa-money-check-dollar me-1"></i>Bonusuri
                                 </a>
                             </li>
                         @endif

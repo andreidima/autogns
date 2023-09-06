@@ -17,11 +17,11 @@
                     <br>
 
                     @if((auth()->user()->role ?? '') === "mecanic")
-                        <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/programari" role="button">
+                        <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/programari-mecanici" role="button">
                             <i class="fa-solid fa-calendar-check me-1"></i>
                             Programări
                         </a>
-                        <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/bonusuri" role="button">
+                        <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/bonusuri-mecanici" role="button">
                             <i class="fa-solid fa-money-check-dollar me-1"></i>
                             Bonusuri
                         </a>
