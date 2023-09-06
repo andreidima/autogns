@@ -259,7 +259,7 @@
                     {{-- <div class="col-lg-12 mb-4 text-center">
                         <span class="fs-4 badge text-white" style="background-color:mediumseagreen;">Manopere</span>
                     </div> --}}
-                    <div class="col-lg-12 mb-0">
+                    <div v-cloak v-if="manopere" class="col-lg-12 mb-0">
                         <div v-for="(manopera, index) in manopere" :key="manopera" class="row my-2" style="border:2px solid mediumseagreen;">
                             <div class="col-lg-5 mb-2">
                                 <input

@@ -97,10 +97,14 @@
                                 </div>
                             </li>
                         @elseif (auth()->user()->role === 'mecanic')
+
+                            @php
+                                // dd(auth()->user()->manopere, auth()->user()->manopere->first()->programare);
+                            @endphp
                             <li class="nav-item me-3">
-                                {{-- <a class="nav-link active" aria-current="page" href="/programari/afisare-calendar"> --}}
+                                <a class="nav-link active" aria-current="page" href="/mecanici/programari">
                                     <i class="fa-solid fa-calendar-check me-1"></i>Programări
-                                {{-- </a> --}}
+                                </a>
                             </li>
                         @endif
                     </ul>

@@ -7,14 +7,13 @@ use Illuminate\Http\Request;
 
 use App\Models\Programare;
 use App\Models\Manopera;
-use App\Models\ProgramareIstoric;
 use App\Models\User;
 
-use App\Traits\TrimiteSmsTrait;
+use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 
-class ProgramareController extends Controller
+class MecanicProgramareController extends Controller
 {
-    use TrimiteSmsTrait;
 
     /**
      * Display a listing of the resource.
@@ -24,90 +23,42 @@ class ProgramareController extends Controller
     public function index(Request $request)
     {
         $request->session()->forget('programare_return_url');
-        if ($request->route()->getName() === "programari.index"){
-            $search_client = \Request::get('search_client');
-            $search_telefon = \Request::get('search_telefon');
-            $search_data = \Request::get('search_data');
-            $search_nr_auto = \Request::get('search_nr_auto');
-
-            switch ($request->input('schimba_ziua')) {
-                case 'o_zi_inapoi':
-                    $search_data = \Carbon\Carbon::parse($search_data)->subDay()->toDateString();
-                    break;
-                case 'o_zi_inainte':
-                    $search_data = \Carbon\Carbon::parse($search_data)->addDay()->toDateString();
-                    break;
-            }
-
-            // $programari = Programare::with('user', 'smsuri', 'programare_istoric')
-            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp')
-                ->when($search_client, function ($query, $search_client) {
-                    return $query->where('client', 'like', '%' . $search_client . '%');
-                })
-                ->when($search_telefon, function ($query, $search_telefon) {
-                    return $query->where('telefon', 'like', '%' . $search_telefon . '%');
-                })
-                ->when($search_nr_auto, function ($query, $search_nr_auto) {
-                    return $query->where('nr_auto', 'like', '%' . $search_nr_auto . '%');
-                })
-                ->when($search_data, function ($query, $search_data) {
-                    $query->where(function($query) use ($search_data){
-                        $query->where(function($query) use ($search_data){
-                            $query->whereNull('data_ora_programare')
-                                ->whereDate('data_ora_finalizare', '=', $search_data);
-                        });
-                        $query->orwhere(function($query) use ($search_data){
-                            $query->whereNull('data_ora_finalizare')
-                                ->whereDate('data_ora_programare', '=', $search_data);
-                        });
-                        $query->orwhere(function($query) use ($search_data){
-                            $query->whereDate('data_ora_programare', '<=', $search_data)
-                                ->whereDate('data_ora_finalizare', '>=', $search_data);
-                        });
-                    })
-                    ->orderBy('data_ora_programare');
-                    // ->orderBy('created_at');
-                })
-                 ->when(!$search_data, function ($query){
-                     $query->latest();
-                 })
-                ->simplePaginate(25);
-
-            return view('programari.index', compact('programari', 'search_client', 'search_telefon', 'search_data', 'search_nr_auto'));
-        } else if ($request->route()->getName() === "programari.afisareCalendar"){
-            $search_data_inceput = \Request::get('search_data_inceput') ?? \Carbon\Carbon::now()->startOfWeek()->toDateString();
-            $search_data_sfarsit = \Request::get('search_data_sfarsit') ?? \Carbon\Carbon::now()->endOfWeek()->toDateString();
-
-            $programari = Programare::
-                where(function($query) use ($search_data_inceput, $search_data_sfarsit){
-                    $query->where(function($query) use ($search_data_inceput, $search_data_sfarsit){
-                        $query->whereNull('data_ora_programare')
-                            ->whereBetween('data_ora_finalizare', [$search_data_inceput, $search_data_sfarsit]);
-                    });
-                    $query->orwhere(function($query) use ($search_data_inceput, $search_data_sfarsit){
-                        $query->whereNull('data_ora_finalizare')
-                            ->whereBetween('data_ora_programare', [$search_data_inceput, $search_data_sfarsit]);
-                    });
-                    $query->orwhere(function($query) use ($search_data_inceput, $search_data_sfarsit){
-                        $query->whereDate('data_ora_programare', '<=', $search_data_sfarsit)
-                            ->whereDate('data_ora_finalizare', '>=', $search_data_inceput);
-                    });
-                })
-                ->orderBy('geometrie_turism', 'desc')
-                ->orderBy('geometrie_camion', 'desc')
-                ->orderBy('freon', 'desc')
-                ->get();
-
-            foreach ($programari as $programare){
-                if (is_null($programare->data_ora_programare)){
-                    $programare->data_ora_programare = $programare->data_ora_finalizare;
-                } else if (is_null($programare->data_ora_finalizare)){
-                    $programare->data_ora_finalizare = $programare->data_ora_programare;
-                }
-            }
-
-            return view('programari.index', compact('programari', 'search_data_inceput', 'search_data_sfarsit'));
+        $search_data = \Request::get('search_data') ?? Carbon::today();
+        switch ($request->input('schimba_ziua')) {
+            case 'o_zi_inapoi':
+                $search_data = \Carbon\Carbon::parse($search_data)->subDay()->toDateString();
+                break;
+            case 'o_zi_inainte':
+                $search_data = \Carbon\Carbon::parse($search_data)->addDay()->toDateString();
+                break;
         }
+
+        $mecanicId = auth()->user()->id;
+
+        $programari = Programare::with('user')
+            ->when($search_data, function ($query, $search_data) {
+                $query->where(function($query) use ($search_data){
+                    $query->where(function($query) use ($search_data){
+                        $query->whereNull('data_ora_programare')
+                            ->whereDate('data_ora_finalizare', '=', $search_data);
+                    });
+                    $query->orwhere(function($query) use ($search_data){
+                        $query->whereNull('data_ora_finalizare')
+                            ->whereDate('data_ora_programare', '=', $search_data);
+                    });
+                    $query->orwhere(function($query) use ($search_data){
+                        $query->whereDate('data_ora_programare', '<=', $search_data)
+                            ->whereDate('data_ora_finalizare', '>=', $search_data);
+                    });
+                })
+                ->orderBy('data_ora_programare');
+            })
+            ->whereHas('manopere', function (Builder $query){
+                $query->where('mecanic_id', auth()->user()->id);
+            })
+            ->get();
+
+            return view('mecanici.programari.index', compact('programari', 'search_data'));
     }
 
     /**
@@ -136,7 +87,7 @@ WHERE t2.nr_auto IS NULL
 // }
 // dd($programari);
 
-        $mecanici = User::where('role', 'mecanic')->orderBy('name')->get();
+        $mecanici = User::where('role', 'mecanic')->get();
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
@@ -226,7 +177,7 @@ WHERE t2.nr_auto IS NULL
         WHERE t2.nr_auto IS NULL
         ');
 
-        $mecanici = User::where('role', 'mecanic')->orderBy('name')->get();
+        $mecanici = User::where('role', 'mecanic')->get();
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 

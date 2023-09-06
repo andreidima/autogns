@@ -7,6 +7,7 @@ use App\Http\Controllers\ProgramareConfirmareController;
 use App\Http\Controllers\MesajTrimisSmsController;
 use App\Http\Controllers\CronJobTrimitereController;
 use App\Http\Controllers\ZiNelucratoareController;
+use App\Http\Controllers\MecanicProgramareController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,3 +44,7 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::get('programare-cerere-confirmare-sms/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'cerereConfirmareSms']);
 });
 
+
+Route::group(['middleware' => 'role:mecanic'], function () {
+    Route::resource('/mecanici/programari', MecanicProgramareController::class,  ['parameters' => ['programari' => 'programare']]);
+});

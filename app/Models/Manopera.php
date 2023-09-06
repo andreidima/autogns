@@ -16,4 +16,14 @@ class Manopera extends Model
     {
         return "/manopere/{$this->id}";
     }
+
+    public function mecanic()
+    {
+        return $this->belongsTo(User::class, 'mecanic_id');
+    }
+
+    public function programare()
+    {
+        return $this->belongsTo(Programare::class, 'programare_id');
+    }
 }
