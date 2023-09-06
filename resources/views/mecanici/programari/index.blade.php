@@ -39,14 +39,34 @@
 
             @foreach ($programari as $programare)
                 <div class="row">
-                    <div class="col-lg-12 d-flex">
-                        <div class="" style="width: 50px;">
-                            {{ $programare->data_ora_programare ? \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') : '' }}
+                    <div class="col-lg-12 d-flex" style="border-bottom: 4px solid black">
+                        <div class="" style="min-width: 50px;">
+                        {{-- <div class="col-2"> --}}
+                            <b>
+                                {{ $programare->data_ora_programare ? \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') : '' }}
+                            </b>
                         </div>
                         <div class="">
-                            {{ $programare->masina }}
+                            <b>
+                                {{ $programare->masina }} {{ $programare->nr_auto }}
+                            </b>
                             <br>
                             {{ $programare->lucrare }}
+                            <br>
+                            @foreach ($programare->manopere as $manopera)
+                                <div class="d-flex">
+                                    <div class="" style="min-width: 70px;">
+                                        <b>
+                                            {{ $manopera->mecanic->name }}
+                                        </b>
+                                    </div>
+                                    <div>
+                                        {{ $manopera->denumire }}
+                                        <br>
+                                        {{ $manopera->observatii }}
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

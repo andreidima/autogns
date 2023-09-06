@@ -47,7 +47,7 @@
                                         name="schimba_ziua" value="o_zi_inainte" type="submit">
                                 {{-- </div> --}}
                                     >
-                                </button>
+                                    </button>
                             </div>
                         </div>
                         <div class="row custom-search-form justify-content-center">

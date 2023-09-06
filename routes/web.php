@@ -46,5 +46,5 @@ Route::group(['middleware' => 'role:admin'], function () {
 
 
 Route::group(['middleware' => 'role:mecanic'], function () {
-    Route::resource('/mecanici/programari', MecanicProgramareController::class,  ['parameters' => ['programari' => 'programare']]);
+    Route::resource('/mecanici/programari-mecanici', MecanicProgramareController::class,  ['parameters' => ['programari_mecanici' => 'programare']]);
 });

@@ -35,7 +35,7 @@ class MecanicProgramareController extends Controller
 
         $mecanicId = auth()->user()->id;
 
-        $programari = Programare::with('user')
+        $programari = Programare::with('user', 'manopere')
             ->when($search_data, function ($query, $search_data) {
                 $query->where(function($query) use ($search_data){
                     $query->where(function($query) use ($search_data){
@@ -57,7 +57,7 @@ class MecanicProgramareController extends Controller
                 $query->where('mecanic_id', auth()->user()->id);
             })
             ->get();
-
+// dd($programari);
             return view('mecanici.programari.index', compact('programari', 'search_data'));
     }
 
