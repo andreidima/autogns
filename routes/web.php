@@ -47,7 +47,10 @@ Route::group(['middleware' => 'role:admin'], function () {
 
 
 Route::group(['middleware' => 'role:mecanic'], function () {
-    Route::resource('/mecanici/programari-mecanici', MecanicProgramareController::class,  ['parameters' => ['programari_mecanici' => 'programare']]);
+    // Route::resource('/mecanici/programari-mecanici', MecanicProgramareController::class,  ['parameters' => ['programari_mecanici' => 'programare']]);
+    Route::get('/mecanici/programari-mecanici', [MecanicProgramareController::class, 'index']);
+    Route::get('/mecanici/programari-mecanici/modificare-manopera/{manopera}', [MecanicProgramareController::class, 'modificareManopera']);
+    Route::post('/mecanici/programari-mecanici/modificare-manopera/{manopera}', [MecanicProgramareController::class, 'postModificareManopera']);
 
     Route::get('/mecanici/bonusuri-mecanici', [MecanicBonusController::class, 'index']);
 });

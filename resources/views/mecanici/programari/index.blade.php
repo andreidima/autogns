@@ -18,11 +18,9 @@
                             <
                         </button>
 
-                        {{-- <label class="mx-2">Data: {{ \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}</label> --}}
                         <span class="badge fs-5 p-0 mx-1 text-black" style="background-color: #ffffff">
                             <label class="mx-0">{{ \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}</label>
                         </span>
-
 
                         <button class="btn btn-sm btn-primary text-white border border-dark rounded-3 shadow block"
                             name="schimba_ziua" value="o_zi_inainte" type="submit">
@@ -41,7 +39,6 @@
                 <div class="row">
                     <div class="col-lg-12 d-flex" style="border-bottom: 4px solid black">
                         <div class="" style="min-width: 50px;">
-                        {{-- <div class="col-2"> --}}
                             <b>
                                 {{ $programare->data_ora_programare ? \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') : '' }}
                             </b>
@@ -57,13 +54,40 @@
                                 <div class="d-flex">
                                     <div class="" style="min-width: 70px;">
                                         <b>
-                                            {{ $manopera->mecanic->name }}
+                                            {{ $manopera->mecanic->name ?? ''}}
                                         </b>
                                     </div>
                                     <div>
-                                        {{ $manopera->denumire }}
-                                        <br>
-                                        {{ $manopera->observatii }}
+                                        @if ($manopera->mecanic_id === auth()->user()->id)
+                                            <div class="p-1 rounded-3" style="font-weight:bold; background-color:#cfeef9">
+                                                <a href="/mecanici/programari-mecanici/modificare-manopera/{{ $manopera->id }}"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                                                {{ $manopera->denumire }}
+                                                <br>
+                                                {{ $manopera->observatii }}
+                                            </div>
+                                            <div class="p-1 rounded-3" style="font-weight:bold; background-color:#fcf69e">
+                                                @if ($manopera->mecanic_timp)
+                                                    {{ $manopera->mecanic_timp }}
+                                                    <br>
+                                                @endif
+                                                @if ($manopera->mecanic_consumabile)
+                                                    {{ $manopera->mecanic_consumabile }}
+                                                    <br>
+                                                @endif
+                                                @if ($manopera->mecanic_observatii)
+                                                    {{ $manopera->mecanic_observatii }}
+                                                    <br>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <div>
+                                                {{ $manopera->denumire }}
+                                                @if ($manopera->observatii)
+                                                    <br>
+                                                    {{ $manopera->observatii }}
+                                                @endif
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
