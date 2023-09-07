@@ -56,7 +56,7 @@ class MecanicBonusController extends Controller
                     //         ->whereDate('data_ora_finalizare', '>=', $search_data);
                     // });
                 })
-                ->orderBy('data_ora_finalizare');
+                ->orderBy('data_ora_programare');
             })
             ->whereHas('manopere', function (Builder $query){
                 $query->where('mecanic_id', auth()->user()->id);
