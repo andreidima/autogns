@@ -61,7 +61,11 @@
                                 @endphp
                                 <tr>
                                     <td class="text-center">
-                                        {{ $programare->data_ora_finalizare ? \Carbon\Carbon::parse($programare->data_ora_finalizare)->isoFormat('DD') : '' }}
+                                        @if ($programare->data_ora_finalizare)
+                                            {{ \Carbon\Carbon::parse($programare->data_ora_finalizare)->isoFormat('DD') }}
+                                        @elseif ($programare->data_ora_programare)
+                                            {{ \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD') }}
+                                        @endif
                                     </td>
                                     <td>
                                         {{ $programare->masina }}
