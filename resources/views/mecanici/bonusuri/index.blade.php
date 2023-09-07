@@ -49,13 +49,15 @@
                     <tbody>
                         @php
                             $nrManopere = 0;
-                            $sumaTotala = 0;
+                            $pretTotal = 0;
+                            $bonusTotal = 0;
                         @endphp
                         @foreach ($programari as $programare)
                             @foreach ($programare->manopere as $manopera)
                                 @php
                                     $nrManopere ++;
-                                    $sumaTotala += $manopera->bonus_mecanic;
+                                    $pretTotal += $manopera->pret;
+                                    $bonusTotal += $manopera->bonus_mecanic;
                                 @endphp
                                 <tr>
                                     <td class="text-center">
@@ -79,11 +81,12 @@
                     </tbody>
                 </table>
 
-
                 <h4 class="text-center" style="font-weight: bold">
                     Total lucrări: {{ $nrManopere }}
                     <br>
-                    Total bonus: {{ $sumaTotala }} lei
+                    Total manopera: {{ $pretTotal }} lei
+                    <br>
+                    Total bonus: {{ $bonusTotal }} lei
                 </h5>
             </div>
         </div>
