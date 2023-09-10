@@ -1,7 +1,8 @@
 @extends ('layouts.app')
 
 @section('content')
-<div class="container card" style="border-radius: 40px 40px 40px 40px;">
+{{-- <div class="container card" style="border-radius: 40px 40px 40px 40px;"> --}}
+<div class="card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header align-items-center" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3">
                 <span class="badge culoare1 fs-5">
@@ -144,6 +145,7 @@
                                 <th class="text-center px-3">Mașină/ Telefon</th>
                                 <th class="text-center">Lucrare</th>
                                 <th class="text-center">Tip lucrare</th>
+                                <th class="text-center">Mecanic</th>
                                 <th class="text-center"><i class="fa-solid fa-car fs-4"></i></th>
                                 <th class="text-center"><span style="font-size: 100%">Conf.</span><i class="fa-solid fa-comment-sms fs-4"></i></th>
                                 <th class="text-center">Operator</th>
@@ -152,7 +154,11 @@
                         </thead>
                         <tbody>
                             @forelse ($programari as $programare)
-                                <tr>
+                                @if ($programare->manopere->where('pret', '>', 0)->count())
+                                    <tr style="background-color: #00ff0020;">
+                                @else
+                                    <tr>
+                                @endif
                                     <td align="">
                                         {{ ($programari ->currentpage()-1) * $programari ->perpage() + $loop->index + 1 }}
                                     </td>
@@ -182,6 +188,12 @@
                                         @if (($programare->geometrie_turism === 0) && ($programare->geometrie_camion === 0) && ($programare->freon === 0))
                                             <span class="me-1 px-1 culoare1 text-white">M</span>
                                         @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @foreach ($programare->manopere as $manopera)
+                                            {{ $manopera->mecanic->name ?? '' }}
+                                            <br>
+                                        @endforeach
                                     </td>
                                     <td class="text-center">
                                         @switch($programare->stare_masina)
@@ -285,6 +297,8 @@
                             @endforelse
                             </tbody>
                     </table>
+
+                    <p class="ms-5 my-0 p-0">* Programările colorate cu verde au adăugate prețul la manopere.</p>
                 </div>
 
                     <nav>
@@ -468,107 +482,6 @@
                     </table>
                 </div>
 
-        {{-- <div class="row mb-2">
-            @for ($ziua = \Carbon\Carbon::parse($search_data_inceput); $ziua <= \Carbon\Carbon::parse($search_data_sfarsit); $ziua->addDay())
-                <div class="col-md-2 p-0">
-                    <div class="" style="border-radius: 20px 20px 0px 0px;">
-                        <div class="border border-secondary p-2" style="border-radius: 20px 20px 0px 0px; background-color:#005a5a">
-                            <h5 class="my-0 text-center" style="color:white">
-                                <b>{{ $ziua->isoFormat('dddd') }}</b>
-                                <br>
-                                {{ $ziua->isoFormat('DD') }}
-                            </h5>
-                        </div>
-                        <div class="d-flex">
-                                    <div class="" style="width: 30px;">
-                                        @for ($i = 8; $i <= 16; $i++)
-                                            <div class="border border-secondary text-center" style="width: 100%; height:60px; background-color:white;">
-                                                {{ $i }}
-                                            </div>
-                                        @endfor
-                                    </div>
-
-                                    <div class="" style="width:100%">
-                                        @php
-                                            $ora_initiala = \Carbon\Carbon::now();
-                                            $ora_initiala->hour = 9;
-                                            $ora_initiala->minute = 0;
-                                            $ora_initiala->second = 0;
-
-                                            $ora_finala = \Carbon\Carbon::now();
-                                            $ora_finala->hour = 19;
-                                            $ora_finala->minute = 0;
-                                            $ora_finala->second = 0;
-
-                                            $total_minute_zi = 0;
-                                        @endphp
-
-                                        @forelse ($programari->where('programare_data', \Carbon\Carbon::now()->weekday($week_day)->toDateString()) as $programare)
-                                            @php
-                                                //variabila pentru crearea divului gol
-                                                $durata_minute_inainte = $ora_initiala->diffInMinutes($programare->programare_ora);
-                                                //variabila pentru crearea divului cu programarea
-                                                $durata_minute =
-                                                    (
-                                                        \Carbon\Carbon::parse($programare->programare_durata)->isoFormat('HH') * 60
-                                                        +
-                                                        \Carbon\Carbon::parse($programare->programare_durata)->isoFormat('mm')
-                                                    );
-                                                //setarea orei de unde incepe calcularea la programarea urmatoare
-                                                $ora_initiala = \Carbon\Carbon::parse($programare->programare_ora)->addMinutes($durata_minute);
-                                                //variabila de control
-                                                $total_minute_zi += $durata_minute_inainte + $durata_minute;
-                                            @endphp
-                                            <div class="border border-secondary" style="width: 100%; background-color:white; height:{{ $durata_minute_inainte }}px;">
-                                            </div>
-                                            <div class="border border-secondary text-center p-0 text-white" style="width: 100%; background-color:darkgreen; height:{{ $durata_minute }}px;
-                                                line-height: 1;"
-                                                title="
-                                                        {{
-                                                            \Carbon\Carbon::parse($programare->programare_ora)->isoFormat('HH:mm') .
-                                                            '-' .
-                                                            \Carbon\Carbon::parse($programare->programare_ora)->addMinutes($durata_minute)->isoFormat('HH:mm')
-                                                        }}. {{ $programare->pacient->nume ?? '' }} {{ $programare->pacient->prenume ?? ''}}.@foreach ($programare->servicii as $serviciu) {{ $serviciu->nume ?? '' }}.@endforeach
-                                                        "
-                                                >
-                                                {{
-                                                    $programare->pacient->nume ?? ''
-                                                }}
-                                                {{
-                                                    $programare->pacient->prenume ?? ''
-                                                }}
-                                                <br>
-                                                {{
-                                                            \Carbon\Carbon::parse($programare->programare_ora)->isoFormat('HH:mm') .
-                                                            '-' .
-                                                            \Carbon\Carbon::parse($programare->programare_ora)->addMinutes($durata_minute)->isoFormat('HH:mm')
-                                                }}
-                                            </div>
-
-                                            @if ($loop->last)
-                                                @php
-                                                    $durata_minute_final = $ora_finala->diffInMinutes($ora_initiala);
-                                                    $total_minute_zi += $durata_minute_final;
-                                                @endphp
-                                                @if ($total_minute_zi > 600)
-                                                    <script type="application/javascript">
-                                                        programariSuprapuse{!! json_encode($week_day) !!}=true;
-                                                    </script>
-                                                @else
-                                                    <div class="border border-secondary" style="width: 100%; background-color:white; height:{{ $durata_minute_final }}px;">
-                                                    </div>
-                                                @endif
-                                            @endif
-                                        @empty
-                                            <div class="border border-secondary" style="width: 100%; background-color:white; height:600px;">
-                                            </div>
-                                        @endforelse
-                                    </div>
-                        </div>
-                    </div>
-                </div>
-            @endfor
-        </div> --}}
 
             @endif
         </div>
