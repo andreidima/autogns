@@ -33,7 +33,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        if (!Auth::check() || Auth::guard()->viaRemember()) {
+            $request->authenticate();
+        }
 
         $request->session()->regenerate();
 
