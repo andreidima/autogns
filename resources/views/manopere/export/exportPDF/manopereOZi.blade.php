@@ -116,7 +116,7 @@
                                 <td>
                                     {{ $manopera->denumire }}
                                 </td>
-                                <td>
+                                <td style="text-align:right;">
                                     {{ $manopera->pret }}
                                 </td>
                             </tr>
@@ -125,11 +125,11 @@
                                 <td colspan="3" style="text-align:right; border-bottom:0px">
                                     <b>Total</b>
                                 </td>
-                                <td style="border-bottom:0px">
+                                <td style="text-align:right;">
                                     <b>{{ $manopereGrupateDupaMecanic->sum('pret') }}</b>
                                 </td>
                             </tr>
-                            @if (!$loop->last)
+                            {{-- @if (!$loop->last) --}}
                                 <tr>
                                     <td colspan="4"  style="border-top:0px">
                                         &nbsp;
@@ -137,8 +137,16 @@
                                         &nbsp; --}}
                                     </td>
                                 </tr>
-                            @endif
+                            {{-- @endif --}}
                     @endforeach
+                            <tr>
+                                <td colspan="3" style="text-align:right;">
+                                    <b>Total general</b>
+                                </td>
+                                <td style="text-align:right;">
+                                    <b>{{ $manopere->sum('pret') }}</b>
+                                </td>
+                            </tr>
                 </tbody>
             </table>
 
