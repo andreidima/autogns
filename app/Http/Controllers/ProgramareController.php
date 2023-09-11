@@ -364,13 +364,14 @@ WHERE t2.nr_auto IS NULL
 
                 'manopere.*.denumire' => 'required|max:500',
                 'manopere.*.mecanic_id' => 'nullable',
-                'manopere.*.pret' => 'nullable|numeric|between:0,99999',
+                'manopere.*.pret' => 'nullable|required_if:stare_masina,3|numeric|between:0,99999',
                 'manopere.*.bonus_mecanic' => 'nullable|numeric|between:0,99999',
                 'manopere.*.observatii' => 'nullable|max:2000',
             ],
             [
                 'manopere.*.denumire.required' => 'Câmpul „Denumire” pentru manopera #:position este obligatoriu',
                 'manopere.*.denumire.max' => 'Câmpul „Denumire” pentru manopera #:position trebuie sa fie de maxim 500 de caractere',
+                'manopere.*.pret.required_if' => 'Câmpul „Pret” pentru manopera #:position este necesar când stare masina este „Finalizată”',
                 'manopere.*.pret.numeric' => 'Câmpul „Pret” pentru manopera #:position trebuie sa fie un număr',
                 'manopere.*.pret.between' => 'Câmpul „Pret” pentru manopera #:position trebuie sa fie un număr între 0 și 99999',
                 'manopere.*.bonus_mecanic.numeric' => 'Câmpul „Bonus mecanic” pentru manopera #:position trebuie sa fie un număr',

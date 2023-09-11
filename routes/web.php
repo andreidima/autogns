@@ -9,6 +9,7 @@ use App\Http\Controllers\CronJobTrimitereController;
 use App\Http\Controllers\ZiNelucratoareController;
 use App\Http\Controllers\MecanicProgramareController;
 use App\Http\Controllers\MecanicBonusController;
+use App\Http\Controllers\ManoperaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,7 +45,7 @@ Route::group(['middleware' => 'role:admin'], function () {
 
     Route::get('programare-cerere-confirmare-sms/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'cerereConfirmareSms']);
 
-    Route::get('/manopere/export-per-mecanic', [ManoperaController::class, 'exportPerMecanic']);
+    Route::get('/manopere/export', [ManoperaController::class, 'export']);
 
     Route::get('verificare-masini-revenite-la-revizie-ulei', function (){
         $smsuri = App\Models\MesajTrimisSms::with('programare')->where('subcategorie', 'sms_revizie_ulei_filtre')->get();

@@ -84,10 +84,11 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="/manopere/export-per-mecanic">
-                                            Manopere per mecanic
+                                        <a class="dropdown-item" href="/manopere/export">
+                                            Manopere export
                                         </a>
                                     </li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('mesaje-trimise-sms.index') }}">
                                             SMS trimise
