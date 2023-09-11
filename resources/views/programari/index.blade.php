@@ -272,14 +272,13 @@
                                         <b>{{ $programare->nr_auto ?? '' }}</b>
                                     </td> --}}
                                     <td>
-                                        <div class="d-flex justify-content-end">
-                                            <a href="{{ $programare->path() }}" class="flex me-1">
-                                                <span class="badge bg-success">Vizualizează</span>
-                                            </a>
-                                            <a href="{{ $programare->path() }}/modifica" class="flex me-1">
+                                        <div class="text-end">
+                                            <a href="{{ $programare->path() }}" class="">
+                                                <span class="badge bg-success">Vizualizează</span></a>
+                                            <a href="{{ $programare->path() }}/modifica" class="mx-1">
                                                 <span class="badge bg-primary">Modifică</span>
                                             </a>
-                                            <div style="flex" class="">
+                                            <div style="" class="mx-1">
                                                 <a
                                                     href="#"
                                                     data-bs-toggle="modal"
