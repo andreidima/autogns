@@ -45,7 +45,19 @@
                         </div>
                         <div class="">
                             <b>
-                                {{ $programare->masina }} {{ $programare->nr_auto }}
+                                {{ $programare->masina }} {{ $programare->nr_auto }} |
+                                @if ($programare->km)
+                                    <span class="text-success" style="white-space: nowrap; overflow: hidden;">
+                                        {{ $programare->km }} km
+                                        <a class="text-success" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                                    </span>
+                                @else
+                                    <span class="text-danger" style="white-space: nowrap; overflow: hidden;">
+                                        Adaugă km
+                                        <a class="text-danger" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                                    </span>
+                                @endif
+
                             </b>
                             <br>
                             {{ $programare->lucrare }}

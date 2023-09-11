@@ -10,6 +10,8 @@ use App\Models\Manopera;
 use App\Models\ProgramareIstoric;
 use App\Models\User;
 
+use Carbon\Carbon;
+
 use App\Traits\TrimiteSmsTrait;
 
 class ProgramareController extends Controller
@@ -153,7 +155,12 @@ WHERE t2.nr_auto IS NULL
     {
         $this->validateRequest($request);
 
-        $programare = Programare::create($request->except('manopere', 'date'));
+        $programare = Programare::make($request->except('manopere', 'date'));
+        // Daca este bifata ca este finalizata, se trece si data ora finalizare ca fiind acum
+        if ($programare->stare_masina == "3"){
+            $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
+        }
+        $programare->save();
 
         // Salvare in istoric
         $programare_istoric = new ProgramareIstoric;
@@ -245,6 +252,12 @@ WHERE t2.nr_auto IS NULL
         $this->validateRequest($request);
 
         $programare->update($request->except('manopere', 'date'));
+        // Daca este bifata acum ca este finalizata, se trece si data ora finalizare ca fiind acum
+        if (($programare->stare_masina == "3") && ($programare->wasChanged ('stare_masina'))){
+            $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
+        }
+        $programare->save();
+
 
         // Salvare in istoric
         $programare_istoric = new ProgramareIstoric;

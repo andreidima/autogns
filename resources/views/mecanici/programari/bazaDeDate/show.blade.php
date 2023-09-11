@@ -160,19 +160,11 @@
                                         {{ $programare->observatii }}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="pe-4">
-                                        Data introducere programare
-                                    </td>
-                                    <td>
-                                        {{ $programare->created_at ? \Carbon\Carbon::parse($programare->created_at)->isoFormat('DD.MM.YYYY HH:mm') : '' }}
-                                    </td>
-                                </tr>
                             </table>
                         </div>
 
                         @if ($programare->manopere->count() > 0)
-                            <div class="my-4 table-responsive col-md-11 mx-auto" style="border:1px solid #e66800">
+                            <div class="my-4 table-responsive col-md-11">
                                 <table class="table table-sm mb-0 table-striped table-hover">
                                     @foreach ($programare->manopere as $manopera)
                                         <tr class="text-white" style="background-color: #e66800;">
@@ -196,7 +188,7 @@
                                                 {{ $manopera->mecanic->name ?? '' }}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <td class="pe-4">
                                                 Preț
                                             </td>
@@ -211,7 +203,7 @@
                                             <td>
                                                 {{ $manopera->bonus_mecanic }}
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
                                             <td class="pe-4">
                                                 Observații

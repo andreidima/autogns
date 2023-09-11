@@ -84,6 +84,11 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
+                                        <a class="dropdown-item" href="/manopere/export-per-mecanic">
+                                            Manopere per mecanic
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item" href="{{ route('mesaje-trimise-sms.index') }}">
                                             SMS trimise
                                         </a>
@@ -109,6 +114,11 @@
                             <li class="nav-item me-3">
                                 <a class="nav-link active" aria-current="page" href="/mecanici/bonusuri-mecanici">
                                     <i class="fa-solid fa-money-check-dollar me-1"></i>Bonusuri
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link active" aria-current="page" href="/mecanici/baza-de-date-programari">
+                                    <i class="fa-solid fa-database me-1"></i>Baza de date Programări
                                 </a>
                             </li>
                         @endif

@@ -43,14 +43,45 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::resource('zile-nelucratoare', ZiNelucratoareController::class)->parameters(['zile-nelucratoare' => 'zi_nelucratoare']);
 
     Route::get('programare-cerere-confirmare-sms/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'cerereConfirmareSms']);
+
+    Route::get('/manopere/export-per-mecanic', [ManoperaController::class, 'exportPerMecanic']);
+
+    Route::get('verificare-masini-revenite-la-revizie-ulei', function (){
+        $smsuri = App\Models\MesajTrimisSms::with('programare')->where('subcategorie', 'sms_revizie_ulei_filtre')->get();
+        $programariRecente = App\Models\Programare::whereDate('data_ora_programare', '>', '2023-08-15')->get();
+        // dd($smsuri, $programariRecente);
+        $nrCrt = 1;
+        foreach ($smsuri as $key => $sms) {
+            foreach ($programariRecente as $programare){
+                if ($programare->telefon && ($sms->programare->telefon ?? null)){
+                    if (str_replace(' ', '', $programare->telefon) == str_replace(' ', '', ($sms->programare->telefon))){
+                        echo $programare->id . ' - ' . $programare->telefon . ' - ' . $programare->lucrare;
+                        echo '<br>';
+                    }
+                }
+            }
+
+            // echo $nrCrt++ . '. ';
+            // if ($sms->programare->telefon ?? null) {
+            //     $sms->programare->telefon = str_replace(' ', '', $sms->programare->telefon);
+            //     echo $sms->programare->telefon;
+            // }
+            // echo '<br>';
+        }
+    });
 });
 
 
 Route::group(['middleware' => 'role:mecanic'], function () {
     // Route::resource('/mecanici/programari-mecanici', MecanicProgramareController::class,  ['parameters' => ['programari_mecanici' => 'programare']]);
     Route::get('/mecanici/programari-mecanici', [MecanicProgramareController::class, 'index']);
+    Route::get('/mecanici/programari-mecanici/modificare-programare/{programare}', [MecanicProgramareController::class, 'modificareProgramare']);
+    Route::post('/mecanici/programari-mecanici/modificare-programare/{programare}', [MecanicProgramareController::class, 'postModificareProgramare']);
     Route::get('/mecanici/programari-mecanici/modificare-manopera/{manopera}', [MecanicProgramareController::class, 'modificareManopera']);
     Route::post('/mecanici/programari-mecanici/modificare-manopera/{manopera}', [MecanicProgramareController::class, 'postModificareManopera']);
+
+    Route::get('/mecanici/baza-de-date-programari', [MecanicProgramareController::class, 'bazaDeDateIndex']);
+    Route::get('/mecanici/baza-de-date-programari/{programare}', [MecanicProgramareController::class, 'bazaDeDateShow']);
 
     Route::get('/mecanici/bonusuri-mecanici', [MecanicBonusController::class, 'index']);
 });
