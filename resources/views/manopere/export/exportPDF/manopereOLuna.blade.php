@@ -27,10 +27,10 @@
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 14px;
-            margin-top: 20px;
+            margin-top: 1cm;
             margin-left: 1cm;
             margin-right: 1cm;
-            margin-bottom: 2cm;
+            margin-bottom: 1cm;
         }
 
         * {
@@ -91,7 +91,7 @@
                     </td>
                     <td style="border-width:0px; text-align:center;">
                         <h1 style="margin: 0">Manopere</h1>
-                        Data: {{ \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}
+                        Luna: {{ \Carbon\Carbon::parse($search_data)->isoFormat('MMMM YYYY') }}
                     </td>
                 </tr>
             </table>
@@ -99,69 +99,56 @@
             <br>
             <br>
 
-            <table style="width:100%; margin-left: auto; margin-right: auto;">
-                <thead>
-                    <tr>
-                        <th>Mecanic</th>
-                        <th>Programare</th>
-                        <th>Manopera</th>
-                        <th>Preț</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($manopere->sortBy('mecanic.name')->groupBy('mecanic_id') as $manopereGrupateDupaMecanic)
-                        @foreach ($manopereGrupateDupaMecanic as $manopera)
+            @foreach ($manopere->sortBy('mecanic.name')->groupBy('mecanic_id') as $manopereGrupateDupaMecanic)
+                <div style="page-break-inside: avoid; margin-bottom:30px;">
+                    <table style="width:100%; margin-left: auto; margin-right: auto;">
+                        <thead>
                             <tr>
-                                @if ($loop->first)
-                                    <td rowspan="{{ $manopereGrupateDupaMecanic->count() }}">
-                                        <b>{{ $manopera->mecanic->name ?? '???' }}</b>
+                                <th colspan="5">
+                                    Mecanic: {{ $manopereGrupateDupaMecanic->first()->mecanic->name ?? '???' }}
+                                </th>
+                            <tr>
+                                <th>#</th>
+                                <th>Data</th>
+                                <th>Programare</th>
+                                <th>Manopera</th>
+                                <th>Preț</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($manopereGrupateDupaMecanic as $manopera)
+                                <tr>
+                                    <td>
+                                        {{ $loop->iteration }}
                                     </td>
-                                @endif
-                                <td>
-                                    {{ $manopera->programare->masina ?? '' }} {{ $manopera->programare->nr_auto ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $manopera->denumire }}
-                                </td>
-                                <td style="text-align:right;">
-                                    {{ $manopera->pret }}
-                                </td>
-                            </tr>
-                        @endforeach
-                            <tr>
-                                <td colspan="3" style="text-align:right; border-bottom:0px; border-left;">
-                                    <b>Total</b>
-                                </td>
-                                <td style="text-align:right;">
-                                    <b>{{ $manopereGrupateDupaMecanic->sum('pret') }}</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                @if (!$loop->last)
-                                    <td colspan="4"  style="border-top:0px">
-                                @else
-                                    <td colspan="4"  style="border-top:0px; border-bottom:0px">
-                                @endif
-                                        &nbsp;
+                                    <td>
+                                        {{ $manopera->programare->data_ora_finalizare ? \Carbon\Carbon::parse($manopera->programare->data_ora_finalizare)->isoFormat('DD.MM.YYYY') : '' }}
                                     </td>
-                            </tr>
+                                    <td>
+                                        {{ $manopera->programare->masina ?? '' }} {{ $manopera->programare->nr_auto ?? '' }}
+                                    </td>
+                                    <td>
+                                        {{ $manopera->denumire }}
+                                    </td>
+                                    <td style="text-align:right;">
+                                        {{ $manopera->pret }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                                <tr>
+                                    <td colspan="4" style="text-align:right; border-bottom:0px; border-left:0px">
+                                        <b>Total</b>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <b>{{ $manopereGrupateDupaMecanic->sum('pret') }}</b>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endforeach
 
-                    @endforeach
-                            <tr>
-                                <td colspan="3" style="text-align:right; border-top:0px">
-                                    <b>Total general</b>
-                                </td>
-                                <td style="text-align:right;">
-                                    <b>{{ $manopere->sum('pret') }}</b>
-                                </td>
-                            </tr>
-                </tbody>
-            </table>
-
-            <br>
-
-
-            </div>
+        </div>
 
 
         {{-- Here's the magic. This MUST be inside body tag. Page count / total, centered at bottom of page --}}
