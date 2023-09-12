@@ -2,7 +2,7 @@
 
 @section('content')
 {{-- <div class="container card" style="border-radius: 40px 40px 40px 40px;"> --}}
-<div class="card" style="border-radius: 40px 40px 40px 40px;">
+<div class="card mx-3" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header align-items-center" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3">
                 <span class="badge culoare1 fs-5">
@@ -154,8 +154,10 @@
                         </thead>
                         <tbody>
                             @forelse ($programari as $programare)
-                                @if ($programare->manopere->where('pret', '>', 0)->count())
-                                    <tr style="background-color: #00ff0020;">
+                                @if ($programare->manopere->where('vazut', 0)->count())
+                                    <tr style="background-color: #ff000038;">
+                                @elseif ($programare->manopere->where('pret', '>', 0)->count())
+                                    <tr style="background-color: #00ff0053;">
                                 @else
                                     <tr>
                                 @endif
@@ -190,8 +192,8 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        @foreach ($programare->manopere as $manopera)
-                                            {{ $manopera->mecanic->name ?? '' }}
+                                        @foreach ($programare->manopere->unique('mecanic_id') as $manopera)
+                                            {{ $manopera->mecanic->name ?? ''}}
                                             <br>
                                         @endforeach
                                     </td>
@@ -274,7 +276,9 @@
                                     <td>
                                         <div class="text-end">
                                             <a href="{{ $programare->path() }}" class="">
-                                                <span class="badge bg-success">Vizualizează</span></a>
+                                                <span class="badge bg-success">
+                                                    Vizualizează
+                                                </span></a>
                                             <a href="{{ $programare->path() }}/modifica" class="mx-1">
                                                 <span class="badge bg-primary">Modifică</span>
                                             </a>
@@ -297,6 +301,7 @@
                             </tbody>
                     </table>
 
+                    <p class="ms-5 my-0 p-0">* Programările colorate cu roșu au informații noi de la mecanici. Dacă se intră pe vizualizare pentru a se vedea informațiile, culoarea va reveni la normal.</p>
                     <p class="ms-5 my-0 p-0">* Programările colorate cu verde au adăugate prețul la manopere.</p>
                 </div>
 

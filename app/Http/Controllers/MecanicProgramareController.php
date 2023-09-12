@@ -92,13 +92,18 @@ class MecanicProgramareController extends Controller
 
     public function postModificareManopera(Request $request, Manopera $manopera)
     {
-        $manopera->update($request->validate(
+        $validated = $request->validate(
             [
                 'mecanic_timp' => 'nullable|max:2000',
                 'mecanic_consumabile' => 'nullable|max:2000',
                 'mecanic_observatii' => 'nullable|max:2000',
-            ]
-        ));
+            ]);
+
+        $manopera->update($validated);
+
+        dd($manopera);
+
+        $validated['vazut'] = 0;
 
         return redirect($request->session()->get('programariMecaniciReturnUrl') ?? ('/mecanici/programari-mecanici'))
             ->with('status', 'Manopera pentru mașina „' . ($manopera->programare->masina ?? '') . '” a fost modificată cu succes!');

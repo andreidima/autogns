@@ -179,6 +179,7 @@ WHERE t2.nr_auto IS NULL
                 $manoperaDB->pret = $manopera['pret'];
                 $manoperaDB->bonus_mecanic = $manopera['bonus_mecanic'];
                 $manoperaDB->observatii = $manopera['observatii'];
+                $manoperaDB->vazut = 1;
                 $manoperaDB->save();
             }
         }
@@ -212,6 +213,11 @@ WHERE t2.nr_auto IS NULL
      */
     public function show(Request $request, Programare $programare)
     {
+        $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
+
+        // Daca este utilizatorul AutoGNS, se bifeaza in baza de date ca vazute informatiile adaugate la manopere de catre mecanici
+        $programare->manopere()->update(['vazut' => 1]);
+
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
         return view('programari.show', compact('programare'));
@@ -272,7 +278,13 @@ WHERE t2.nr_auto IS NULL
         // Se adauga/ modifica manoperele din request
         if ($request->manopere) {
             foreach ($request->manopere as $manopera){
-                $manopera['id'] ? ($manoperaDB = Manopera::find($manopera['id'])) : ($manoperaDB = new Manopera());
+                if ($manopera['id']) {
+                    $manoperaDB = Manopera::find($manopera['id']);
+                } else {
+                    $manoperaDB = new Manopera();
+                    $manoperaDB->vazut = 1;
+                }
+                // $manopera['id'] ? ($manoperaDB = Manopera::find($manopera['id'])) : ($manoperaDB = new Manopera());
                 $manoperaDB->programare_id = $programare->id;
                 $manoperaDB->mecanic_id = $manopera['mecanic_id'] ?? null;
                 $manoperaDB->denumire = $manopera['denumire'];
