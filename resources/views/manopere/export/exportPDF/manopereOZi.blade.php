@@ -28,8 +28,8 @@
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 14px;
             margin-top: 20px;
-            margin-left: 2cm;
-            margin-right: 2cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
             margin-bottom: 2cm;
         }
 
@@ -80,16 +80,23 @@
 
         {{-- <div style="page-break-after: always"> --}}
         <div>
+            {{-- <div style="text-align:center">
+                <img src="{{ asset('imagini/autogns-logo-01-2048x482.png') }}" style="height: 100px;">
+            </div> --}}
 
             <table style="">
                 <tr valign="" style="">
+                    <td style="border-width:0px; width:50%">
+                        <img src="{{ asset('imagini/autogns-logo-01-2048x482.png') }}" style="height: 70px;">
+                    </td>
                     <td style="border-width:0px; text-align:center;">
-                        <h2 style="margin: 0">AutoGNS - Manopere</h2>
+                        <h1 style="margin: 0">Manopere</h1>
                         Data: {{ \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}
                     </td>
                 </tr>
             </table>
 
+            <br>
             <br>
 
             <table style="width:100%; margin-left: auto; margin-right: auto;">
@@ -129,18 +136,19 @@
                                     <b>{{ $manopereGrupateDupaMecanic->sum('pret') }}</b>
                                 </td>
                             </tr>
-                            {{-- @if (!$loop->last) --}}
-                                <tr>
+                            <tr>
+                                @if (!$loop->last)
                                     <td colspan="4"  style="border-top:0px">
+                                @else
+                                    <td colspan="4"  style="border-top:0px; border-bottom:0px">
+                                @endif
                                         &nbsp;
-                                        {{-- <br>
-                                        &nbsp; --}}
                                     </td>
-                                </tr>
-                            {{-- @endif --}}
+                            </tr>
+
                     @endforeach
                             <tr>
-                                <td colspan="3" style="text-align:right;">
+                                <td colspan="3" style="text-align:right; border-top:0px">
                                     <b>Total general</b>
                                 </td>
                                 <td style="text-align:right;">

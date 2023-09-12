@@ -28,7 +28,7 @@ class ManoperaController extends Controller
                 $pdf = \PDF::loadView('manopere.export.exportPDF.manopereOZi', compact('manopere', 'search_data'))
                     ->setPaper('a4', 'portrait');
                 $pdf->getDomPDF()->set_option("enable_php", true);
-                return $pdf->download('Manopere ' . \Carbon\Carbon::parse($search_data)->todatestring() . '.pdf');
+                return $pdf->download('AutoGNS Manopere ' . \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') . '.pdf');
                 // return $pdf->stream();
                 break;
 
