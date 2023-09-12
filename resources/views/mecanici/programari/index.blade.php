@@ -65,11 +65,13 @@
                                     </span>
                                 @endif
 
-                                <span class="px-1 rounded-3 bg-info text-white" style="white-space: nowrap; overflow: hidden;">
-                                    <a class="text-white text-decoration-none" href="/mecanici/baza-de-date-programari?search_nr_auto={{ $programare->nr_auto }}">
-                                        Istoric
-                                    </a>
-                                </span>
+                                @if ($programare->nr_auto)
+                                    <span class="px-1 rounded-3 bg-info text-white" style="white-space: nowrap; overflow: hidden;">
+                                        <a class="text-white text-decoration-none" href="/mecanici/baza-de-date-programari?search_nr_auto={{ $programare->nr_auto }}">
+                                            Istoric
+                                        </a>
+                                    </span>
+                                @endif
 
                             </b>
                             <br>
