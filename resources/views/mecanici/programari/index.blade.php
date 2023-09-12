@@ -45,18 +45,31 @@
                         </div>
                         <div class="">
                             <b>
-                                {{ $programare->masina }} {{ $programare->nr_auto }} |
+                                <span class="" style="color:#e66800">
+                                    {{ $programare->masina }} {{ $programare->nr_auto }}
+                                </span>
+                                <br>
                                 @if ($programare->km)
-                                    <span class="text-success" style="white-space: nowrap; overflow: hidden;">
-                                        {{ $programare->km }} km
-                                        <a class="text-success" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                                    <span class="px-1 me-1 rounded-3 bg-success text-white" style="white-space: nowrap; overflow: hidden;">
+                                        <a class="text-white text-decoration-none" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}">
+                                            {{ $programare->km }} km
+                                            <i class="fa-solid fa-pen-to-square fs-5"></i>
+                                        </a>
                                     </span>
                                 @else
-                                    <span class="text-danger" style="white-space: nowrap; overflow: hidden;">
-                                        Adaugă km
-                                        <a class="text-danger" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                                    <span class="px-1 me-1 rounded-3 bg-danger text-white" style="white-space: nowrap; overflow: hidden;">
+                                        <a class="text-white text-decoration-none" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}">
+                                            Adaugă km
+                                            <i class="fa-solid fa-pen-to-square fs-5"></i>
+                                        </a>
                                     </span>
                                 @endif
+
+                                <span class="px-1 rounded-3 bg-info text-white" style="white-space: nowrap; overflow: hidden;">
+                                    <a class="text-white text-decoration-none" href="/mecanici/baza-de-date-programari?search_nr_auto={{ $programare->nr_auto }}">
+                                        Istoric
+                                    </a>
+                                </span>
 
                             </b>
                             <br>
