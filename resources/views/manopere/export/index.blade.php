@@ -39,9 +39,30 @@
                             </button>
                         </div>
                     </form>
-                    {{-- <button type="submit" name="action" value="manopereTotIntervalul" class="list-group-item list-group-item-action" aria-current="true">
-                        Manopere tot intervalul
-                    </button> --}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <form class="needs-validation" novalidate method="GET" action="{{ url()->current()  }}">
+                        @csrf
+
+                        <div class="py-2 rounded-3 d-flex align-items-center justify-content-center" style="background-color:aliceblue">
+                            <p class="m-0 me-3 p-0">Manopere</p>
+                            <div class="col-lg-5 d-flex justify-content-center">
+                                <label for="searchLuna" class="mb-0 align-self-center me-1">Luna:</label>
+                                <input type="text" class="form-control form-control border rounded-3" id="searchLuna" name="searchLuna" placeholder="Luna" autofocus
+                                        value="{{ $searchLuna }}">
+                            </div>
+                            <div class="col-lg-5 d-flex justify-content-center">
+                                <label for="searchAn" class="mb-0 align-self-center me-1">An:</label>
+                                <input type="text" class="form-control form-control me-1 border rounded-3" id="searchAn" name="searchAn" placeholder="An" autofocus
+                                        value="{{ $searchAn }}">
+                            </div>
+                            <button type="submit" name="action" value="manopereOLuna" class="btn btn-success" aria-current="true">
+                                Export
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
