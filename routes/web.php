@@ -10,6 +10,7 @@ use App\Http\Controllers\ZiNelucratoareController;
 use App\Http\Controllers\MecanicProgramareController;
 use App\Http\Controllers\MecanicBonusController;
 use App\Http\Controllers\ManoperaController;
+use App\Http\Controllers\PontajController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -87,4 +88,12 @@ Route::group(['middleware' => 'role:mecanic'], function () {
     Route::get('/mecanici/baza-de-date-programari/{programare}', [MecanicProgramareController::class, 'bazaDeDateShow']);
 
     Route::get('/mecanici/bonusuri-mecanici', [MecanicBonusController::class, 'index']);
+
+    Route::get('/mecanici/pontaje-mecanici/citireQr/{programare}', [PontajController::class, 'citireQr']);
+    Route::post('/mecanici/pontaje-mecanici/incepe-termina-pontaj/{programare}/{pontaj}', [PontajController::class, 'postIncepeTerminaPontaj']);
+    Route::get('/mecanici/pontaje-mecanici/status/{programare}/{pontaj}', [PontajController::class, 'status']);
 });
+
+// Route::group(['middleware' => 'role:admin,mecanic'], function () {
+//     Route::resource('/pontaje', PontajController::class,  ['parameters' => ['pontaje' => 'pontaj']]);
+// });
