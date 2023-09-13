@@ -233,7 +233,7 @@
                                                 Mecanic - consumabile folosite
                                             </td>
                                             <td>
-                                                {{ $manopera->mecanic_cosumabile }}
+                                                {{ $manopera->mecanic_consumabile }}
                                             </td>
                                         </tr>
                                         <tr>
