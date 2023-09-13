@@ -54,7 +54,7 @@ class ManoperaController extends Controller
                     })
                     ->get()
                     ->sortBy('programare.data');
-// dd($manopere);
+
                 // $manopere = $manopere->sortBy('programare.data');
 
                 // return view('manopere.export.exportPDF.manopereOLuna', compact('manopere', 'search_data'));

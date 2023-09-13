@@ -275,23 +275,25 @@
                                     </td> --}}
                                     <td>
                                         <div class="text-end">
+                                            <a href="{{ $programare->path() }}/fisa-pdf" class="me-1">
+                                                <span class="badge bg-warning text-dark">
+                                                    Fișa
+                                                </span></a>
                                             <a href="{{ $programare->path() }}" class="">
                                                 <span class="badge bg-success">
                                                     Vizualizează
                                                 </span></a>
-                                            <a href="{{ $programare->path() }}/modifica" class="mx-1">
-                                                <span class="badge bg-primary">Modifică</span>
+                                        </div>
+                                        <div class="text-end">
+                                            <a href="{{ $programare->path() }}/modifica" class="me-1">
+                                                <span class="badge bg-primary">Modifică</span></a>
+                                            <a href="#"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#stergeProgramarea{{ $programare->id }}"
+                                                title="Șterge Programarea"
+                                                >
+                                                <span class="badge bg-danger">Șterge</span>
                                             </a>
-                                            <div style="" class="mx-1">
-                                                <a
-                                                    href="#"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#stergeProgramarea{{ $programare->id }}"
-                                                    title="Șterge Programarea"
-                                                    >
-                                                    <span class="badge bg-danger">Șterge</span>
-                                                </a>
-                                            </div>
                                         </div>
                                     </td>
                                 </tr>

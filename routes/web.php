@@ -37,6 +37,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['middleware' => 'role:admin'], function () {
     Route::get('programari/afisare-calendar', [ProgramareController::class, 'index'])->name('programari.afisareCalendar');
+
+    Route::get('/programari/{programare}/fisa-pdf', [ProgramareController::class, 'exportFisaPdf']);
     Route::resource('/programari', ProgramareController::class,  ['parameters' => ['programari' => 'programare']]);
 
     Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje-trimise-sms' => 'mesaj_trimis_sms']]);

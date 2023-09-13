@@ -392,4 +392,14 @@ WHERE t2.nr_auto IS NULL
             ]
         );
     }
+
+    public function exportFisaPdf(Request $request, Programare $programare)
+    {
+        // return view('programari.export.exportFisaPdf', compact('programare'));
+        $pdf = \PDF::loadView('programari.export.exportFisaPdf', compact('programare'))
+            ->setPaper('a4', 'portrait');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        // return $pdf->download('AutoGNS Manopere ' . \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') . '.pdf');
+        return $pdf->stream();
+    }
 }
