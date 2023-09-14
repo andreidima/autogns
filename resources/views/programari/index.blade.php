@@ -274,26 +274,34 @@
                                         <b>{{ $programare->nr_auto ?? '' }}</b>
                                     </td> --}}
                                     <td>
-                                        <div class="text-end">
-                                            <a href="{{ $programare->path() }}/fisa-pdf" target="_blank" class="me-1">
-                                                <span class="badge bg-warning text-dark">
-                                                    Fișa
-                                                </span></a>
-                                            <a href="{{ $programare->path() }}" class="">
-                                                <span class="badge bg-success">
-                                                    Vizualizează
-                                                </span></a>
+                                        <div class="text-end d-flex">
+                                            <div>
+                                                <a href="{{ $programare->path() }}/fisa-pdf" target="_blank" class="me-1">
+                                                    <span class="badge bg-warning text-dark">
+                                                        Fișa
+                                                    </span></a>
+                                            </div>
+                                            <div>
+                                                <a href="{{ $programare->path() }}" class="">
+                                                    <span class="badge bg-success">
+                                                        Vizualizează
+                                                    </span></a>
+                                            </div>
                                         </div>
                                         <div class="text-end">
-                                            <a href="{{ $programare->path() }}/modifica" class="me-1">
-                                                <span class="badge bg-primary">Modifică</span></a>
-                                            <a href="#"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#stergeProgramarea{{ $programare->id }}"
-                                                title="Șterge Programarea"
-                                                >
-                                                <span class="badge bg-danger">Șterge</span>
-                                            </a>
+                                            <div>
+                                                <a href="{{ $programare->path() }}/modifica" class="me-1">
+                                                    <span class="badge bg-primary">Modifică</span></a>
+                                            </div>
+                                            <div>
+                                                <a href="#"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#stergeProgramarea{{ $programare->id }}"
+                                                    title="Șterge Programarea"
+                                                    >
+                                                    <span class="badge bg-danger">Șterge</span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
