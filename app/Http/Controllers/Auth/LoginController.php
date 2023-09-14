@@ -43,11 +43,11 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        // if(!session()->has('url.intended'))
-        // {
+        if(!session()->has('url.intended'))
+        {
             session(['url.intended' => url()->previous()]);
-        // }
-        // dd(session()->get('url.intended'));
+        }
+
         return view("auth.login");
     }
 
@@ -59,8 +59,6 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-// dd(session()->get('url.intended'));
-// $redirectTo = 'ssss2';
 
         if (Auth::attempt($credentials)) {
 

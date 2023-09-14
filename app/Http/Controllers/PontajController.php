@@ -53,13 +53,29 @@ class PontajController extends Controller
 
     public function status(Request $request)
     {
-        // dd('stop');
+        $search_data = Carbon::parse($request->search_data) ?? Carbon::today();
+
+        switch ($request->input('schimbaZiua')) {
+            case 'oZiInapoi':
+                $search_data = Carbon::parse($search_data)->subDay();
+                break;
+            case 'oZiInainte':
+                $search_data = Carbon::parse($search_data)->addDay();
+                break;
+        }
+
+        $pontaje = Pontaj::with('programare')
+                        ->where('mecanic_id', auth()->user()->id)
+                        ->whereDate('inceput', $search_data)
+                        ->oldest()
+                        ->get();
+
         $pontaj = Pontaj::where('mecanic_id', auth()->user()->id)
                         ->with('programare')
                         ->whereNull('sfarsit')
                         ->latest()
                         ->first();
 
-        return view ('pontaje.interfataMecanici.status', compact('pontaj'));
+        return view ('pontaje.interfataMecanici.status', compact('pontaje', 'pontaj', 'search_data'));
     }
 }

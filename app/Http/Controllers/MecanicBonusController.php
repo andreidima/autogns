@@ -22,7 +22,6 @@ class MecanicBonusController extends Controller
      */
     public function index(Request $request)
     {
-        $request->session()->forget('programare_return_url');
         $search_data = Carbon::parse($request->search_data) ?? Carbon::today();
 
         switch ($request->input('schimbaLuna')) {

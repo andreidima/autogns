@@ -21,6 +21,10 @@
                             <i class="fa-solid fa-calendar-check me-1"></i>
                             Programări
                         </a>
+                        <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/pontaje-mecanici/status" role="button">
+                            <i class="fa-solid fa-clock me-1"></i>
+                            Pontaje
+                        </a>
                         <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/bonusuri-mecanici" role="button">
                             <i class="fa-solid fa-money-check-dollar me-1"></i>
                             Bonusuri

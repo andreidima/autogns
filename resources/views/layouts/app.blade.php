@@ -113,6 +113,11 @@
                                 </a>
                             </li>
                             <li class="nav-item me-3">
+                                <a class="nav-link active" aria-current="page" href="/mecanici/pontaje-mecanici/status">
+                                    <i class="fa-solid fa-clock me-1"></i>Pontaje
+                                </a>
+                            </li>
+                            <li class="nav-item me-3">
                                 <a class="nav-link active" aria-current="page" href="/mecanici/bonusuri-mecanici">
                                     <i class="fa-solid fa-money-check-dollar me-1"></i>Bonusuri
                                 </a>
