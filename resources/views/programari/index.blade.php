@@ -289,7 +289,7 @@
                                             </div>
                                         {{-- </div> --}}
                                         {{-- <div class="d-flex text-end"> --}}
-                                            <div class="d-flex justify-content-end>
+                                            <div class="d-flex justify-content-end">
                                                 <a href="{{ $programare->path() }}/modifica" class="me-1">
                                                     <span class="badge bg-primary">Modifică</span></a>
                                             {{-- </div>
