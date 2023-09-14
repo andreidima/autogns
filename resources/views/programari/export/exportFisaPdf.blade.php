@@ -28,8 +28,8 @@
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 12px;
             margin-top: 0px;
-            margin-left: 25px;
-            margin-right: 25px;
+            margin-left: 10px;
+            margin-right: 10px;
             margin-bottom: 0px;
         }
 
@@ -118,14 +118,14 @@
                         Marca/tip: {{ $programare->masina }}
                         <br>
                         Proprietar: {{ $programare->client }}
-                        <br><br>
+                        <br>
                         Delegat: ......................................................
                     </td>
                     <td style="width:32%; border-width:0px;">
                         Data: {{ $programare->data_ora_programare ? \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') : '' }}
                         <br>
                         Nr. Tel: {{ $programare->telefon }}
-                        <br><br>
+                        <br>
                         Km: .............................
                     </td>
                 </tr>
@@ -133,8 +133,8 @@
 
 
             1. Lucrări solicitate de client:
-            <div style="padding:0px 2px; border:3px solid black;">
-                {{ $programare->lucrare }}
+            <div style="padding:0px 2px; border:3px solid black; font-size:14px">
+                <b>{{ $programare->lucrare }}</b>
             </div>
 
             2. Constatare atelier:
