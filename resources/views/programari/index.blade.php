@@ -273,27 +273,27 @@
                                     <td class="text-center">
                                         <b>{{ $programare->nr_auto ?? '' }}</b>
                                     </td> --}}
-                                    <td>
-                                        <div class="text-end d-flex">
-                                            <div>
+                                    <td style="text-end">
+                                        {{-- <div class="d-flex text-end"> --}}
+                                            <div class="d-flex justify-content-end">
                                                 <a href="{{ $programare->path() }}/fisa-pdf" target="_blank" class="me-1">
                                                     <span class="badge bg-warning text-dark">
                                                         Fișa
                                                     </span></a>
-                                            </div>
-                                            <div>
+                                            {{-- </div>
+                                            <div> --}}
                                                 <a href="{{ $programare->path() }}" class="">
                                                     <span class="badge bg-success">
                                                         Vizualizează
                                                     </span></a>
                                             </div>
-                                        </div>
-                                        <div class="text-end">
-                                            <div>
+                                        {{-- </div> --}}
+                                        {{-- <div class="d-flex text-end"> --}}
+                                            <div class="d-flex justify-content-end>
                                                 <a href="{{ $programare->path() }}/modifica" class="me-1">
                                                     <span class="badge bg-primary">Modifică</span></a>
-                                            </div>
-                                            <div>
+                                            {{-- </div>
+                                            <div> --}}
                                                 <a href="#"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#stergeProgramarea{{ $programare->id }}"
@@ -302,7 +302,7 @@
                                                     <span class="badge bg-danger">Șterge</span>
                                                 </a>
                                             </div>
-                                        </div>
+                                        {{-- </div> --}}
                                     </td>
                                 </tr>
                             @empty
