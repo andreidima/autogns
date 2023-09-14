@@ -23,13 +23,14 @@ class PontajController extends Controller
         return view ('pontaje.interfataMecanici.citireQr', compact('programare', 'pontaj'));
     }
 
-    public function postIncepeTerminaPontaj(Request $request, Programare $programare, Pontaj $pontaj)
+    public function postIncepeTerminaPontaj(Request $request, Programare $programare)
     {
+        // dd('stop2');
         // Se cauta in baza de date daca este vreu pontaj ramas neterminat
-        // $pontaj = Pontaj::where('mecanic_id', auth()->user()->id)
-        //                 ->whereNull('sfarsit')
-        //                 ->latest()
-        //                 ->first();
+        $pontaj = Pontaj::where('mecanic_id', auth()->user()->id)
+                        ->whereNull('sfarsit')
+                        ->latest()
+                        ->first();
 
         // Daca s-a gasit un pontaj, acesta se inchide
         if ($pontaj) {
@@ -47,14 +48,18 @@ class PontajController extends Controller
             $pontaj->save();
         }
 
-        return redirect('/mecanici/pontaje-mecanici/status/' . $programare->id . '/' . $pontaj->id);
+        return redirect('/mecanici/pontaje-mecanici/status');
     }
 
-    public function status(Request $request, Programare $programare, Pontaj $pontaj)
+    public function status(Request $request)
     {
-        echo $programare->id;
-        echo '<br>';
-        echo $pontaj->id;
+        // dd('stop');
+        $pontaj = Pontaj::where('mecanic_id', auth()->user()->id)
+                        ->with('programare')
+                        ->whereNull('sfarsit')
+                        ->latest()
+                        ->first();
 
+        return view ('pontaje.interfataMecanici.status', compact('pontaj'));
     }
 }

@@ -15,8 +15,16 @@
 
             @include ('errors')
 
-            <form class="needs-validation" novalidate method="POST" action="/mecanici/pontaje-mecanici/incepe-termina-pontaj/{{ $programare->id }}/{{ $pontaj->id }}">
+            <form class="needs-validation" novalidate method="POST" action="/mecanici/pontaje-mecanici/incepe-termina-pontaj/{{ $programare->id }}">
                 @csrf
+
+                    <div class="col-lg-12">
+                        <div class="px-2 rounded-2 text-center">
+                            <span class="rounded-3" style="font-weight:bold; color:#e66800; padding:0px 5px;">
+                                Ai scanat mașina:
+                            </span>
+                        </div>
+                    </div>
 
                     <div class="col-lg-12 d-flex">
                         <div style="min-width: 70px">
@@ -35,14 +43,16 @@
                         </div>
                     </div>
                     @if (!$pontaj) {{-- Daca nu exista pontaj --}}
-                        <div class="col-lg-12 text-center">
+                        <div class="col-6 mx-auto py-4 text-center d-grid gap-2">
                             <button class="btn btn-lg btn-primary text-white border border-dark rounded-3 shadow" type="submit">
                                 Începe
                             </button>
                         </div>
                     @elseif ($pontaj && ($pontaj->programare_id != $programare->id)) {{-- Daca exista pontaj dar nu pentru programarea aceasta --}}
-                        <div class="col-lg-12 my-3 py-1 rounded-3 px-2 bg-warning">
+                        <div class="col-lg-12 my-4 py-1 rounded-3 px-2 bg-warning">
                             <div class="text-center">
+                                ATENȚIE!
+                                <br>
                                 Ai deja în derulare un pontaj deschis la:
                             </div>
                             <div class="d-flex">
@@ -66,7 +76,10 @@
                                     Început:
                                 </div>
                                 <div>
-                                    {{ $pontaj->inceput ? \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('DD.MM.YYYY HH:mm') : '' }}
+                                    @if ($pontaj->inceput)
+                                        {{ \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('DD.MM.YYYY') }}
+                                        <span style="font-weight:bold; color:white; background-color:#e66800; padding:0px 5px;">{{ \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') }}</span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -75,21 +88,24 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-12 text-center">
+                        <div class="col-6 mx-auto py-4 text-center d-grid gap-2">
                             <button class="btn btn-lg btn-primary text-white border border-dark rounded-3 shadow" type="submit">
                                 Începe
                             </button>
                         </div>
                     @elseif ($pontaj && ($pontaj->programare_id == $programare->id)) {{-- Daca exista pontaj pentru programarea aceasta --}}
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 d-flex">
                             <div style="min-width: 70px">
                                 Început:
                             </div>
                             <div>
-                                {{ $pontaj->inceput ? \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('DD.MM.YYYY HH:mm') : '' }}
+                                @if ($pontaj->inceput)
+                                    {{ \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('DD.MM.YYYY') }}
+                                    <span style="font-weight:bold; color:white; background-color:#e66800; padding:0px 5px;">{{ \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') }}</span>
+                                @endif
                             </div>
                         </div>
-                        <div class="col-lg-12 text-center">
+                        <div class="col-6 mx-auto py-4 text-center d-grid gap-2">
                             <button class="btn btn-primary text-white border border-dark rounded-3 shadow" type="submit">
                                 Termină
                             </button>

@@ -19,7 +19,7 @@ class Pontaj extends Model
 
     public function programare()
     {
-        return $this->belongsTo(User::class, 'programare_id');
+        return $this->belongsTo(Programare::class, 'programare_id');
     }
 
     public function mecanic()
