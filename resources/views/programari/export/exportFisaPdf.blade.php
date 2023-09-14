@@ -27,10 +27,10 @@
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 12px;
-            margin-top: 5px;
-            margin-left: 1cm;
-            margin-right: 1cm;
-            margin-bottom: 1cm;
+            margin-top: 0px;
+            margin-left: 25px;
+            margin-right: 25px;
+            margin-bottom: 0px;
         }
 
         * {
@@ -95,6 +95,9 @@
                         Focșani, Vrancea
                         <br>
                         Str. Verde DN 2 - E 85
+                    </td>
+                    <td>
+                        <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate(url('/mecanici/pontaje-mecanici/citireQr/' . $programare->id))) }} ">
                     </td>
                 </tr>
             </table>
@@ -384,7 +387,7 @@
 
 
         {{-- Here's the magic. This MUST be inside body tag. Page count / total, centered at bottom of page --}}
-        <script type="text/php">
+        {{-- <script type="text/php">
             if (isset($pdf)) {
                 $text = "Pagina {PAGE_NUM} / {PAGE_COUNT}";
                 $size = 10;
@@ -394,7 +397,7 @@
                 $y = $pdf->get_height() - 20;
                 $pdf->page_text($x, $y, $text, $font, $size);
             }
-        </script>
+        </script> --}}
 
 
     </main>
