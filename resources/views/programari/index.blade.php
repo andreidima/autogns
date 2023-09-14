@@ -275,7 +275,7 @@
                                     </td> --}}
                                     <td>
                                         <div class="text-end">
-                                            <a href="{{ $programare->path() }}/fisa-pdf" class="me-1">
+                                            <a href="{{ $programare->path() }}/fisa-pdf" target="_blank" class="me-1">
                                                 <span class="badge bg-warning text-dark">
                                                     Fișa
                                                 </span></a>
