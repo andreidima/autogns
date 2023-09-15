@@ -94,7 +94,7 @@ class MecanicProgramareController extends Controller
     {
         $manopera->update($request->validate(
             [
-                'mecanic_timp' => 'nullable|max:2000',
+                'constatare_atelier' => 'nullable|max:2000',
                 'mecanic_consumabile' => 'nullable|max:2000',
                 'mecanic_observatii' => 'nullable|max:2000',
             ]));

@@ -65,6 +65,8 @@ class LoginController extends Controller
             return redirect(session()->get('url.intended'));
         }
 
-        return redirect("login")->withSuccess('Oppes! You have entered invalid credentials');
+        return back()->withErrors([
+            'email' => 'Datele de identificare nu pot fi confirmate.',
+        ])->onlyInput('email');
     }
 }

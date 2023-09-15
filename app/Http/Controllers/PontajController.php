@@ -25,7 +25,6 @@ class PontajController extends Controller
 
     public function postIncepeTerminaPontaj(Request $request, Programare $programare)
     {
-        // dd('stop2');
         // Se cauta in baza de date daca este vreu pontaj ramas neterminat
         $pontaj = Pontaj::where('mecanic_id', auth()->user()->id)
                         ->whereNull('sfarsit')
@@ -34,7 +33,17 @@ class PontajController extends Controller
 
         // Daca s-a gasit un pontaj, acesta se inchide
         if ($pontaj) {
-            $pontaj->sfarsit = Carbon::now();
+            // In cazul in care pontajul a ramas neinchis din alta zi
+            if (Carbon::parse($pontaj->inceput)->toDateString() !== Carbon::now()->toDateString()){
+                if (in_array(Carbon::parse($pontaj->inceput)->dayOfWeek, [1,2,3,4,5])){ // luni-vineri
+                    $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(17)->minute(00);
+                } else if (Carbon::parse($pontaj->inceput)->dayOfWeek === 6) { // sambata
+                    $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(14)->minute(00);
+                } else if (Carbon::parse($pontaj->inceput)->dayOfWeek === 0) { // duminica
+                    $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(23)->minute(59);
+                }
+            }
+            // $pontaj->sfarsit = Carbon::now();
             $pontaj->save();
 
         }

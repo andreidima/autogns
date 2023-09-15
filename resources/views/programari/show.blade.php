@@ -222,10 +222,10 @@
                                         </tr>
                                         <tr>
                                             <td class="pe-4">
-                                                Mecanic - timp alocat
+                                                Constatare atelier
                                             </td>
                                             <td>
-                                                {{ $manopera->mecanic_timp }}
+                                                {{ $manopera->constatare_atelier }}
                                             </td>
                                         </tr>
                                         <tr>

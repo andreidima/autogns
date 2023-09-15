@@ -137,7 +137,7 @@ const manopereFormularProgramare = createApp({
     },
     methods: {
         adaugaManoperaGoalaInArray() {
-            this.manopere.push({ id: '', mecanic_id: '', denumire: '', pret: '', bonus_mecanic: '', observatii: '', mecanic_timp: '', mecanic_consumabile: '', mecanic_observatii: '' });
+            this.manopere.push({ id: '', mecanic_id: '', denumire: '', pret: '', bonus_mecanic: '', observatii: '', constatare_atelier: '', mecanic_consumabile: '', mecanic_observatii: '' });
         },
         stergeManopera(index) {
             this.manopere.splice(index, 1);

@@ -66,9 +66,9 @@
                                 @endif
 
                                 @if ($programare->nr_auto)
-                                    <span class="px-1 rounded-3 bg-info text-white" style="white-space: nowrap; overflow: hidden;">
+                                    <span class="px-1 rounded-3 bg-primary text-white" style="white-space: nowrap; overflow: hidden;">
                                         <a class="text-white text-decoration-none" href="/mecanici/baza-de-date-programari?search_nr_auto={{ $programare->nr_auto }}">
-                                            Istoric
+                                            Istoric mașină
                                         </a>
                                     </span>
                                 @endif
@@ -93,8 +93,8 @@
                                                 {{ $manopera->observatii }}
                                             </div>
                                             <div class="p-1 rounded-3" style="font-weight:bold; background-color:#fcf69e">
-                                                @if ($manopera->mecanic_timp)
-                                                    {{ $manopera->mecanic_timp }}
+                                                @if ($manopera->constatare_atelier)
+                                                    {{ $manopera->constatare_atelier }}
                                                     <br>
                                                 @endif
                                                 @if ($manopera->mecanic_consumabile)

@@ -16,12 +16,12 @@
                 @csrf
                 <div class="row">
                     <div class="col-lg-4 mb-4">
-                        <label for="mecanic_timp" class="mb-0 ps-3">Timp necesar</label>
+                        <label for="constatare_atelier" class="mb-0 ps-3">Constatare atelier</label>
                         <input
                             type="text"
-                            class="form-control bg-white rounded-3 {{ $errors->has('mecanic_timp') ? 'is-invalid' : '' }}"
-                            name="mecanic_timp"
-                            value="{{ old('mecanic_timp', $manopera->mecanic_timp) }}">
+                            class="form-control bg-white rounded-3 {{ $errors->has('constatare_atelier') ? 'is-invalid' : '' }}"
+                            name="constatare_atelier"
+                            value="{{ old('constatare_atelier', $manopera->constatare_atelier) }}">
                     </div>
                     <div class="col-lg-4 mb-4">
                         <label for="mecanic_consumabile" class="mb-0 ps-3">Consumabile</label>

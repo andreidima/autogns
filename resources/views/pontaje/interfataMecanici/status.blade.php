@@ -1,5 +1,9 @@
 @extends ('layouts.app')
 
+@php
+    use \Carbon\Carbon;
+@endphp
+
 @section('content')
 <div class="row m-0 mb-5">
     <div class="col-md-4 container card" style="border-radius: 40px 40px 40px 40px;">
@@ -50,6 +54,13 @@
                         @endif
                     </div>
                 </div>
+
+                @if ($pontaj->inceput && (Carbon::parse($pontaj->inceput)->toDateString() !== Carbon::now()->toDateString()))
+                    <div class="col-lg-12 my-2 d-flex bg-warning">
+                        Acest pontaj este rămas neterminat dintr-o zi anterioră.
+                        Apasând „Termină”, se va închide în ziua respectivă la sfârșitul programului.
+                    </div>
+                @endif
 
                 @if ($pontaj->programare->id)
                     <form class="needs-validation" novalidate method="POST" action="/mecanici/pontaje-mecanici/incepe-termina-pontaj/{{ $pontaj->programare->id }}">

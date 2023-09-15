@@ -97,7 +97,7 @@
                         Str. Verde DN 2 - E 85
                     </td>
                     <td>
-                        <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate(url('/mecanici/pontaje-mecanici/citireQr/' . $programare->id))) }} ">
+                        <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(70)->generate(url('/mecanici/pontaje-mecanici/citireQr/' . $programare->id))) }} ">
                     </td>
                 </tr>
             </table>
@@ -139,6 +139,9 @@
 
             2. Constatare atelier:
             <div style="height: 200px; border:3px solid black;"></div>
+                @foreach ($programare->manopere as $manopera)
+                    {{ $manopera->constatare_atelier }}
+                @endforeach
 
             3. Observații:
             <br>

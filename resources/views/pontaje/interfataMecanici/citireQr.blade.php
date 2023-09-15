@@ -1,5 +1,9 @@
 @extends ('layouts.app')
 
+@php
+    use \Carbon\Carbon;
+@endphp
+
 @section('content')
 <div class="row m-0">
     <div class="col-md-4 container card" style="border-radius: 40px 40px 40px 40px;">
@@ -86,6 +90,13 @@
                             <div class="px-2 rounded-2 text-center" style="background-color:rgb(199, 196, 0)">
                                 Acest pontaj se va incheia automat dacă începi pontajul la noua mașină.
                             </div>
+
+                            @if ($pontaj->inceput && (Carbon::parse($pontaj->inceput)->toDateString() !== Carbon::now()->toDateString()))
+                                <div class="px-2 my-2 rounded-2 text-center" style="background-color:rgb(199, 196, 0)">
+                                    Acest pontaj este rămas neterminat dintr-o zi anterioră.
+                                    Se va închide în ziua respectivă la sfârșitul programului.
+                                </div>
+                            @endif
                         </div>
 
                         <div class="col-6 mx-auto py-4 text-center d-grid gap-2">
@@ -105,6 +116,12 @@
                                 @endif
                             </div>
                         </div>
+                        @if ($pontaj->inceput && (Carbon::parse($pontaj->inceput)->toDateString() !== Carbon::now()->toDateString()))
+                            <div class="col-lg-12 my-2 d-flex bg-warning">
+                                Acest pontaj este rămas neterminat dintr-o zi anterioră.
+                                Apasând „Termină”, se va închide în ziua respectivă la sfârșitul programului.
+                            </div>
+                        @endif
                         <div class="col-6 mx-auto py-4 text-center d-grid gap-2">
                             <button class="btn btn-primary text-white border border-dark rounded-3 shadow" type="submit">
                                 Termină
