@@ -138,7 +138,9 @@ WHERE t2.nr_auto IS NULL
 // }
 // dd($programari);
 
-        $mecanici = User::where('role', 'mecanic')->orderBy('name')->get();
+        $mecanici = User::where('role', 'mecanic')
+            ->where('id', '<>', 18) // Andrei Dima Mecanic
+            ->orderBy('name')->get();
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
@@ -241,7 +243,9 @@ WHERE t2.nr_auto IS NULL
         WHERE t2.nr_auto IS NULL
         ');
 
-        $mecanici = User::where('role', 'mecanic')->orderBy('name')->get();
+        $mecanici = User::where('role', 'mecanic')
+            ->where('id', '<>', 18) // Andrei Dima Mecanic
+            ->orderBy('name')->get();
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 

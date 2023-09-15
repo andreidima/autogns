@@ -149,7 +149,7 @@
                                 <th class="text-center px-3">Mașină/ Telefon</th>
                                 <th class="text-center">Lucrare</th>
                                 <th class="text-center">Tip lucrare</th>
-                                <th class="text-center">Mecanic</th>
+                                <th class="text-center">Mecanic (pontaje)</th>
                                 <th class="text-center"><i class="fa-solid fa-car fs-4"></i></th>
                                 <th class="text-center"><span style="font-size: 100%">Conf.</span><i class="fa-solid fa-comment-sms fs-4"></i></th>
                                 <th class="text-center">Operator</th>
@@ -197,15 +197,16 @@
                                     </td>
                                     <td class="text-center">
                                         @foreach ($programare->manopere->unique('mecanic_id') as $manopera)
-                                            {{ $manopera->mecanic->name ?? ''}}
-                                            {{-- @foreach ($programare->pontajAstazi as $pontaj)
-                                                @if ($manopera->mecanic->id === $pontaj->mecanic_id)
-                                                    <div>
-                                                        {{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }} - {{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }}
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                            <br> --}}
+                                            <div class="border border-1">
+                                                {{ $manopera->mecanic->name ?? ''}}
+                                                @foreach ($programare->pontajAstazi as $pontaj)
+                                                    @if ($manopera->mecanic->id === $pontaj->mecanic_id)
+                                                        <div style="overflow: auto; white-space: nowrap;">
+                                                            ({{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}-{{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }})
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                         @endforeach
                                     </td>
                                     <td class="text-center">
