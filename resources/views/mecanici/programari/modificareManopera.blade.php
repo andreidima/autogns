@@ -17,11 +17,8 @@
                 <div class="row">
                     <div class="col-lg-4 mb-4">
                         <label for="constatare_atelier" class="mb-0 ps-3">Constatare atelier</label>
-                        <input
-                            type="text"
-                            class="form-control bg-white rounded-3 {{ $errors->has('constatare_atelier') ? 'is-invalid' : '' }}"
-                            name="constatare_atelier"
-                            value="{{ old('constatare_atelier', $manopera->constatare_atelier) }}">
+                        <textarea class="form-control bg-white {{ $errors->has('constatare_atelier') ? 'is-invalid' : '' }}"
+                            name="constatare_atelier" rows="4">{{ old('constatare_atelier', $manopera->constatare_atelier) }}</textarea>
                     </div>
                     <div class="col-lg-4 mb-4">
                         <label for="mecanic_consumabile" class="mb-0 ps-3">Consumabile</label>

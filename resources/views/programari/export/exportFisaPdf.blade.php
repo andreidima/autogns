@@ -131,7 +131,6 @@
                 </tr>
             </table>
 
-
             1. Lucrări solicitate de client:
             <div style="padding:0px 2px; border:3px solid black; font-size:14px">
                 <b>{{ $programare->lucrare }}</b>
