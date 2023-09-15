@@ -14,6 +14,8 @@ use Carbon\Carbon;
 
 use App\Traits\TrimiteSmsTrait;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
+
 class ProgramareController extends Controller
 {
     use TrimiteSmsTrait;
@@ -42,7 +44,10 @@ class ProgramareController extends Controller
             }
 
             // $programari = Programare::with('user', 'smsuri', 'programare_istoric')
-            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic', 'pontajAstazi.mecanic')
+            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic')
+                ->with(['pontaje' => function (Builder $query) use ($search_data) {
+                    $query->whereDate('inceput', $search_data);
+                }])
                 ->when($search_client, function ($query, $search_client) {
                     return $query->where('client', 'like', '%' . $search_client . '%');
                 })

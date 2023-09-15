@@ -199,8 +199,8 @@
                                         @foreach ($programare->manopere->unique('mecanic_id') as $manopera)
                                             <div class="border border-1">
                                                 {{ $manopera->mecanic->name ?? ''}}
-                                                @foreach ($programare->pontajAstazi as $pontaj)
-                                                    @if ($manopera->mecanic->id === $pontaj->mecanic_id)
+                                                @foreach ($programare->pontaje as $pontaj)
+                                                    @if (($manopera->mecanic->id ?? '') === $pontaj->mecanic_id)
                                                         <div style="overflow: auto; white-space: nowrap;">
                                                             ({{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}-{{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }})
                                                         </div>

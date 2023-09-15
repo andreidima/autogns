@@ -68,8 +68,8 @@ class Programare extends Model
         return $this->hasMany(Manopera::class, 'programare_id', 'id');
     }
 
-    public function pontajAstazi()
+    public function pontaje()
     {
-        return $this->hasMany(Pontaj::class, 'programare_id', 'id')->whereDate('inceput', Carbon::now());
+        return $this->hasMany(Pontaj::class, 'programare_id', 'id');
     }
 }
