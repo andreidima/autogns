@@ -121,9 +121,6 @@
 
         <div class="row card-body px-0 py-3">
 
-            @include ('errors')
-
-
             <div class="px-0 table-responsive rounded">
                 <table class="table table-sm table-striped table-hover table-bordered rounded">
                     <thead class="text-white rounded culoare2">

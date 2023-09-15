@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use \Carbon\Carbon;
 
 class Programare extends Model
 {
@@ -65,5 +66,10 @@ class Programare extends Model
     public function manopere()
     {
         return $this->hasMany(Manopera::class, 'programare_id', 'id');
+    }
+
+    public function pontajAstazi()
+    {
+        return $this->hasMany(Pontaj::class, 'programare_id', 'id')->whereDate('inceput', Carbon::now());
     }
 }

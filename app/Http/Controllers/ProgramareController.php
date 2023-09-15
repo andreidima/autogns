@@ -42,7 +42,7 @@ class ProgramareController extends Controller
             }
 
             // $programari = Programare::with('user', 'smsuri', 'programare_istoric')
-            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic')
+            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic', 'pontajAstazi.mecanic')
                 ->when($search_client, function ($query, $search_client) {
                     return $query->where('client', 'like', '%' . $search_client . '%');
                 })
@@ -216,7 +216,9 @@ WHERE t2.nr_auto IS NULL
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 
         // Daca este utilizatorul AutoGNS, se bifeaza in baza de date ca vazute informatiile adaugate la manopere de catre mecanici
-        $programare->manopere()->update(['vazut' => 1]);
+        if (auth()->user()->id == 2) {
+            $programare->manopere()->update(['vazut' => 1]);
+        }
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
 

@@ -1,5 +1,9 @@
 @extends ('layouts.app')
 
+@php
+    use \Carbon\Carbon;
+@endphp
+
 @section('content')
 {{-- <div class="container card" style="border-radius: 40px 40px 40px 40px;"> --}}
 <div class="card mx-3" style="border-radius: 40px 40px 40px 40px;">
@@ -194,7 +198,14 @@
                                     <td class="text-center">
                                         @foreach ($programare->manopere->unique('mecanic_id') as $manopera)
                                             {{ $manopera->mecanic->name ?? ''}}
-                                            <br>
+                                            {{-- @foreach ($programare->pontajAstazi as $pontaj)
+                                                @if ($manopera->mecanic->id === $pontaj->mecanic_id)
+                                                    <div>
+                                                        {{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }} - {{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }}
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                            <br> --}}
                                         @endforeach
                                     </td>
                                     <td class="text-center">

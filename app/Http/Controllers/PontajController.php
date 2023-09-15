@@ -14,6 +14,10 @@ class PontajController extends Controller
 {
     public function citireQr(Request $request, Programare $programare)
     {
+        if (!in_array(auth()->user()->id, $programare->manopere->pluck('mecanic_id')->toArray())){
+            return redirect('/mecanici/pontaje-mecanici/status')->with('eroare', 'Nu ai nici o manoperă alocată pentru mașina ' . $programare->masina . ' ' . $programare->nr_auto);
+        }
+
         $pontaj = Pontaj::with('programare')
                         ->where('mecanic_id', auth()->user()->id)
                         ->whereNull('sfarsit')
@@ -42,10 +46,10 @@ class PontajController extends Controller
                 } else if (Carbon::parse($pontaj->inceput)->dayOfWeek === 0) { // duminica
                     $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(23)->minute(59);
                 }
+            } else {
+                $pontaj->sfarsit = Carbon::now();
             }
-            // $pontaj->sfarsit = Carbon::now();
             $pontaj->save();
-
         }
 
         // Daca nu s-a gasit nici un pontaj, sau daca pontajul gasit nu era cel pentru programarea scanata, atunci se deschide unul nou
