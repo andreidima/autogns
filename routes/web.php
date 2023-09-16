@@ -11,6 +11,7 @@ use App\Http\Controllers\MecanicProgramareController;
 use App\Http\Controllers\MecanicBonusController;
 use App\Http\Controllers\ManoperaController;
 use App\Http\Controllers\PontajController;
+use App\Http\Controllers\NecesarController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,6 +35,8 @@ Route::any('/cron-jobs/trimitere-sms-revizie-ulei-filtre/{key}', [CronJobTrimite
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/acasa', 'acasa');
+
+    Route::resource('necesare', NecesarController::class)->parameters(['necesare' => 'necesar']);
 });
 
 Route::group(['middleware' => 'role:admin'], function () {

@@ -29,6 +29,10 @@
                             <i class="fa-solid fa-money-check-dollar me-1"></i>
                             Bonusuri
                         </a>
+                        <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="necesare" role="button">
+                            <i class="fa-solid fa-screwdriver-wrench me-1"></i>
+                            Necesare
+                        </a>
                         <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/baza-de-date-programari" role="button">
                             <i class="fa-solid fa-database me-1"></i>
                             Baza de date Programări
