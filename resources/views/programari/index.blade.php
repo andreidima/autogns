@@ -149,7 +149,7 @@
                                 <th class="text-center px-3">Mașină/ Telefon</th>
                                 <th class="text-center">Lucrare</th>
                                 <th class="text-center">Tip lucrare</th>
-                                <th class="text-center">Mecanic (pontaje)</th>
+                                <th class="text-center" style="min-width:170px;">Mecanic (pontaje)</th>
                                 <th class="text-center"><i class="fa-solid fa-car fs-4"></i></th>
                                 <th class="text-center"><span style="font-size: 100%">Conf.</span><i class="fa-solid fa-comment-sms fs-4"></i></th>
                                 <th class="text-center">Operator</th>
@@ -215,7 +215,7 @@
                                                 </div>
                                                 @foreach ($programare->pontaje as $pontaj)
                                                     @if (($manopera->mecanic->id ?? '') === $pontaj->mecanic_id)
-                                                        <div class="d-flex align-items-center" style="overflow: auto; white-space: nowrap;">
+                                                        <div class="d-flex justify-content-center align-items-center" style="overflow: auto; white-space: nowrap;">
                                                             ({{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}-{{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }})
                                                             <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.edit', ['pontaj' => $pontaj->id])  }}">
                                                                 @csrf
