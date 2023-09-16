@@ -50,29 +50,7 @@ Route::group(['middleware' => 'role:admin'], function () {
 
     Route::get('/manopere/export', [ManoperaController::class, 'export']);
 
-    Route::get('verificare-masini-revenite-la-revizie-ulei', function (){
-        $smsuri = App\Models\MesajTrimisSms::with('programare')->where('subcategorie', 'sms_revizie_ulei_filtre')->get();
-        $programariRecente = App\Models\Programare::whereDate('data_ora_programare', '>', '2023-08-15')->get();
-        // dd($smsuri, $programariRecente);
-        $nrCrt = 1;
-        foreach ($smsuri as $key => $sms) {
-            foreach ($programariRecente as $programare){
-                if ($programare->telefon && ($sms->programare->telefon ?? null)){
-                    if (str_replace(' ', '', $programare->telefon) == str_replace(' ', '', ($sms->programare->telefon))){
-                        echo $programare->id . ' - ' . $programare->telefon . ' - ' . $programare->lucrare;
-                        echo '<br>';
-                    }
-                }
-            }
-
-            // echo $nrCrt++ . '. ';
-            // if ($sms->programare->telefon ?? null) {
-            //     $sms->programare->telefon = str_replace(' ', '', $sms->programare->telefon);
-            //     echo $sms->programare->telefon;
-            // }
-            // echo '<br>';
-        }
-    });
+    Route::resource('pontaje', PontajController::class)->parameters(['pontaje' => 'pontaj']);
 });
 
 

@@ -77,6 +77,12 @@
                                     <i class="fa-solid fa-calendar-days me-1"></i>Calendar
                                 </a>
                             </li>
+                            <li class="nav-item me-3">
+                                <a class="nav-link active" aria-current="page" href="/pontaje">
+                                    <i class="fa-solid fa-clock me-1"></i>
+                                    Pontaje
+                                </a>
+                            </li>
                             <li class="nav-item me-3 dropdown">
                                 <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-bars me-1"></i>

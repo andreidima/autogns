@@ -302,15 +302,23 @@
                                     :name="'manopere[' + index + '][bonus_mecanic]'"
                                     v-model="manopere[index].bonus_mecanic">
                             </div>
-                            <div class="col-lg-10 mb-2">
-                                <label for="observații" class="mb-0 ps-3">Observații</label>
-                                <input
-                                    type="text"
-                                    class="form-control bg-white rounded-3"
+                            <div class="col-lg-5 mb-2">
+                                <label for="observatii" class="mb-0 ps-3">Observații</label>
+                                <textarea class="form-control bg-white rounded-3 {{ $errors->has('observatii') ? 'is-invalid' : '' }}"
                                     :name="'manopere[' + index + '][observatii]'"
-                                    v-model="manopere[index].observatii">
+                                    v-model="manopere[index].observatii"
+                                    rows="3">
+                                </textarea>
                             </div>
-                            <div class="col-lg-2 mb-2 d-flex justify-content-center align-items-end">
+                            <div class="col-lg-5 mb-2">
+                                <label for="constatare_atelier" class="mb-0 ps-3">Constatare atelier (aici pot completa/ modifica și mecanicii)</label>
+                                <textarea class="form-control bg-white rounded-3 {{ $errors->has('constatare_atelier') ? 'is-invalid' : '' }}"
+                                    :name="'manopere[' + index + '][constatare_atelier]'"
+                                    v-model="manopere[index].constatare_atelier"
+                                    rows="3">
+                                </textarea>
+                            </div>
+                            <div class="col-lg-2 mb-2 d-flex justify-content-center align-items-center">
                                 <button type="button" class="btn btn-danger text-white rounded-3" @click="stergeManopera(index)">
                                     Șterge manopera
                                 </button>

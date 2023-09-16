@@ -46,6 +46,21 @@ import VueDatepickerNext from './components/DatePicker.vue';
 // }
 
 
+const datepicker = createApp({
+    data() {
+        return {
+            // message: 'Hello root Component 1'
+        };
+    },
+    components: {
+        'vue-datepicker-next': VueDatepickerNext,
+        // 'example-component-2': VueDatepickerNext,
+    },
+});
+if (document.getElementById('datepicker') != null) {
+    datepicker.mount('#datepicker');
+}
+
 const programari = createApp({
     data() {
         return {

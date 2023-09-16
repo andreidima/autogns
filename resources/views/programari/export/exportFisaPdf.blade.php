@@ -139,7 +139,8 @@
             2. Constatare atelier:
             <div style="padding:0px 2px; min-height:200px; border:3px solid black; font-size:14px">
                 @foreach ($programare->manopere as $manopera)
-                    {{ $manopera->constatare_atelier }}.
+                    {{ $manopera->constatare_atelier }}
+                    <br>
                 @endforeach
             </div>
 

@@ -198,11 +198,42 @@
                                     <td class="text-center">
                                         @foreach ($programare->manopere->unique('mecanic_id') as $manopera)
                                             <div class="border border-1">
-                                                {{ $manopera->mecanic->name ?? ''}}
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.create')  }}">
+                                                        @csrf
+                                                        <input type="hidden" name="programareId" value="{{ $programare->id }}">
+                                                        <input type="hidden" name="mecanicId" value="{{ $manopera->mecanic_id }}">
+                                                        <input type="hidden" name="data" value="{{ $search_data }}">
+                                                        <button
+                                                            class="btn btn-sm bg-white"
+                                                            type="submit" style="width:20px; height:20px; padding:0px;">
+                                                            <i class="fas fa-plus-square text-success fa-xl" style=""></i>
+                                                            {{-- <h1 class="m-0 p-0">+</h1> --}}
+                                                        </button>
+                                                    </form>
+                                                    {{ $manopera->mecanic->name ?? ''}}
+                                                </div>
                                                 @foreach ($programare->pontaje as $pontaj)
                                                     @if (($manopera->mecanic->id ?? '') === $pontaj->mecanic_id)
-                                                        <div style="overflow: auto; white-space: nowrap;">
+                                                        <div class="d-flex align-items-center" style="overflow: auto; white-space: nowrap;">
                                                             ({{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}-{{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }})
+                                                            <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.edit', ['pontaj' => $pontaj->id])  }}">
+                                                                @csrf
+                                                                <button
+                                                                    class="btn btn-sm bg-white rounded-1 border-0"
+                                                                    type="submit" style="width:20px; height:20px; padding:0px;">
+                                                                    <i class="fa-solid fa-square-pen text-primary fa-xl" style=""></i>
+                                                                </button>
+                                                            </form>
+                                                            <a href="#"
+                                                                class="bg-danger rounded-1 border-0 p-0"
+                                                                style="width:18px; height:18px; padding:0px;"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#stergePontaj{{ $pontaj->id }}"
+                                                                title="Șterge Pontaj"
+                                                                >
+                                                                <i class="far fa-trash-alt text-white fa-sm"></i>
+                                                            </a>
                                                         </div>
                                                     @endif
                                                 @endforeach
@@ -536,6 +567,42 @@
                     </div>
                 </div>
             </div>
+        @endforeach
+    @endif
+
+    {{-- Modalele pentru stergere pontaje --}}
+    @if (Route::currentRouteName() === "programari.index")
+        @foreach ($programari as $programare)
+            @foreach ($programare->pontaje as $pontaj)
+                <div class="modal fade text-dark" id="stergePontaj{{ $pontaj->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header bg-danger">
+                            <h5 class="modal-title text-white" id="exampleModalLabel">Pontaj mecanic <b>{{ $pontaj->mecanic->name ?? '' }}</b>, masina <b>{{ $pontaj->programare->masina ?? '' }}</b></h5>
+                            <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="text-align:left;">
+                            Ești sigur ca vrei să ștergi Pontajul?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Renunță</button>
+
+                            <form method="POST" action="{{ $pontaj->path() }}">
+                                @method('DELETE')
+                                @csrf
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger text-white"
+                                    >
+                                    Șterge Pontajul
+                                </button>
+                            </form>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         @endforeach
     @endif
 

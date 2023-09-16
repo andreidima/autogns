@@ -28,6 +28,8 @@ class ProgramareController extends Controller
     public function index(Request $request)
     {
         $request->session()->forget('programare_return_url');
+        $request->session()->forget('pontajReturnUrl');
+
         if ($request->route()->getName() === "programari.index"){
             $search_client = \Request::get('search_client');
             $search_telefon = \Request::get('search_telefon');
@@ -186,6 +188,7 @@ WHERE t2.nr_auto IS NULL
                 $manoperaDB->pret = $manopera['pret'];
                 $manoperaDB->bonus_mecanic = $manopera['bonus_mecanic'];
                 $manoperaDB->observatii = $manopera['observatii'];
+                $manoperaDB->constatare_atelier = $manopera['constatare_atelier'];
                 $manoperaDB->vazut = 1;
                 $manoperaDB->save();
             }
@@ -302,6 +305,7 @@ WHERE t2.nr_auto IS NULL
                 $manoperaDB->pret = $manopera['pret'];
                 $manoperaDB->bonus_mecanic = $manopera['bonus_mecanic'];
                 $manoperaDB->observatii = $manopera['observatii'];
+                $manoperaDB->constatare_atelier = $manopera['constatare_atelier'];
                 $manoperaDB->save();
             }
         }
@@ -390,6 +394,7 @@ WHERE t2.nr_auto IS NULL
                 'manopere.*.pret' => 'nullable|required_if:stare_masina,3|numeric|between:0,99999',
                 'manopere.*.bonus_mecanic' => 'nullable|numeric|between:0,99999',
                 'manopere.*.observatii' => 'nullable|max:2000',
+                'manopere.*.constatare_atelier' => 'nullable|max:2000',
             ],
             [
                 'manopere.*.denumire.required' => 'Câmpul „Denumire” pentru manopera #:position este obligatoriu',
@@ -400,6 +405,7 @@ WHERE t2.nr_auto IS NULL
                 'manopere.*.bonus_mecanic.numeric' => 'Câmpul „Bonus mecanic” pentru manopera #:position trebuie sa fie un număr',
                 'manopere.*.bonus_mecanic.between' => 'Câmpul „Bonus mecanic” pentru manopera #:position trebuie sa fie un număr între 0 și 99999',
                 'manopere.*.observatii.max' => 'Câmpul „Observații” pentru manopera #:position trebuie sa fie de maxim 2000 de caractere',
+                'manopere.*.constatare_atelier.max' => 'Câmpul „Constatare atelier” pentru manopera #:position trebuie sa fie de maxim 2000 de caractere',
             ]
         );
     }
