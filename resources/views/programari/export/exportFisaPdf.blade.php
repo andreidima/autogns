@@ -27,10 +27,10 @@
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 12px;
-            margin-top: 10px;
-            margin-left: 20px;
-            margin-right: 20px;
-            margin-bottom: 10px;
+            margin-top: 20px;
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-bottom: 20px;
         }
 
         * {
