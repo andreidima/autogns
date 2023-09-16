@@ -215,7 +215,9 @@
                                                 </div>
                                                 @foreach ($programare->pontaje as $pontaj)
                                                     @if (($manopera->mecanic->id ?? '') === $pontaj->mecanic_id)
-                                                        <div class="d-flex justify-content-center align-items-center" style="overflow: auto; white-space: nowrap;">
+                                                        <div class="d-flex justify-content-center align-items-center"
+                                                            {{-- style="overflow: auto; white-space: nowrap;" --}}
+                                                        >
                                                             ({{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}-{{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }})
                                                             <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.edit', ['pontaj' => $pontaj->id])  }}">
                                                                 @csrf
