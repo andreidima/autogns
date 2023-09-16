@@ -199,18 +199,20 @@
                                         @foreach ($programare->manopere->unique('mecanic_id') as $manopera)
                                             <div class="border border-1">
                                                 <div class="d-flex justify-content-center align-items-center">
-                                                    <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.create')  }}">
-                                                        @csrf
-                                                        <input type="hidden" name="programareId" value="{{ $programare->id }}">
-                                                        <input type="hidden" name="mecanicId" value="{{ $manopera->mecanic_id }}">
-                                                        <input type="hidden" name="data" value="{{ $search_data }}">
-                                                        <button
-                                                            class="btn btn-sm bg-white"
-                                                            type="submit" style="width:20px; height:20px; padding:0px;">
-                                                            <i class="fas fa-plus-square text-success fa-xl" style=""></i>
-                                                            {{-- <h1 class="m-0 p-0">+</h1> --}}
-                                                        </button>
-                                                    </form>
+                                                    @if ($programare->id && $manopera->mecanic_id)
+                                                        <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.create')  }}">
+                                                            @csrf
+                                                            <input type="hidden" name="programareId" value="{{ $programare->id }}">
+                                                            <input type="hidden" name="mecanicId" value="{{ $manopera->mecanic_id }}">
+                                                            <input type="hidden" name="data" value="{{ $search_data }}">
+                                                            <button
+                                                                class="btn btn-sm bg-white"
+                                                                type="submit" style="width:20px; height:20px; padding:0px;">
+                                                                <i class="fas fa-plus-square text-success fa-xl" style=""></i>
+                                                                {{-- <h1 class="m-0 p-0">+</h1> --}}
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                     {{ $manopera->mecanic->name ?? ''}}
                                                 </div>
                                                 @foreach ($programare->pontaje as $pontaj)
