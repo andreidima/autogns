@@ -13,7 +13,7 @@
                     Pontaje
                 </span>
             </div>
-            <div class="col-lg-7">
+            <div class="col-lg-8">
                 <form class="needs-validation" novalidate method="GET" action="{{ route(Route::currentRouteName())  }}">
                     @csrf
                     <div class="row mb-1 custom-search-form justify-content-center" id="datepicker">
@@ -28,7 +28,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-lg-">
+                        <div class="col-lg-3">
                             <input type="text" class="form-control rounded-3" id="nrAuto" name="nrAuto" placeholder="Nr. auto" value="{{ $nrAuto }}">
                         </div>
                         <div class="col-lg-4 d-flex justify-content-center align-items-center">
@@ -55,10 +55,10 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-3 text-end">
-                <a class="btn btn-sm bg-success text-white border border-dark rounded-3 col-md-8" href="/pontaje/adauga" role="button">
+            <div class="col-lg-2 text-end">
+                {{-- <a class="btn btn-sm bg-success text-white border border-dark rounded-3 col-md-8" href="/pontaje/adauga" role="button">
                     <i class="fas fa-plus-square text-white me-1"></i>Adaugă pontaj
-                </a>
+                </a> --}}
             </div>
         </div>
 
