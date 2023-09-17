@@ -62,6 +62,14 @@
                                 </tr>
                                 <tr>
                                     <td class="pe-4">
+                                        VIN
+                                    </td>
+                                    <td>
+                                        {{ $programare->vin }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pe-4">
                                         Km
                                     </td>
                                     <td>

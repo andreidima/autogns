@@ -91,6 +91,7 @@ const programariForm = createApp({
             email: emailVechi,
             masina: masinaVechi,
             nr_auto: nr_autoVechi,
+            vin: vinVechi,
 
 
             // message: 'Hello root Component 1'

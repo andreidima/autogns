@@ -376,6 +376,7 @@ WHERE t2.nr_auto IS NULL
                 'data_ora_finalizare' => '',
                 'masina' => 'nullable|max:500',
                 'nr_auto' => 'nullable|max:500',
+                'vin' => 'nullable|max:200',
                 'lucrare' => 'nullable|max:2000',
                 'geometrie_turism' => '',
                 'geometrie_camion' => '',

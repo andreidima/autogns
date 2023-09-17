@@ -9,6 +9,7 @@
     emailVechi={!! json_encode(old('email', $programare->email)) !!}
     masinaVechi={!! json_encode(old('masina', $programare->masina)) !!}
     nr_autoVechi={!! json_encode(old('nr_auto', $programare->nr_auto)) !!}
+    vinVechi={!! json_encode(old('vin', $programare->vin)) !!}
 
     // Variabile pentru manopere
     mecanici = {!! json_encode($mecanici) !!}
@@ -18,7 +19,7 @@
     <div class="col-lg-12 mb-0">
         <div class="row mb-0" id="programariForm">
 
-            <div class="col-lg-4 mb-4 mx-auto">
+            <div class="col-lg-3 mb-4 mx-auto">
                 <label for="client" class="mb-0 ps-3">Client<span class="text-danger">*</span></label>
                 <input
                     type="text"
@@ -29,7 +30,7 @@
                     {{-- value="{{ old('client', $programare->client) }}" --}}
                     required>
             </div>
-            <div class="col-lg-4 mb-4 mx-auto">
+            <div class="col-lg-3 mb-4 mx-auto">
                 <label for="telefon" class="mb-0 ps-3">Telefon</label>
                 <input
                     type="text"
@@ -40,7 +41,7 @@
                     {{-- value="{{ old('telefon', $programare->telefon) }}" --}}
                     required>
             </div>
-            <div class="col-lg-4 mb-4 mx-auto">
+            <div class="col-lg-3 mb-4 mx-auto">
                 <label for="email" class="mb-0 ps-3">Email</label>
                 <input
                     type="text"
@@ -51,7 +52,7 @@
                     {{-- value="{{ old('email', $programare->email) }}" --}}
                     required>
             </div>
-            <div class="col-lg-4 mb-4 mx-auto">
+            <div class="col-lg-3 mb-4 mx-auto">
                 <label for="masina" class="mb-0 ps-3">Mașina</label>
                 <input
                     type="text"
@@ -94,6 +95,17 @@
                         </li>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-3 mb-4 mx-auto">
+                <label for="vin" class="mb-0 ps-3">VIN</label>
+                <input
+                    type="text"
+                    class="form-control bg-white rounded-3 {{ $errors->has('vin') ? 'is-invalid' : '' }}"
+                    name="vin"
+                    v-model="vin"
+                    placeholder=""
+                    {{-- value="{{ old('vin', $programare->vin) }}" --}}
+                    required>
             </div>
             @php
                 // $zile_nelucratoare = App\Models\ZiNelucratoare::select('data')->get()->pluck('data');
