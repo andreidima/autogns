@@ -36,6 +36,8 @@ Route::any('/cron-jobs/trimitere-sms-revizie-ulei-filtre/{key}', [CronJobTrimite
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/acasa', 'acasa');
 
+    Route::resource('pontaje', PontajController::class)->parameters(['pontaje' => 'pontaj']);
+
     Route::resource('necesare', NecesarController::class)->parameters(['necesare' => 'necesar']);
 });
 
@@ -52,8 +54,6 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::get('programare-cerere-confirmare-sms/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'cerereConfirmareSms']);
 
     Route::get('/manopere/export', [ManoperaController::class, 'export']);
-
-    Route::resource('pontaje', PontajController::class)->parameters(['pontaje' => 'pontaj']);
 });
 
 

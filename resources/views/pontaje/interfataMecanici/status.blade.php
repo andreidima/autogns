@@ -49,8 +49,8 @@
                     </div>
                     <div>
                         @if ($pontaj->inceput)
-                            {{ \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('DD.MM.YYYY') }}
-                            <span style="font-weight:bold; color:white; background-color:#e66800; padding:0px 5px;">{{ \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') }}</span>
+                            {{ Carbon::parse($pontaj->inceput)->isoFormat('DD.MM.YYYY') }}
+                            <span style="font-weight:bold; color:white; background-color:#e66800; padding:0px 5px;">{{ Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') }}</span>
                         @endif
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                     <input type="hidden" name="search_data" value="{{ $search_data }}">
 
                     <span class="badge mb-2 fs-5" style="background-color: #e66800">
-                        <i class="fa-solid fa-calendar-check me-1"></i>Pontaje din data de:
+                        <i class="fa-solid fa-calendar-check me-1"></i>Pontaje data:
                     </span>
 
                     <div class="mb-2 d-flex justify-content-center align-items-center">
@@ -107,7 +107,7 @@
                             <
                         </button>
                         <span class="badge fs-5 p-0 mx-1 text-black" style="background-color: #ffffff">
-                            <label class="mx-0">{{ \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}</label>
+                            <label class="mx-0">{{ Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}</label>
                         </span>
 
                         <button class="btn btn-sm btn-primary text-white border border-dark rounded-3 shadow block"
@@ -125,27 +125,63 @@
                 <table class="table table-sm table-striped table-hover table-bordered rounded">
                     <thead class="text-white rounded culoare2">
                         <tr class="" style="padding:2rem">
-                            <th class="text-center px-0">Început</th>
+                            {{-- <th class="text-center px-0">Început</th>
                             <th class="text-center px-0">Sfârșit</th>
                             <th class="text-center px-0">Mașina</th>
-                            <th class="text-center px-0">Lucrare</th>
+                            <th class="text-center px-0">Lucrare</th> --}}
+                            <th class="text-center px-0">Ore</th>
+                            <th class="text-center px-0">Mașina/Lucrare</th>
+
+                            {{-- Pontajele de ieri si azi se pot modifica --}}
+                            @if (Carbon::parse($search_data)->addDays(2)->gt(Carbon::today()))
+                                <th class="text-center px-0">Acțiuni</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($pontaje as $pontaj)
                             <tr>
-                                <td class="text-center">
-                                    {{ $pontaj->inceput ? \Carbon\Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}
+                                {{-- <td class="text-center">
+                                    {{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $pontaj->sfarsit ? \Carbon\Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }}
+                                    {{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }}
                                 </td>
                                 <td>
                                     {{ $pontaj->programare->masina ?? '' }}
                                 </td>
                                 <td>
                                     {{ $pontaj->programare->lucrare ?? '' }}
+                                </td> --}}
+                                <td class="text-center">
+                                    {{ $pontaj->inceput ? Carbon::parse($pontaj->inceput)->isoFormat('HH:mm') : '' }}
+                                    <br>
+                                    {{ $pontaj->sfarsit ? Carbon::parse($pontaj->sfarsit)->isoFormat('HH:mm') : '' }}
                                 </td>
+                                <td>
+                                    {{ $pontaj->programare->masina ?? '' }}
+                                    <br>
+                                    {{ $pontaj->programare->lucrare ?? '' }}
+                                </td>
+                                @if (Carbon::parse($search_data)->addDays(2)->gt(Carbon::today()))
+                                    <td>
+                                        <div class="text-end">
+                                            <a href="{{ $pontaj->path() }}/modifica" class="flex">
+                                                <span class="badge bg-primary">Modifică</span>
+                                            </a>
+                                            <div style="flex" class="">
+                                                <a
+                                                    href="#"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#stergePontaj{{ $pontaj->id }}"
+                                                    title="Șterge Pontaj"
+                                                    >
+                                                    <span class="badge bg-danger">Șterge</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -155,4 +191,41 @@
         </div>
     </div>
 </div>
+
+
+
+    {{-- Modalele pentru stergere pontaje --}}
+    {{-- Pontajele de ieri si azi se pot sterge --}}
+    @if (Carbon::parse($search_data)->addDays(2)->gt(Carbon::today()))
+        @foreach ($pontaje as $pontaj)
+            <div class="modal fade text-dark" id="stergePontaj{{ $pontaj->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title text-white" id="exampleModalLabel">Pontaj mecanic <b>{{ $pontaj->mecanic->name ?? '' }}</b>, masina <b>{{ $pontaj->programare->masina ?? '' }}</b></h5>
+                        <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align:left;">
+                        Ești sigur ca vrei să ștergi Pontajul?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Renunță</button>
+
+                        <form method="POST" action="{{ $pontaj->path() }}">
+                            @method('DELETE')
+                            @csrf
+                            <button
+                                type="submit"
+                                class="btn btn-danger text-white"
+                                >
+                                Șterge Pontajul
+                            </button>
+                        </form>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
 @endsection

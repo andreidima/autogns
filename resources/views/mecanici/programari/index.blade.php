@@ -1,5 +1,9 @@
 @extends ('layouts.app')
 
+@php
+    use \Carbon\Carbon;
+@endphp
+
 @section('content')
 <div class="container card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header align-items-center" style="border-radius: 40px 40px 0px 0px;">
@@ -19,7 +23,7 @@
                         </button>
 
                         <span class="badge fs-5 p-0 mx-1 text-black" style="background-color: #ffffff">
-                            <label class="mx-0">{{ \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}</label>
+                            <label class="mx-0">{{ Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') }}</label>
                         </span>
 
                         <button class="btn btn-sm btn-primary text-white border border-dark rounded-3 shadow block"
@@ -40,7 +44,7 @@
                     <div class="col-lg-12 d-flex" style="border-bottom: 4px solid black">
                         <div class="" style="min-width: 50px;">
                             <b>
-                                {{ $programare->data_ora_programare ? \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') : '' }}
+                                {{ $programare->data_ora_programare ? Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') : '' }}
                             </b>
                         </div>
                         <div class="">
@@ -50,14 +54,14 @@
                                 </span>
                                 <br>
                                 @if ($programare->km)
-                                    <span class="px-1 me-1 rounded-3 bg-success text-white" style="white-space: nowrap; overflow: hidden;">
+                                    <span class="px-1 me-4 rounded-3 bg-success text-white" style="white-space: nowrap; overflow: hidden;">
                                         <a class="text-white text-decoration-none" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}">
                                             {{ $programare->km }} km
                                             <i class="fa-solid fa-pen-to-square fs-5"></i>
                                         </a>
                                     </span>
                                 @else
-                                    <span class="px-1 me-1 rounded-3 bg-danger text-white" style="white-space: nowrap; overflow: hidden;">
+                                    <span class="px-1 me-4 rounded-3 bg-danger text-white" style="white-space: nowrap; overflow: hidden;">
                                         <a class="text-white text-decoration-none" href="/mecanici/programari-mecanici/modificare-programare/{{ $programare->id }}">
                                             Adaugă km
                                             <i class="fa-solid fa-pen-to-square fs-5"></i>
@@ -66,8 +70,8 @@
                                 @endif
 
                                 @if ($programare->nr_auto)
-                                    <span class="px-1 rounded-3 bg-primary text-white" style="white-space: nowrap; overflow: hidden;">
-                                        <a class="text-white text-decoration-none" href="/mecanici/baza-de-date-programari?search_nr_auto={{ $programare->nr_auto }}">
+                                    <span class="px-1 rounded-3 bg-secondary text-light" style="white-space: nowrap; overflow: hidden;">
+                                        <a class="text-light text-decoration-none" href="/mecanici/baza-de-date-programari?search_nr_auto={{ $programare->nr_auto }}">
                                             Istoric mașină
                                         </a>
                                     </span>
@@ -87,10 +91,31 @@
                                     <div>
                                         @if ($manopera->mecanic_id === auth()->user()->id)
                                             <div class="p-1 rounded-3" style="font-weight:bold; background-color:#cfeef9">
-                                                <a href="/mecanici/programari-mecanici/modificare-manopera/{{ $manopera->id }}"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                                                {{-- <a href="/mecanici/programari-mecanici/modificare-manopera/{{ $manopera->id }}"><i class="fa-solid fa-pen-to-square fs-5"></i></a> --}}
                                                 {{ $manopera->denumire }}
                                                 <br>
-                                                {{ $manopera->observatii }}
+                                                @if ($manopera->observatii)
+                                                    {{ $manopera->observatii }}
+                                                    <br>
+                                                @endif
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="px-1 py-0 me-4 rounded-3 bg-primary text-white text-center" style="">
+                                                        <a class="text-white text-decoration-none" href="/mecanici/programari-mecanici/modificare-manopera/{{ $manopera->id }}" style="font-size:90%;">
+                                                            Adaugă informații
+                                                        </a>
+                                                    </span>
+                                                    @if (Carbon::parse($search_data)->addDays(2)->gte(Carbon::today()))
+                                                        <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.create')  }}">
+                                                            @csrf
+                                                            <input type="hidden" name="programareId" value="{{ $programare->id }}">
+                                                            <input type="hidden" name="mecanicId" value="{{ $manopera->mecanic_id }}">
+                                                            <input type="hidden" name="data" value="{{ $search_data }}">
+                                                            <button class="btn btn-sm btn-warning rounded-3 py-0 px-1" style="height:90%; font-size:85%; font-weight:bold" type="submit">
+                                                                Adaugă pontaj
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div class="p-1 rounded-3" style="font-weight:bold; background-color:#fcf69e">
                                                 @if ($manopera->constatare_atelier)

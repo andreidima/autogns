@@ -74,6 +74,23 @@ class PontajController extends Controller
      */
     public function store(Request $request)
     {
+        // Mecanicii nu pot adăuga pontaje mai vechi de 2 zile
+        if (auth()->user()->role === "mecanic"){
+            if (auth()->user()->id != $request->mecanicId){
+                return back()->with('eroare', 'Nu se pot adăuga pontaje altor utilizatori.');
+            } else if(Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today())){
+                return back()->with('eroare', 'Nu se pot adăuga pontaje mai vechi de 2 zile.');
+            } else if(Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today())){
+                return back()->with('eroare', 'Nu se pot adăuga pontaje mai vechi de 2 zile.');
+            }
+        }
+        // dd(Programare::where('id', $request->programareId)->first()->manopere->pluck('mecanic_id')->toArray());
+        if (!in_array(auth()->user()->id, Programare::where('id', $request->programareId)->first()->manopere->pluck('mecanic_id')->toArray())){
+            return back()->with('eroare', 'Nu ai nici o manoperă adăugată la această mașină');
+        }
+
+
+
         $request->validate([
             'programareId' => 'required',
             'mecanicId' => 'required',
@@ -139,6 +156,18 @@ class PontajController extends Controller
      */
     public function update(Request $request, Pontaj $pontaj)
     {
+        // Mecanicii nu pot modifica pontaje mai vechi de 2 zile
+        if (auth()->user()->role === "mecanic"){
+            if (auth()->user()->id != $pontaj->mecanic_id){
+                return back()->with('eroare', 'Nu se pot modifica pontajele altor utilizatori.');
+            } else if(Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today()) || Carbon::parse($pontaj->inceput)->addDays(2)->lessThan(Carbon::today())){
+                return back()->with('eroare', 'Nu se pot modifica pontaje mai vechi de 2 zile.');
+            }
+        }
+        if ((auth()->user()->role === "mecanic") && Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today())){
+            return back()->with('eroare', 'Nu se pot modifica pontaje mai vechi de 2 zile.');
+        }
+
         $request->validate([
             'data' => 'required',
             'inceput' => 'required',
@@ -150,6 +179,8 @@ class PontajController extends Controller
         }
         if ($request->sfarsit) {
             $pontaj->sfarsit = Carbon::parse($request->data)->setTimeFromTimeString($request->sfarsit)->toDateTimeString();
+        } else {
+            $pontaj->sfarsit = null;
         }
 
         $pontaj->save();
@@ -166,6 +197,16 @@ class PontajController extends Controller
      */
     public function destroy(Request $request, Pontaj $pontaj)
     {
+        // Mecanicii nu pot sterge pontaje mai vechi de 2 zile
+        if (auth()->user()->role === "mecanic"){
+            if (auth()->user()->id != $pontaj->mecanic_id){
+                return back()->with('eroare', 'Nu se pot șterge pontajele altor utilizatori.');
+            } else if(Carbon::parse($pontaj->inceput)->addDays(2)->lessThan(Carbon::today())){
+                return back()->with('eroare', 'Nu se pot șterge pontaje mai vechi de 2 zile.');
+            }
+        }
+
+
         $pontaj->delete();
 
         return back()->with('status', 'Pontajul pentru mecanicul „' . $pontaj->mecanic->name . '”, la mașina „' . $pontaj->programare->masina . '”, a fost șters cu succes!');
@@ -234,6 +275,8 @@ class PontajController extends Controller
      */
     public function status(Request $request)
     {
+        $request->session()->forget('pontajReturnUrl');
+
         $search_data = Carbon::parse($request->search_data) ?? Carbon::today();
 
         switch ($request->input('schimbaZiua')) {

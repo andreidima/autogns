@@ -60,13 +60,18 @@ export default {
     }
   },
     methods: {
+        allDates(date) {
+            // return;
+        },
         notDates(date) {
             // Se blocheaza toate zilele nelucratoare venite din MySQL || se blocheaza ziua de duminica
-            var zileNelucratoare = (typeof this.zileNelucratoare !== 'undefined') ? this.zileNelucratoare : []; // se defineste un array gol daca lipseste prop, ca sa nu dea eroare
-            zileNelucratoare = zileNelucratoare.map(element => { // Se formateaza toate elementele venite din MySQL la formatul DateString
-                return new Date(element).toDateString();
-            });
-            return (zileNelucratoare.includes(date.toDateString()) ? date : '') || new Date(date).getDay() === 0;
+            if (this.tip !== "time"){ // daca este nevoie doar de ceas, nu se blocheaza nimic
+                var zileNelucratoare = (typeof this.zileNelucratoare !== 'undefined') ? this.zileNelucratoare : []; // se defineste un array gol daca lipseste prop, ca sa nu dea eroare
+                zileNelucratoare = zileNelucratoare.map(element => { // Se formateaza toate elementele venite din MySQL la formatul DateString
+                    return new Date(element).toDateString();
+                });
+                return (zileNelucratoare.includes(date.toDateString()) ? date : '') || new Date(date).getDay() === 0;
+            }
 
 
             // Blocare zile din saptamana
