@@ -131,19 +131,27 @@ class ProgramareController extends Controller
         // dd($programari->first());
         // $programari = groupBy('nr_auto');
         // $programari = DB::select('select * from (select * from programari ORDER BY created_at DESC) AS x where nr_auto = "VN84DIM" GROUP BY id');
-$programari = DB::select('
-        SELECT t1.*
-FROM programari t1
-  LEFT OUTER JOIN programari t2
-    ON (t1.nr_auto = t2.nr_auto AND t1.created_at < t2.created_at)
-WHERE t2.nr_auto IS NULL
-');
+// $programari = DB::select('
+//         SELECT t1.*
+// FROM programari t1
+//   LEFT OUTER JOIN programari t2
+//     ON (t1.nr_auto = t2.nr_auto AND t1.created_at < t2.created_at)
+// WHERE t2.nr_auto IS NULL
+// ');
         // $programari = DB::select('select * from programari ORDER BY created_at ASC');
 // $nr = 0;
 // foreach ($programari as $programare){
 //     echo $nr++ . '. ' . $programare->nr_auto . '&nbsp&nbsp&nbsp&nbsp&nbsp' . $programare->created_at . '<br>';
 // }
 // dd($programari);
+
+        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
+            ->where(function (Builder $query) {
+                $query->whereNotNull('nr_auto')
+                      ->orWhereNotNull('telefon');
+            })
+            ->distinct('nr_auto', 'telefon')
+            ->get();
 
         $mecanici = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
@@ -243,13 +251,21 @@ WHERE t2.nr_auto IS NULL
      */
     public function edit(Request $request, Programare $programare)
     {
-        $programari = DB::select('
-                SELECT t1.*
-        FROM programari t1
-        LEFT OUTER JOIN programari t2
-            ON (t1.nr_auto = t2.nr_auto AND t1.created_at < t2.created_at)
-        WHERE t2.nr_auto IS NULL
-        ');
+        // $programari = DB::select('
+        //         SELECT t1.*
+        // FROM programari t1
+        // LEFT OUTER JOIN programari t2
+        //     ON (t1.nr_auto = t2.nr_auto AND t1.created_at < t2.created_at)
+        // WHERE t2.nr_auto IS NULL
+        // ');
+
+        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
+            ->where(function (Builder $query) {
+                $query->whereNotNull('nr_auto')
+                      ->orWhereNotNull('telefon');
+            })
+            ->distinct('nr_auto', 'telefon')
+            ->get();
 
         $mecanici = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
