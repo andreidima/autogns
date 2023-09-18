@@ -26,8 +26,35 @@
                     class="form-control bg-white rounded-3 {{ $errors->has('client') ? 'is-invalid' : '' }}"
                     name="client"
                     v-model="client"
+                    autocomplete="off"
+                    v-on:keyup="autocompleteClient()"
+                    >
+                <div v-cloak v-if="programariListaAutocompleteClient.length" class="panel-footer overflow-auto" style="max-height: 200px;">
+                    <div class="list-group">
+                            <button type="button" class="list-group-item list-group-item list-group-item-action py-0"
+                                v-for="programare in programariListaAutocompleteClient"
+                                v-on:click="
+                                    client = programare.client;
+                                    telefon = programare.telefon;
+
+                                    programariListaAutocompleteClient = ''
+                                "
+                                >
+                                    @{{ programare.client }}
+                            </button>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-4 mx-auto">
+                <label for="telefon" class="mb-0 ps-3">Telefon</label>
+                <input
+                    type="text"
+                    class="form-control bg-white rounded-3 {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
+                    name="telefon"
+                    v-model="telefon"
                     placeholder=""
-                    {{-- value="{{ old('client', $programare->client) }}" --}}
+                    {{-- value="{{ old('telefon', $programare->telefon) }}" --}}
                     required>
             </div>
             <div class="col-lg-3 mb-4 mx-auto">
@@ -42,37 +69,17 @@
                     required>
             </div>
             <div class="col-lg-3 mb-4 mx-auto">
-                <label for="telefon" class="mb-0 ps-3">Telefon</label>
+                <label for="masina" class="mb-0 ps-3">Mașina</label>
                 <input
                     type="text"
-                    class="form-control bg-white rounded-3 {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
-                    name="telefon"
-                    v-model="telefon"
+                    class="form-control bg-white rounded-3 {{ $errors->has('masina') ? 'is-invalid' : '' }}"
+                    name="masina"
+                    v-model="masina"
                     placeholder=""
-                    {{-- value="{{ old('telefon', $programare->telefon) }}" --}}
+                    {{-- value="{{ old('masina', $programare->masina) }}" --}}
                     required>
-                <div v-cloak v-if="programari_lista_autocomplete.length" class="panel-footer overflow-auto" style="max-height: 200px;">
-                    <div class="list-group">
-                            <button type="button" class="list-group-item list-group-item list-group-item-action py-0"
-                                v-for="programare in programari_lista_autocomplete"
-                                v-on:click="
-                                    client = programare.client;
-                                    nr_auto = programare.nr_auto;
-                                    telefon = programare.telefon;
-                                    email = programare.email;
-                                    masina = programare.masina;
-                                    vin = programare.vin;
-
-                                    programari_lista_autocomplete = ''
-                                "
-                                >
-                                    @{{ programare.telefon }}
-                            </button>
-                        </li>
-                    </div>
-                </div>
             </div>
-            <div class="col-lg-3 mb-4 mx-auto">
+            <div class="col-lg-2 mb-4 mx-auto">
                 <label for="nr_auto" class="mb-0 ps-3">Nr. auto</label>
                 <input
                     type="text"
@@ -107,17 +114,6 @@
                 </div>
             </div>
             <div class="col-lg-3 mb-4 mx-auto">
-                <label for="masina" class="mb-0 ps-3">Mașina</label>
-                <input
-                    type="text"
-                    class="form-control bg-white rounded-3 {{ $errors->has('masina') ? 'is-invalid' : '' }}"
-                    name="masina"
-                    v-model="masina"
-                    placeholder=""
-                    {{-- value="{{ old('masina', $programare->masina) }}" --}}
-                    required>
-            </div>
-            <div class="col-lg-3 mb-4 mx-auto">
                 <label for="vin" class="mb-0 ps-3">VIN</label>
                 <input
                     type="text"
@@ -132,7 +128,7 @@
                 // $zile_nelucratoare = App\Models\ZiNelucratoare::select('data')->get()->pluck('data');
                 // dd(App\Models\ZiNelucratoare::select('data')->get()->pluck('data'));
             @endphp
-            <div class="col-lg-3 mb-4 mx-auto d-flex justify-content-center">
+            <div class="col-lg-3 mb-4 mx-auto d-flex justify-content-start">
                 <div>
                     <label for="data_ora_programare" class="mb-0 ps-xxl-2"><small>Dată și oră programare</small></label>
                     <vue-datepicker-next
@@ -149,7 +145,7 @@
                     ></vue-datepicker-next>
                 </div>
             </div>
-            <div class="col-lg-3 mb-4 mx-auto d-flex justify-content-center">
+            <div class="col-lg-3 mb-4 mx-auto d-flex justify-content-start">
                 <div>
                     <label for="data_ora_finalizare" class="mb-0 ps-xxl-2"><small>Dată și oră finalizare</small></label>
                     <vue-datepicker-next
