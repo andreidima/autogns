@@ -20,30 +20,30 @@
                     <div class="row">
                         <div class="table-responsive col-md-12 mx-auto">
                             <table class="table table-striped table-hover">
-                                <tr>
+                                {{-- <tr>
                                     <td class="pe-4">
                                         Client
                                     </td>
                                     <td>
                                         {{ $programare->client }}
                                     </td>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                {{-- <tr>
                                     <td class="pe-4">
                                         Telefon
                                     </td>
                                     <td>
                                         {{ $programare->telefon }}
                                     </td>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                {{-- <tr>
                                     <td class="pe-4">
                                         Email
                                     </td>
                                     <td>
                                         {{ $programare->email }}
                                     </td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td class="pe-4">
                                         Mașina
@@ -58,6 +58,14 @@
                                     </td>
                                     <td>
                                         {{ $programare->nr_auto }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pe-4">
+                                        VIN
+                                    </td>
+                                    <td>
+                                        {{ $programare->vin }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -214,10 +222,10 @@
                                         </tr>
                                         <tr>
                                             <td class="pe-4">
-                                                Mecanic - timp alocat
+                                                Constatare atelier
                                             </td>
                                             <td>
-                                                {{ $manopera->mecanic_timp }}
+                                                {{ $manopera->constatare_atelier }}
                                             </td>
                                         </tr>
                                         <tr>

@@ -52,6 +52,25 @@
                                 <span class="" style="color:#e66800">
                                     {{ $programare->masina }} {{ $programare->nr_auto }}
                                 </span>
+                                {{-- <br> --}}
+                                <span class="" style="">
+                                    {{-- Stare masina: --}}
+                                        @switch($programare->stare_masina)
+                                            @case(0)
+                                                (nu este la service)
+                                                @break
+                                            @case(1)
+                                                (în așteptare)
+                                                @break
+                                            @case(2)
+                                                (în lucru)
+                                                @break
+                                            @case(3)
+                                                (finalizată)
+                                                @break
+                                            @default
+                                        @endswitch
+                                </span>
                                 <br>
                                 @if ($programare->km)
                                     <span class="px-1 me-4 rounded-3 bg-success text-white" style="white-space: nowrap; overflow: hidden;">
