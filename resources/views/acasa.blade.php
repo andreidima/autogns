@@ -25,10 +25,10 @@
                             <i class="fa-solid fa-clock me-1"></i>
                             Pontaje
                         </a>
-                        <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/bonusuri-mecanici" role="button">
+                        {{-- <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="/mecanici/bonusuri-mecanici" role="button">
                             <i class="fa-solid fa-money-check-dollar me-1"></i>
                             Bonusuri
-                        </a>
+                        </a> --}}
                         <a class="mb-3 btn btn-lg w-100 text-white culoare1" href="necesare" role="button">
                             <i class="fa-solid fa-screwdriver-wrench me-1"></i>
                             Necesare

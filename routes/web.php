@@ -68,7 +68,7 @@ Route::group(['middleware' => 'role:mecanic'], function () {
     Route::get('/mecanici/baza-de-date-programari', [MecanicProgramareController::class, 'bazaDeDateIndex']);
     Route::get('/mecanici/baza-de-date-programari/{programare}', [MecanicProgramareController::class, 'bazaDeDateShow']);
 
-    Route::get('/mecanici/bonusuri-mecanici', [MecanicBonusController::class, 'index']);
+    // Route::get('/mecanici/bonusuri-mecanici', [MecanicBonusController::class, 'index']);
 
     Route::get('/mecanici/pontaje-mecanici/citireQr/{programare}', [PontajController::class, 'citireQr']);
     Route::post('/mecanici/pontaje-mecanici/incepe-termina-pontaj/{programare}', [PontajController::class, 'postIncepeTerminaPontaj']);

@@ -129,11 +129,11 @@
                                     <i class="fa-solid fa-clock me-1"></i>Pontaje
                                 </a>
                             </li>
-                            <li class="nav-item me-3">
+                            {{-- <li class="nav-item me-3">
                                 <a class="nav-link active" aria-current="page" href="/mecanici/bonusuri-mecanici">
                                     <i class="fa-solid fa-money-check-dollar me-1"></i>Bonusuri
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item me-3">
                                 <a class="nav-link active" aria-current="page" href="/necesare">
                                     <i class="fa-solid fa-screwdriver-wrench me-1"></i>
