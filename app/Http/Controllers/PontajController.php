@@ -80,13 +80,10 @@ class PontajController extends Controller
                 return back()->with('eroare', 'Nu se pot adăuga pontaje altor utilizatori.');
             } else if(Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today())){
                 return back()->with('eroare', 'Nu se pot adăuga pontaje mai vechi de 2 zile.');
-            } else if(Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today())){
-                return back()->with('eroare', 'Nu se pot adăuga pontaje mai vechi de 2 zile.');
             }
-        }
-        // dd(Programare::where('id', $request->programareId)->first()->manopere->pluck('mecanic_id')->toArray());
-        if (!in_array(auth()->user()->id, Programare::where('id', $request->programareId)->first()->manopere->pluck('mecanic_id')->toArray())){
-            return back()->with('eroare', 'Nu ai nici o manoperă adăugată la această mașină');
+            if (!in_array(auth()->user()->id, Programare::where('id', $request->programareId)->first()->manopere->pluck('mecanic_id')->toArray())){
+                return back()->with('eroare', 'Nu ai nici o manoperă adăugată la această mașină');
+            }
         }
 
 

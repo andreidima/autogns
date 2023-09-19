@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Models\Programare;
-use App\Models\Manopera;
 use App\Models\ProgramareIstoric;
+use App\Models\Manopera;
+use App\Models\Pontaj;
 use App\Models\User;
 
 use Carbon\Carbon;
@@ -145,13 +146,27 @@ class ProgramareController extends Controller
 // }
 // dd($programari);
 
+        // $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
+        //     ->where(function (Builder $query) {
+        //         $query->whereNotNull('nr_auto')
+        //               ->orWhereNotNull('client');
+        //     })
+        //     ->distinct('nr_auto')
+        //     ->get();
+
         $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
             ->where(function (Builder $query) {
                 $query->whereNotNull('nr_auto')
-                      ->orWhereNotNull('telefon');
+                      ->orWhereNotNull('client');
             })
-            ->distinct('nr_auto', 'telefon')
+            ->where('client', 'corox')
+            ->groupBy(DB::raw('ifnull(nr_auto,client)'))
+            ->orderBy('created_at', 'desc')
+            // ->distinct('nr_auto', 'telefon')
             ->get();
+
+// dd($programari->count(), $programari2->count(), $programari2->take(5));
+// dd($programari);
 
         $mecanici = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
@@ -259,12 +274,23 @@ class ProgramareController extends Controller
         // WHERE t2.nr_auto IS NULL
         // ');
 
+        // $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
+        //     ->where(function (Builder $query) {
+        //         $query->whereNotNull('nr_auto')
+        //               ->orWhereNotNull('telefon');
+        //     })
+        //     ->distinct('nr_auto', 'telefon')
+        //     ->get();
+
         $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
             ->where(function (Builder $query) {
                 $query->whereNotNull('nr_auto')
-                      ->orWhereNotNull('telefon');
+                      ->orWhereNotNull('client');
             })
-            ->distinct('nr_auto', 'telefon')
+            ->where('client', 'corox')
+            ->groupBy(DB::raw('ifnull(nr_auto,client)'))
+            ->orderBy('created_at', 'desc')
+            // ->distinct('nr_auto', 'telefon')
             ->get();
 
         $mecanici = User::where('role', 'mecanic')
@@ -285,7 +311,17 @@ class ProgramareController extends Controller
      */
     public function update(Request $request, Programare $programare)
     {
-        $this->validateRequest($request);
+        $this->validateRequest($request, $programare);
+
+        if ($request->stare_masina === "3"){ // Daca programarea este finalizata
+            foreach ($programare->manopere->whereNotIn('mecanic_id', [10,17]) as $manopera) { // Daca au lucrat si alti mecanici in afara de Cosmin si Iulian
+                if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->count() === 0) {
+                    return back()->with('eroare', 'Mecanicul ' . $manopera->mecanic->name . ' nu are pontajul adăugat.');
+                } else if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->whereNull('sfarsit')->count() > 0) {
+                    return back()->with('eroare', 'Mecanicul ' . $manopera->mecanic->name . ' nu are pontajul sfârșit.');
+                }
+            }
+        }
 
         $programare->update($request->except('manopere', 'date'));
         // Daca este bifata acum ca este finalizata, se trece si data ora finalizare ca fiind acum
@@ -375,7 +411,7 @@ class ProgramareController extends Controller
      *
      * @return array
      */
-    protected function validateRequest(Request $request)
+    protected function validateRequest(Request $request, $programare = null)
     {
         // Se adauga doar la adaugare, iar la modificare nu se schimba
         if ($request->isMethod('post')) {
@@ -398,7 +434,18 @@ class ProgramareController extends Controller
                 'geometrie_camion' => '',
                 'freon' => '',
                 'piese' => '',
-                'stare_masina' => '',
+                'stare_masina' => ($request->_method === "PATCH") ?
+                        function ($attribute, $value, $fail) use ($request, $programare) {
+                            if ($value == "3"){ // Daca se bifeaza ca programarea este finalizata
+                                foreach ($programare->manopere->whereNotIn('mecanic_id', [10,17]) as $manopera) { // Daca au lucrat si alti mecanici in afara de Cosmin si Iulian
+                                    if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->count() === 0) {
+                                        $fail('Mecanicul ' . $manopera->mecanic->name . ' nu are pontajul adăugat.');
+                                    } else if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->whereNull('sfarsit')->count() > 0) {
+                                        $fail('Mecanicul ' . $manopera->mecanic->name . ' nu are pontajul sfârșit.');
+                                    }
+                                }
+                            }
+                        } : '',
                 'observatii' => 'nullable|max:2000',
                 'user_id' => '',
                 'confirmare' => '',
