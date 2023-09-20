@@ -277,6 +277,35 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-4 rounded-3" style="background-color: #c8fbfd">
+            <div class="col-lg-3 my-1 d-flex align-items-center">
+                <div style="min-width: 110px;">
+                    Sms recenzie:
+                </div>
+                <div class="form-check me-3">
+                    <input class="form-check-input" type="radio" value="1" name="sms_recenzie" id="sms_recenzie_da"
+                        {{ old('sms_recenzie', $programare->sms_recenzie) == '1' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="sms_recenzie_da">DA</label>
+                </div>
+                <div class="form-check me-5">
+                    <input class="form-check-input" type="radio" value="0" name="sms_recenzie" id="sms_recenzie_nu"
+                        {{ old('sms_recenzie', $programare->sms_recenzie) == '0' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="sms_recenzie_nu">NU</label>
+                </div>
+            </div>
+            <div class="col-lg-9 my-1 d-flex align-items-center">
+                {{-- <div class="align-items-center"> --}}
+                    <div style="min-width: 130px;">
+                        Motiv pentru NU:
+                    </div>
+                    <input
+                        type="text"
+                        class="form-control bg-white rounded-3 {{ $errors->has('sms_recenzie_motiv_nu') ? 'is-invalid' : '' }}"
+                        name="sms_recenzie_motiv_nu"
+                        value="{{ old('sms_recenzie_motiv_nu', $programare->sms_recenzie_motiv_nu) }}">
+                {{-- </div> --}}
+            </div>
+        </div>
         <div class="row mb-4 d-flex justify-content-center" id="manopereFormularProgramare">
             <div class="col-lg-12">
                 <div class="row px-2 pt-0 pb-0 d-flex justify-content-center">
@@ -284,7 +313,7 @@
                         <span class="fs-4 badge text-black" style="background-color:#B8FFB8;">Manopere</span>
                     </div>
                 </div>
-                <div class="row px-2 pt-0 pb-1 d-flex justify-content-center" style="background-color:#B8FFB8;">
+                <div class="row px-2 pt-0 pb-1 d-flex justify-content-center rounded-3 " style="background-color:#B8FFB8;">
                     {{-- <div class="col-lg-12 mb-4 text-center">
                         <span class="fs-4 badge text-white" style="background-color:mediumseagreen;">Manopere</span>
                     </div> --}}
