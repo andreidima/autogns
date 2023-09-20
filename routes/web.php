@@ -12,6 +12,7 @@ use App\Http\Controllers\MecanicBonusController;
 use App\Http\Controllers\ManoperaController;
 use App\Http\Controllers\PontajController;
 use App\Http\Controllers\NecesarController;
+use App\Http\Controllers\ConcediuController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('pontaje', PontajController::class)->parameters(['pontaje' => 'pontaj']);
 
     Route::resource('necesare', NecesarController::class)->parameters(['necesare' => 'necesar']);
+
+    Route::resource('concedii', ConcediuController::class)->parameters(['concedii' => 'concediu']);
 });
 
 Route::group(['middleware' => 'role:admin'], function () {

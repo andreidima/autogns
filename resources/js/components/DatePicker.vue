@@ -20,7 +20,8 @@ export default {
     'doarZiuaA',
     'doarZiuaB',
     'minuteStep',
-    'hours'],
+    'hours',
+    'range'],
   computed: {
     latimePrelucrata() {
       if (this.tip === "time") {
@@ -147,6 +148,7 @@ export default {
         :disabled-date=notDates
         :style=latime
         :lang="langObject"
+        :range="range"
     >
     </date-picker>
   </div>

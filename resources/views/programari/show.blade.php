@@ -169,6 +169,30 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td colspan="2">
+                                        Trimitere sms, o singură dată, după 1 an, pentru revizie ulei și filtre:
+                                        @if ($programare->sms_revizie_ulei_filtre == 1)
+                                            <span class="text-success"><b>DA</b></span>
+                                        @else
+                                            <span class="text-danger"><b>NU</b></span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pe-4">
+                                        Sms recenzie:
+                                    </td>
+                                    <td>
+                                        @if ($programare->sms_recenzie == 1)
+                                            <span class="text-success"><b>DA</b></span>
+                                        @else
+                                            <span class="text-danger"><b>NU</b></span>
+                                            <br>
+                                            Motiv: {{ $programare->sms_recenzie_motiv_nu }}
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="pe-4">
                                         Data introducere programare
                                     </td>

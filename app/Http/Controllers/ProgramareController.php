@@ -313,16 +313,6 @@ class ProgramareController extends Controller
     {
         $this->validateRequest($request, $programare);
 
-        if ($request->stare_masina === "3"){ // Daca programarea este finalizata
-            foreach ($programare->manopere->whereNotIn('mecanic_id', [10,17]) as $manopera) { // Daca au lucrat si alti mecanici in afara de Cosmin si Iulian
-                if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->count() === 0) {
-                    return back()->with('eroare', 'Mecanicul ' . $manopera->mecanic->name . ' nu are pontajul adăugat.');
-                } else if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->whereNull('sfarsit')->count() > 0) {
-                    return back()->with('eroare', 'Mecanicul ' . $manopera->mecanic->name . ' nu are pontajul sfârșit.');
-                }
-            }
-        }
-
         $programare->update($request->except('manopere', 'date'));
         // Daca este bifata acum ca este finalizata, se trece si data ora finalizare ca fiind acum
         if (($programare->stare_masina == "3") && ($programare->wasChanged ('stare_masina'))){
@@ -451,6 +441,8 @@ class ProgramareController extends Controller
                 'confirmare' => '',
                 'cheie_unica' => '',
                 'sms_revizie_ulei_filtre' => '',
+                'sms_recenzie' => 'nullable|required_if:stare_masina,3',
+                'sms_recenzie_motiv_nu' => 'nullable|required_if:sms_recenzie,0',
 
 
                 'manopere.*.denumire' => 'required|max:500',
@@ -461,6 +453,9 @@ class ProgramareController extends Controller
                 'manopere.*.constatare_atelier' => 'nullable|max:2000',
             ],
             [
+                'sms_recenzie.required_if' => 'Câmpul „Sms recenzie” este necesar când stare masina este „Finalizată”',
+                'sms_recenzie_motiv_nu.required_if' => 'Câmpul „Motiv pentru NU” este necesar când „Sms recenzie” este NU',
+
                 'manopere.*.denumire.required' => 'Câmpul „Denumire” pentru manopera #:position este obligatoriu',
                 'manopere.*.denumire.max' => 'Câmpul „Denumire” pentru manopera #:position trebuie sa fie de maxim 500 de caractere',
                 'manopere.*.pret.required_if' => 'Câmpul „Pret” pentru manopera #:position este necesar când stare masina este „Finalizată”',

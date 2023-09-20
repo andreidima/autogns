@@ -83,11 +83,32 @@
                                     Pontaje
                                 </a>
                             </li>
-                            <li class="nav-item me-3">
+                            {{-- <li class="nav-item me-3">
                                 <a class="nav-link active" aria-current="page" href="/necesare">
                                     <i class="fa-solid fa-screwdriver-wrench me-1"></i>
                                     Necesare
                                 </a>
+                            </li> --}}
+                            <li class="nav-item me-3 dropdown">
+                                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-users me-1"></i>
+                                    Mecanici
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="/concedii">
+                                            <i class="fa-solid fa-users-slash me-1"></i>
+                                            Concedii
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="/necesare">
+                                            <i class="fa-solid fa-screwdriver-wrench me-1"></i>
+                                            Necesare
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="nav-item me-3 dropdown">
                                 <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
