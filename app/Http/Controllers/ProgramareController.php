@@ -186,7 +186,7 @@ class ProgramareController extends Controller
     public function store(Request $request)
     {
         $this->validateRequest($request);
-
+// dd($request);
         $programare = Programare::make($request->except('manopere', 'date'));
         // Daca este bifata ca este finalizata, se trece si data ora finalizare ca fiind acum
         if ($programare->stare_masina == "3"){
