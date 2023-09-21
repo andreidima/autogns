@@ -335,7 +335,7 @@
                             <div class="col-lg-3 mb-2">
                                 <label for="mecanic_id" class="mb-0 ps-3">Mecanic</label>
                                 <select :name="'manopere[' + index + '][mecanic_id]'" v-model="manopere[index].mecanic_id" class="form-select bg-white rounded-3 {{ $errors->has('mecanic_id') ? 'is-invalid' : '' }}">
-                                    <option selected></option>
+                                    <option selected value=""></option>
                                     <option
                                         v-for='mecanic in mecanici'
                                         :value='mecanic.id'

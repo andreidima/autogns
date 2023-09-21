@@ -206,7 +206,7 @@ class ProgramareController extends Controller
             foreach($request->manopere as $manopera){
                 $manoperaDB = new Manopera;
                 $manoperaDB->programare_id = $programare->id;
-                $manoperaDB->mecanic_id = $manopera['mecanic_id'];
+                $manoperaDB->mecanic_id = $manopera['mecanic_id'] ?? null;
                 $manoperaDB->denumire = $manopera['denumire'];
                 $manoperaDB->pret = $manopera['pret'];
                 $manoperaDB->bonus_mecanic = $manopera['bonus_mecanic'];
