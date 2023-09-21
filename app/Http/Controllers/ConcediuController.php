@@ -39,6 +39,7 @@ class ConcediuController extends Controller
 
         $useri = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
+            ->where('id', '<>', 20) // Viorel Mecanic
             ->orderBy('name')->get();
 
         return view('concedii.index', compact('concedii', 'useri', 'userId', 'data'));
@@ -55,6 +56,7 @@ class ConcediuController extends Controller
 
         $useri = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
+            ->where('id', '<>', 20) // Viorel Mecanic
             ->orderBy('name')->get();
 
         return view('concedii.create', compact('useri'));

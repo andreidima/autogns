@@ -162,12 +162,12 @@
                     ></vue-datepicker-next>
                 </div>
             </div>
-            <div class="col-lg-6 mb-4 mx-auto">
+            <div class="col-lg-5 mb-4 mx-auto">
                 <label for="lucrare" class="form-label mb-0 ps-3">Lucrare</label>
                 <textarea class="form-control bg-white {{ $errors->has('lucrare') ? 'is-invalid' : '' }}"
                     name="lucrare" rows="4">{{ old('lucrare', $programare->lucrare) }}</textarea>
             </div>
-            <div class="col-lg-4 mb-4 ps-s mx-auto d-flex align-items-center">
+            <div class="col-lg-3 mb-4 ps-s mx-auto d-flex align-items-center">
                 <div>
                     <div class="form-check">
                         <input class="form-check-input" type="hidden" name="geometrie_turism" value="0" />
@@ -212,6 +212,16 @@
                         <input class="form-check-input" type="radio" value="3" name="piese" id="piese_client"
                             {{ old('piese', $programare->piese) == '3' ? 'checked' : '' }}>
                         <label class="form-check-label" for="piese_client">Client</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 mb-4 ps-s mx-auto d-flex align-items-center">
+                <div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="hidden" name="piese_vechi_in_masina" value="0" />
+                        <input class="form-check-input" type="checkbox" value="1" name="piese_vechi_in_masina" id="piese_vechi_in_masina"
+                            {{ old('piese_vechi_in_masina', $programare->piese_vechi_in_masina) == '1' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="piese_vechi_in_masina">Piesele vechi de lăsat în mașină</label>
                     </div>
                 </div>
             </div>

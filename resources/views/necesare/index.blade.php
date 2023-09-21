@@ -60,9 +60,12 @@
                                 <th class="">#</th>
                                 <th class="">Utilizator</th>
                                 <th class="text-center">Data adăugării</th>
+                                <th class="">Necesar</th>
+                                <th class="text-end">Acțiuni</th>
+                            @else
+                                <th class="">#</th>
+                                <th class="">Necesar</th>
                             @endif
-                            <th class="">Necesar</th>
-                            <th class="text-end">Acțiuni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,20 +81,36 @@
                                     <td class="text-center">
                                         {{ $necesar->created_at ? Carbon::parse($necesar->created_at)->isoFormat('DD.MM.YYYY') : '' }}
                                     </td>
-                                @endif
-                                <td class="">
-                                    {{ $necesar->necesar }}
-                                </td>
-                                <td>
-                                    @if (auth()->user()->role !== "mecanic")
+                                    <td class="">
+                                        {{ $necesar->necesar }}
+                                    </td>
+                                    <td>
                                         <div class="d-flex justify-content-end">
-                                    @else
-                                        <div class="text-end">
-                                    @endif
-                                        <a href="{{ $necesar->path() }}/modifica" class="flex me-1">
-                                            <span class="badge bg-primary">Modifică</span>
-                                        </a>
-                                        <div style="flex" class="">
+                                            <a href="{{ $necesar->path() }}/modifica" class="flex me-1">
+                                                <span class="badge bg-primary">Modifică</span>
+                                            </a>
+                                            <div style="flex" class="">
+                                                <a
+                                                    href="#"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#stergeNecesar{{ $necesar->id }}"
+                                                    title="Șterge Necesar"
+                                                    >
+                                                    <span class="badge bg-danger">Șterge</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td align="">
+                                        {{ ($necesare ->currentpage()-1) * $necesare ->perpage() + $loop->index + 1 }}
+                                    </td>
+                                    <td class="">
+                                        {{ $necesar->necesar }}
+                                        <b>({{ $necesar->user->name ?? '' }})</b>
+                                        @if ($necesar->user_id === auth()->user()->id))
+                                            <a href="{{ $necesar->path() }}/modifica" class="me-1">
+                                                <span class="badge bg-primary">Modifică</span></a>
                                             <a
                                                 href="#"
                                                 data-bs-toggle="modal"
@@ -100,9 +119,9 @@
                                                 >
                                                 <span class="badge bg-danger">Șterge</span>
                                             </a>
-                                        </div>
-                                    </div>
-                                </td>
+                                        @endif
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}

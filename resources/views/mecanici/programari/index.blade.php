@@ -98,7 +98,14 @@
 
                             </b>
                             <br>
-                            {{ $programare->lucrare }}
+                            <b>Lucrare</b> {{ $programare->lucrare }}
+                            <br>
+                            Piesele vechi de lăsat în mașina:
+                                @if ($programare->piese_vechi_in_masina === 1)
+                                    <span class="text-success"><b>DA</b></span>
+                                @elseif ($programare->piese_vechi_in_masina === 0)
+                                    <span class="text-danger"><b>NU</b></span>
+                                @endif
                             <br>
                             @foreach ($programare->manopere as $manopera)
                                 <div class="d-flex">

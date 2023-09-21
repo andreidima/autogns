@@ -132,8 +132,29 @@
             </table>
 
             1. Lucrări solicitate de client:
-            <div style="padding:0px 2px; border:3px solid black; font-size:14px">
-                <b>{{ $programare->lucrare }}</b>
+            <div style="padding:0px 2px; border:3px solid black; font-size:14px; font-weight:bold">
+                {{ $programare->lucrare }}
+                <br>
+                @if ($programare->geometrie_turism === 1)
+                    <span class="me-1 px-1 culoare1 text-white">GEOMETRIE TURISM.</span>
+                @endif
+                @if ($programare->geometrie_camion === 1)
+                    <span class="me-1 px-1 culoare1 text-white">GEOMETRIE CAMION.</span>
+                @endif
+                @if ($programare->freon === 1)
+                    <span class="me-1 px-1 culoare1 text-white">FREON.</span>
+                @endif
+                <br>
+                @if ($programare->piese !== 3)
+                    Piesele necesare sunt procurate de către atelier.
+                @else
+                    Piesele necesare sunt procurate de către client.
+                @endif
+                @if ($programare->piese_vechi_in_masina === 1)
+                    Piesele vechi se vor lăsa în mașină.
+                @elseif ($programare->piese_vechi_in_masina === 0)
+                    Piesele vechi vor rămâne în atelier.
+                @endif
             </div>
 
             2. Constatare atelier:

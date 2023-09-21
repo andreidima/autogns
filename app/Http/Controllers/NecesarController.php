@@ -29,9 +29,9 @@ class NecesarController extends Controller
                     return $query->where('id', $userId);
                 });
             })
-            ->when((auth()->user()->role == "mecanic"), function ($query) {
-                return $query->where('user_id', auth()->user()->id);
-            })
+            // ->when((auth()->user()->role == "mecanic"), function ($query) {
+            //     return $query->where('user_id', auth()->user()->id);
+            // })
             ->latest()
             ->simplePaginate(25);
 
@@ -89,10 +89,11 @@ class NecesarController extends Controller
     {
         $request->session()->get('necesarReturnUrl') ?? $request->session()->put('necesarReturnUrl', url()->previous());
 
-        if ((auth()->user()->role == "mecanic") && (auth()->user()->id != $necesar->user_id)){
-        } else {
-            return view('necesare.edit', compact('necesar'));
+        if ($request->user()->cannot('update', $necesar)) {
+            abort(403);
         }
+
+        return view('necesare.edit', compact('necesar'));
     }
 
     /**
@@ -104,10 +105,11 @@ class NecesarController extends Controller
      */
     public function update(Request $request, Necesar $necesar)
     {
-        if ((auth()->user()->role == "mecanic") && (auth()->user()->id != $necesar->user_id)){
-        } else {
-            $necesar->update($this->validateRequest($request));
+        if ($request->user()->cannot('update', $necesar)) {
+            abort(403);
         }
+
+        $necesar->update($this->validateRequest($request));
 
         return redirect($request->session()->get('necesarReturnUrl') ?? ('/necesare'))
             ->with('status', 'Necesarul a fost modificat cu succes!');
@@ -121,10 +123,11 @@ class NecesarController extends Controller
      */
     public function destroy(Request $request, Necesar $necesar)
     {
-        if ((auth()->user()->role == "mecanic") && (auth()->user()->id != $necesar->user_id)){
-        } else {
-            $necesar->delete();
+        if ($request->user()->cannot('update', $necesar)) {
+            abort(403);
         }
+
+        $necesar->delete();
 
         return back()->with('status', 'Necesarul a fost șters cu succes!');
     }

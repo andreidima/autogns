@@ -139,6 +139,16 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td colspan="2">
+                                        Piesele vechi de lăsat în mașină:
+                                        @if ($programare->piese_vechi_in_masina === 1)
+                                            <span class="text-success"><b>DA</b></span>
+                                        @elseif ($programare->piese_vechi_in_masina === 0)
+                                            <span class="text-danger"><b>NU</b></span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="pe-4">
                                         Stare mașină
                                     </td>
@@ -171,9 +181,9 @@
                                 <tr>
                                     <td colspan="2">
                                         Trimitere sms, o singură dată, după 1 an, pentru revizie ulei și filtre:
-                                        @if ($programare->sms_revizie_ulei_filtre == 1)
+                                        @if ($programare->sms_revizie_ulei_filtre === 1)
                                             <span class="text-success"><b>DA</b></span>
-                                        @else
+                                        @elseif ($programare->sms_revizie_ulei_filtre === 0)
                                             <span class="text-danger"><b>NU</b></span>
                                         @endif
                                     </td>
@@ -183,9 +193,9 @@
                                         Sms recenzie:
                                     </td>
                                     <td>
-                                        @if ($programare->sms_recenzie == 1)
+                                        @if ($programare->sms_recenzie === 1)
                                             <span class="text-success"><b>DA</b></span>
-                                        @else
+                                        @elseif ($programare->sms_recenzie === 0)
                                             <span class="text-danger"><b>NU</b></span>
                                             <br>
                                             Motiv: {{ $programare->sms_recenzie_motiv_nu }}
