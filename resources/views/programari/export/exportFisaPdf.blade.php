@@ -137,14 +137,16 @@
                 <br>
                 @if ($programare->geometrie_turism === 1)
                     <span class="me-1 px-1 culoare1 text-white">GEOMETRIE TURISM.</span>
+                    <br>
                 @endif
                 @if ($programare->geometrie_camion === 1)
                     <span class="me-1 px-1 culoare1 text-white">GEOMETRIE CAMION.</span>
+                    <br>
                 @endif
                 @if ($programare->freon === 1)
                     <span class="me-1 px-1 culoare1 text-white">FREON.</span>
+                    <br>
                 @endif
-                <br>
                 @if ($programare->piese !== 3)
                     Piesele necesare sunt procurate de către atelier.
                 @else
