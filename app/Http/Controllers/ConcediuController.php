@@ -31,8 +31,8 @@ class ConcediuController extends Controller
                 });
             })
             ->when($data, function (Builder $query) use ($data) {
-                return $query->whereDate('inceput', '>=', $data)
-                            ->whereDate('sfarsit', '<=', $data);
+                return $query->whereDate('inceput', '<=', $data)
+                            ->whereDate('sfarsit', '>=', $data);
             })
             ->latest()
             ->simplePaginate(25);
@@ -70,51 +70,27 @@ class ConcediuController extends Controller
      */
     public function store(Request $request)
     {
-        // Mecanicii nu pot adăuga pontaje mai vechi de 2 zile
-        if (auth()->user()->role === "mecanic"){
-            if (auth()->user()->id != $request->mecanicId){
-                return back()->with('eroare', 'Nu se pot adăuga pontaje altor utilizatori.');
-            } else if(Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today())){
-                return back()->with('eroare', 'Nu se pot adăuga pontaje mai vechi de 2 zile.');
-            }
-            if (!in_array(auth()->user()->id, Programare::where('id', $request->programareId)->first()->manopere->pluck('mecanic_id')->toArray())){
-                return back()->with('eroare', 'Nu ai nici o manoperă adăugată la această mașină');
-            }
-        }
+        $this->validateRequest($request);
 
+        $concediu = new Concediu;
+        $concediu->user_id = $request->mecanic;
+        $concediu->inceput = strtok($request->interval, ',');
+        $concediu->sfarsit = strtok('');
+        $concediu->observatii = $request->observatii;
 
+        $concediu->save();
 
-        $request->validate([
-            'programareId' => 'required',
-            'mecanicId' => 'required',
-            'data' => 'required',
-            'inceput' => 'required',
-            'sfarsit' => ''
-        ]);
-
-        $pontaj = new Concediu;
-        $pontaj->programare_id = $request->programareId;
-        $pontaj->mecanic_id = $request->mecanicId;
-        if ($request->inceput) {
-            $pontaj->inceput = Carbon::parse($request->data)->setTimeFromTimeString($request->inceput)->toDateTimeString();
-        }
-        if ($request->sfarsit) {
-            $pontaj->sfarsit = Carbon::parse($request->data)->setTimeFromTimeString($request->sfarsit)->toDateTimeString();
-        }
-
-        $pontaj->save();
-
-        return redirect($request->session()->get('concediuReturnUrl') ?? ('/programari'))
-            ->with('status', 'Concediuul pentru mecanicul „' . $pontaj->mecanic->name . '”, la mașina „' . $pontaj->programare->masina . '”, a fost adăugat cu succes!');
+        return redirect($request->session()->get('concediuReturnUrl') ?? ('/concedii'))
+            ->with('status', 'Concediul pentru mecanicul ' . ($concediu->user->name ?? '') . ' a fost adăugat cu succes!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Concediu  $pontaj
+     * @param  \App\Concediu  $concediu
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Concediu $pontaj)
+    public function show(Request $request, Concediu $concediu)
     {
         // $request->session()->get('concediuReturnUrl') ?? $request->session()->put('concediuReturnUrl', url()->previous());
 
@@ -124,84 +100,72 @@ class ConcediuController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App Concediu  $pontaj
+     * @param  \App Concediu  $concediu
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, Concediu $pontaj)
+    public function edit(Request $request, Concediu $concediu)
     {
         $request->session()->get('concediuReturnUrl') ?? $request->session()->put('concediuReturnUrl', url()->previous());
 
-        $programare = Programare::where('id', $pontaj->programare_id)->first();
-        $mecanic = User::where('id', $pontaj->mecanic_id)->first();
-        $data = Carbon::parse($pontaj->inceput)->toDateString();
+        $useri = User::where('role', 'mecanic')
+            ->where('id', '<>', 18) // Andrei Dima Mecanic
+            ->where('id', '<>', 20) // Viorel Mecanic
+            ->orderBy('name')->get();
 
-        // dd($pontaj,$mecanic);
-
-        return view('concedii.edit', compact('pontaj', 'programare', 'mecanic', 'data'));
+        return view('concedii.edit', compact('concediu', 'useri'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App Concediu  $pontaj
+     * @param  \App Concediu  $concediu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Concediu $pontaj)
+    public function update(Request $request, Concediu $concediu)
     {
-        // Mecanicii nu pot modifica pontaje mai vechi de 2 zile
-        if (auth()->user()->role === "mecanic"){
-            if (auth()->user()->id != $pontaj->mecanic_id){
-                return back()->with('eroare', 'Nu se pot modifica pontajele altor utilizatori.');
-            } else if(Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today()) || Carbon::parse($pontaj->inceput)->addDays(2)->lessThan(Carbon::today())){
-                return back()->with('eroare', 'Nu se pot modifica pontaje mai vechi de 2 zile.');
-            }
-        }
-        if ((auth()->user()->role === "mecanic") && Carbon::parse($request->data)->addDays(2)->lessThan(Carbon::today())){
-            return back()->with('eroare', 'Nu se pot modifica pontaje mai vechi de 2 zile.');
-        }
+        $this->validateRequest($request);
 
-        $request->validate([
-            'data' => 'required',
-            'inceput' => 'required',
-            'sfarsit' => ''
-        ]);
+        $concediu->user_id = $request->mecanic;
+        $concediu->inceput = strtok($request->interval, ',');
+        $concediu->sfarsit = strtok('');
+        $concediu->observatii = $request->observatii;
 
-        if ($request->inceput) {
-            $pontaj->inceput = Carbon::parse($request->data)->setTimeFromTimeString($request->inceput)->toDateTimeString();
-        }
-        if ($request->sfarsit) {
-            $pontaj->sfarsit = Carbon::parse($request->data)->setTimeFromTimeString($request->sfarsit)->toDateTimeString();
-        } else {
-            $pontaj->sfarsit = null;
-        }
+        $concediu->save();
 
-        $pontaj->save();
-
-        return redirect($request->session()->get('concediuReturnUrl') ?? ('/pontaje'))
-            ->with('status', 'Concediuul pentru mecanicul „' . $pontaj->mecanic->name . '”, la mașina „' . $pontaj->programare->masina . '”, a fost modificat cu succes!');
+        return redirect($request->session()->get('concediuReturnUrl') ?? ('/concedii'))
+            ->with('status', 'Concediul pentru mecanicul ' . ($concediu->user->name ?? '') . ' a fost modificat cu succes!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App Concediu  $pontaj
+     * @param  \App Concediu  $concediu
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Concediu $pontaj)
+    public function destroy(Request $request, Concediu $concediu)
     {
-        // Mecanicii nu pot sterge pontaje mai vechi de 2 zile
-        if (auth()->user()->role === "mecanic"){
-            if (auth()->user()->id != $pontaj->mecanic_id){
-                return back()->with('eroare', 'Nu se pot șterge pontajele altor utilizatori.');
-            } else if(Carbon::parse($pontaj->inceput)->addDays(2)->lessThan(Carbon::today())){
-                return back()->with('eroare', 'Nu se pot șterge pontaje mai vechi de 2 zile.');
-            }
-        }
+        $concediu->delete();
 
+        return back()->with('status', 'Concediul pentru mecanicul ' . ($concediu->user->name ?? '') . ' a fost șters cu succes!');
+    }
 
-        $pontaj->delete();
+    /**
+     * Validate the request attributes.
+     *
+     * @return array
+     */
+    protected function validateRequest(Request $request)
+    {
+        return $request->validate(
+            [
+                'mecanic' => 'required',
+                'interval' => 'required|min:20', // ramane doar o virgula daca data se sterge manual din controller, si atunci nu mai functioneaza doar regula „required”
+                'observatii' => '',
+            ],
+            [
 
-        return back()->with('status', 'Concediuul pentru mecanicul „' . $pontaj->mecanic->name . '”, la mașina „' . $pontaj->programare->masina . '”, a fost șters cu succes!');
+            ]
+        );
     }
 }

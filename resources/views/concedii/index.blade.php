@@ -91,6 +91,9 @@
                                     {{ $concediu->sfarsit ? Carbon::parse($concediu->sfarsit)->isoFormat('DD.MM.YYYY') : '' }}
                                 </td>
                                 <td>
+                                    {{ $concediu->observatii }}
+                                </td>
+                                <td>
                                     <div class="d-flex justify-content-end">
                                         <a href="{{ $concediu->path() }}/modifica" class="flex me-1">
                                             <span class="badge bg-primary">Modifică</span>

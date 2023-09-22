@@ -122,7 +122,14 @@ export default {
         if (this.dataVeche == "") {
         }
         else {
-          this.time = this.dataVeche
+            if (this.dataVeche.includes(',')){ // in cazul in care are virgula inseamna ca este un interval
+                this.time = [];
+                this.time[0] = this.dataVeche.split(',')[0];
+                this.time[1] = this.dataVeche.split(',')[1];
+                // console.log(date, this.dataVeche.split(',')[0], this.dataVeche.split(',')[1]);
+            }else{
+                this.time = this.dataVeche;
+            }
         }
         // this.dataprogramare('dataProgramareTrimisa');
     },

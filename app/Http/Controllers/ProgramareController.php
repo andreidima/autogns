@@ -10,6 +10,7 @@ use App\Models\ProgramareIstoric;
 use App\Models\Manopera;
 use App\Models\Pontaj;
 use App\Models\User;
+use App\Models\Concediu;
 
 use Carbon\Carbon;
 
@@ -83,7 +84,15 @@ class ProgramareController extends Controller
                  })
                 ->simplePaginate(25);
 
-            return view('programari.index', compact('programari', 'search_client', 'search_telefon', 'search_data', 'search_nr_auto'));
+            // Se incarca si concediile pentru ziua respectiva ca sa le vada operatorul programarilor
+            $concedii = null;
+            if ($search_data){
+                $concedii = Concediu::whereDate('inceput', '<=', $search_data)
+                    ->whereDate('sfarsit', '>=', $search_data)
+                    ->get();
+            }
+
+            return view('programari.index', compact('programari', 'concedii', 'search_client', 'search_telefon', 'search_data', 'search_nr_auto'));
         } else if ($request->route()->getName() === "programari.afisareCalendar"){
             $search_data_inceput = \Request::get('search_data_inceput') ?? \Carbon\Carbon::now()->startOfWeek()->toDateString();
             $search_data_sfarsit = \Request::get('search_data_sfarsit') ?? \Carbon\Carbon::now()->endOfWeek()->toDateString();

@@ -140,6 +140,10 @@
             @include ('errors')
 
             @if (Route::currentRouteName() === "programari.index")
+                @foreach ($concedii as $concediu)
+                    {{ $concediu->user->name ?? '' }}
+                    <br>
+                @endforeach
                 <div class="table-responsive rounded">
                     <table class="table table-striped table-hover rounded">
                         <thead class="text-white rounded culoare2">
