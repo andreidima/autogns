@@ -141,8 +141,22 @@
 
             @if (Route::currentRouteName() === "programari.index")
                 @foreach ($concedii as $concediu)
-                    {{ $concediu->user->name ?? '' }}
-                    <br>
+                    @if ($loop->first)
+                        <div class="text-center mb-2">
+                            <span class="text-black px-1 rounded-3 border border-2" style="background-color: #fff700; font-size:110%">
+                                <b>Concedii</b>:
+                    @endif
+                    <b>{{ $concediu->user->name ?? '' }}</b>
+                    @if ($concediu->observatii)
+                        ({{ $concediu->observatii }})
+                    @endif
+                    @if (!$loop->last)
+                        |
+                    @endif
+                    @if ($loop->last)
+                            </span>
+                        </div>
+                    @endif
                 @endforeach
                 <div class="table-responsive rounded">
                     <table class="table table-striped table-hover rounded">
