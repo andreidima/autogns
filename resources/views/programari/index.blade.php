@@ -140,26 +140,28 @@
             @include ('errors')
 
             @if (Route::currentRouteName() === "programari.index")
-                @foreach ($concedii as $concediu)
-                    @if ($loop->first)
-                        <div class="text-center mb-2">
-                            <span class="text-black px-1 rounded-3 border border-2" style="background-color: #fff700; font-size:100%">
-                                <b>Concedii</b>:
-                    @endif
-                    <span style="color:rgb(187, 7, 7); font-weight:bold; font-size:120%">
-                        {{ $concediu->user->name ?? '' }}
-                    </span>
-                    @if ($concediu->observatii)
-                        ({{ $concediu->observatii }})
-                    @endif
-                    @if (!$loop->last)
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                    @endif
-                    @if ($loop->last)
-                            </span>
-                        </div>
-                    @endif
-                @endforeach
+                @if ($concedii)
+                    @foreach ($concedii as $concediu)
+                        @if ($loop->first)
+                            <div class="text-center mb-2">
+                                <span class="text-black px-1 rounded-3 border border-2" style="background-color: #fff700; font-size:100%">
+                                    <b>Concedii</b>:
+                        @endif
+                        <span style="color:rgb(187, 7, 7); font-weight:bold; font-size:120%">
+                            {{ $concediu->user->name ?? '' }}
+                        </span>
+                        @if ($concediu->observatii)
+                            ({{ $concediu->observatii }})
+                        @endif
+                        @if (!$loop->last)
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                        @endif
+                        @if ($loop->last)
+                                </span>
+                            </div>
+                        @endif
+                    @endforeach
+                @endif
                 <div class="table-responsive rounded">
                     <table class="table table-striped table-hover rounded">
                         <thead class="text-white rounded culoare2">
