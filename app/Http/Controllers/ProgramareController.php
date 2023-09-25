@@ -174,7 +174,7 @@ class ProgramareController extends Controller
                         ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY client)');
                 });
             })
-            ->where('client', 'VN28RAN')
+            // ->where('client', 'VN28RAN')
             // ->orderBy('created_at', 'desc')
             ->latest()
             // ->groupBy(DB::raw('ifnull(nr_auto,client)'))
