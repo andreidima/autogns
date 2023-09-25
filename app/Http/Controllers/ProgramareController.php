@@ -163,17 +163,20 @@ class ProgramareController extends Controller
         //     ->distinct('nr_auto')
         //     ->get();
 
-        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin', 'created_at')
+        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
             ->where(function (Builder $query) {
                 $query->where(function (Builder $query) {
                     $query->whereNotNull('nr_auto')
-                        ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY nr_auto)');
-                    })
-                ->orWhere(function (Builder $query) {
-                    $query->whereNotNull('client')
-                        ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY client)');
-                });
+                        ->orWhereNotNull('client');
+                        // ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY nr_auto)');
+                    });
+                // ->orWhere(function (Builder $query) {
+                //     $query->whereNull('nr_auto')
+                //         ->whereNotNull('client');
+                        // ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY client)');
+                // });
             })
+            ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY ifnull(nr_auto,client))')
             // ->where('client', 'VN28RAN')
             // ->orderBy('created_at', 'desc')
             ->latest()
