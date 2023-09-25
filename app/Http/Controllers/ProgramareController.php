@@ -163,16 +163,26 @@ class ProgramareController extends Controller
         //     ->distinct('nr_auto')
         //     ->get();
 
-        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
+        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin', 'created_at')
             ->where(function (Builder $query) {
-                $query->whereNotNull('nr_auto')
-                      ->orWhereNotNull('client');
+                $query->where(function (Builder $query) {
+                    $query->whereNotNull('nr_auto')
+                        ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY nr_auto)');
+                    })
+                ->orWhere(function (Builder $query) {
+                    $query->whereNotNull('client')
+                        ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY client)');
+                });
             })
-            // ->where('client', 'corox')
-            ->groupBy(DB::raw('ifnull(nr_auto,client)'))
-            ->orderBy('created_at', 'desc')
-            // ->distinct('nr_auto', 'telefon')
+            ->where('client', 'VN28RAN')
+            // ->orderBy('created_at', 'desc')
+            ->latest()
+            // ->groupBy(DB::raw('ifnull(nr_auto,client)'))
             ->get();
+            // ->unique('ifnull(nr_auto,client)');
+            // $programari = $programari->unique(function (array $item) {
+            //     return $item['nr_auto'].$item['client'];
+            // });
 
 // dd($programari->count(), $programari2->count(), $programari2->take(5));
 // dd($programari);
