@@ -136,59 +136,23 @@ class ProgramareController extends Controller
      */
     public function create(Request $request)
     {
-        // $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'created_at')->whereNotNull('nr_auto')->orderBy('id', 'desc')->get();
-        // $programari = $programari->groupBy('nr_auto');
-        // dd($programari->first());
-        // $programari = groupBy('nr_auto');
-        // $programari = DB::select('select * from (select * from programari ORDER BY created_at DESC) AS x where nr_auto = "VN84DIM" GROUP BY id');
-// $programari = DB::select('
-//         SELECT t1.*
-// FROM programari t1
-//   LEFT OUTER JOIN programari t2
-//     ON (t1.nr_auto = t2.nr_auto AND t1.created_at < t2.created_at)
-// WHERE t2.nr_auto IS NULL
-// ');
-        // $programari = DB::select('select * from programari ORDER BY created_at ASC');
-// $nr = 0;
-// foreach ($programari as $programare){
-//     echo $nr++ . '. ' . $programare->nr_auto . '&nbsp&nbsp&nbsp&nbsp&nbsp' . $programare->created_at . '<br>';
-// }
-// dd($programari);
-
-        // $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
-        //     ->where(function (Builder $query) {
-        //         $query->whereNotNull('nr_auto')
-        //               ->orWhereNotNull('client');
-        //     })
-        //     ->distinct('nr_auto')
-        //     ->get();
-
-        $programari = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
-            ->where(function (Builder $query) {
-                $query->where(function (Builder $query) {
-                    $query->whereNotNull('nr_auto')
-                        ->orWhereNotNull('client');
-                        // ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY nr_auto)');
-                    });
-                // ->orWhere(function (Builder $query) {
-                //     $query->whereNull('nr_auto')
-                //         ->whereNotNull('client');
-                        // ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY client)');
-                // });
-            })
-            ->whereRaw('id IN (select MAX(id) FROM programari GROUP BY ifnull(nr_auto,client))')
-            // ->where('client', 'VN28RAN')
-            // ->orderBy('created_at', 'desc')
+        // Programari selectate unic dupa nr_auto
+        $programari1 = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
+            ->whereNotNull('nr_auto')
             ->latest()
-            // ->groupBy(DB::raw('ifnull(nr_auto,client)'))
-            ->get();
-            // ->unique('ifnull(nr_auto,client)');
-            // $programari = $programari->unique(function (array $item) {
-            //     return $item['nr_auto'].$item['client'];
-            // });
+            ->get()
+            ->unique('nr_auto');
 
-// dd($programari->count(), $programari2->count(), $programari2->take(5));
-// dd($programari);
+        // Programari care nu au nr_auto, si care nu au clientul deja in cele de mai sus
+        $programari2 = Programare::select('client', 'telefon', 'email', 'masina', 'nr_auto', 'vin')
+            ->whereNull('nr_auto')
+            ->whereNotIn('client', $programari1->pluck('client'))
+            ->latest()
+            ->get()
+            ->unique('client');
+
+        $programari = collect([$programari1, $programari2]);
+        $programari = $programari->flatten(1);
 
         $mecanici = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
