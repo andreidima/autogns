@@ -33,6 +33,7 @@ Route::get('status-programare/{programare:cheie_unica}', [ProgramareConfirmareCo
 // Trimitere Cron joburi din Cpanel
 Route::any('/cron-jobs/trimitere-automata-sms-cerere-confirmare-programare/{key}', [CronJobTrimitereController::class, 'trimitereAutomataSmsCerereConfirmareProgramare']);
 Route::any('/cron-jobs/trimitere-sms-revizie-ulei-filtre/{key}', [CronJobTrimitereController::class, 'trimitereSmsRevizieUleiFiltre']);
+Route::any('/cron-jobs/inchidere-pontaje/{key}', [PontajController::class, 'cronjobInchiderePontaje']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/acasa', 'acasa');

@@ -248,7 +248,7 @@ class PontajController extends Controller
                 } else if (Carbon::parse($pontaj->inceput)->dayOfWeek === 6) { // sambata
                     $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(14)->minute(00);
                 } else if (Carbon::parse($pontaj->inceput)->dayOfWeek === 0) { // duminica
-                    $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(23)->minute(59);
+                    $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(14)->minute(00);
                 }
             } else {
                 $pontaj->sfarsit = Carbon::now();
@@ -299,5 +299,26 @@ class PontajController extends Controller
                         ->first();
 
         return view ('pontaje.interfataMecanici.status', compact('pontaje', 'pontaj', 'search_data'));
+    }
+
+    /**
+     * CronJob inchidere toate pontajele ramase neinchise
+     */
+    public function cronjobInchiderePontaje(Request $request, Programare $programare)
+    {
+        // Se cauta in baza de date daca este vreu pontaj ramas neterminat
+        $pontaje = Pontaj::whereNull('sfarsit')->get();
+
+        foreach ($pontaje as $pontaj){
+            if (in_array(Carbon::parse($pontaj->inceput)->dayOfWeek, [1,2,3,4,5])){ // luni-vineri
+                $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(17)->minute(00)->second(00);
+            } else if (Carbon::parse($pontaj->inceput)->dayOfWeek === 6) { // sambata
+                $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(14)->minute(00)->second(00);
+            } else if (Carbon::parse($pontaj->inceput)->dayOfWeek === 0) { // duminica
+                $pontaj->sfarsit = Carbon::parse($pontaj->inceput)->hour(14)->minute(00)->second(00);
+            }
+            $pontaj->save();
+        }
+        // echo 'S-au inchis ' . $pontaje->count() . ' pontaje!';
     }
 }
