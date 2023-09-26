@@ -147,15 +147,18 @@
                     <span class="me-1 px-1 culoare1 text-white">FREON.</span>
                     <br>
                 @endif
-                @if ($programare->piese !== 3)
-                    Piesele necesare sunt procurate de către atelier.
-                @else
-                    Piesele necesare sunt procurate de către client.
-                @endif
-                @if ($programare->piese_vechi_in_masina === 1)
-                    Piesele vechi se vor lăsa în mașină.
-                @elseif ($programare->piese_vechi_in_masina === 0)
-                    Piesele vechi vor rămâne în atelier.
+                {{-- $programare->piese === 0 inseamna ca programarea este fara piese, gen constatare --}}
+                @if ($programare->piese !== 0)
+                    @if ($programare->piese !== 3)
+                        Piesele necesare sunt procurate de către atelier.
+                    @else
+                        Piesele necesare sunt procurate de către client.
+                    @endif
+                    @if ($programare->piese_vechi_in_masina === 1)
+                        Piesele vechi se vor lăsa în mașină.
+                    @elseif ($programare->piese_vechi_in_masina === 0)
+                        Piesele vechi vor rămâne în atelier.
+                    @endif
                 @endif
             </div>
 

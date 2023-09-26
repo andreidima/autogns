@@ -71,4 +71,37 @@ class CronJobTrimitereController extends Controller
         }
 
     }
+
+
+
+    public function trimitereSmsCerereRecenzie($key = null)
+    {
+        $config_key = \Config::get('variabile.cron_job_key');
+
+        if ($key !== $config_key){
+            echo 'Cheia pentru Cron Joburi nu este corectă!';
+            return;
+        }
+
+
+        $programari = Programare::
+            whereDate('data_ora_finalizare', '<', Carbon::today()->todatestring()) // sms-ul sa se trimita cel putin la o zi dupa ce a fost gata lucrarea
+            ->whereDate('data_ora_finalizare', '>=', Carbon::today()->subDays(3)->todatestring()) // se trimite sms la programarile din ultimele 3 zile
+            ->where('sms_recenzie', 1) // la cei la care nu se doreste de trimis sms, au sms_recenzie = 0
+            ->doesntHave('smsCerereRecenzie') // sms-ul nu a fost deja trimis
+            ->where('client', 'Andrei Dima test')
+            ->get();
+
+dd('programari');
+
+        foreach ($programari as $programare){
+            // echo $programare->id . '<br>';
+            $mesaj = 'Cat de multumit ai fost de experienta cu AutoGNS? Te invităm să ne oferi o recenzie la ' . url('/recenzie/' . $programare->cheie_unica) . '. Feedback-ul tau ne ajuta sa fim mai buni!';
+                        // 'Multumim! AutoGNS +40723114595!';
+            // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
+            $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+            $this->trimiteSms('programari', 'cerere recenzie', $programare->id, [$programare->telefon], $mesaj);
+        }
+
+    }
 }

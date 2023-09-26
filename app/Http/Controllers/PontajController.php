@@ -304,8 +304,15 @@ class PontajController extends Controller
     /**
      * CronJob inchidere toate pontajele ramase neinchise
      */
-    public function cronjobInchiderePontaje(Request $request, Programare $programare)
+    public function cronjobInchiderePontaje($key = null)
     {
+        $config_key = \Config::get('variabile.cron_job_key');
+
+        if ($key !== $config_key){
+            echo 'Cheia pentru Cron Joburi nu este corectă!';
+            return;
+        }
+
         // Se cauta in baza de date daca este vreu pontaj ramas neterminat
         $pontaje = Pontaj::whereNull('sfarsit')->get();
 
@@ -319,6 +326,6 @@ class PontajController extends Controller
             }
             $pontaj->save();
         }
-        // echo 'S-au inchis ' . $pontaje->count() . ' pontaje!';
+        echo 'S-au inchis ' . $pontaje->count() . ' pontaje!';
     }
 }

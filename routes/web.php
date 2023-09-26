@@ -30,10 +30,16 @@ Route::redirect('/', '/acasa');
 
 Route::get('status-programare/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'statusProgramare']);
 
+Route::get('recenzie-programare/{programare:cheie_unica}', [ProgramareController::class, 'recenzieClient']);
+Route::post('recenzie-programare/{programare:cheie_unica}', [ProgramareController::class, 'postRecenzieClient']);
+
+
 // Trimitere Cron joburi din Cpanel
 Route::any('/cron-jobs/trimitere-automata-sms-cerere-confirmare-programare/{key}', [CronJobTrimitereController::class, 'trimitereAutomataSmsCerereConfirmareProgramare']);
 Route::any('/cron-jobs/trimitere-sms-revizie-ulei-filtre/{key}', [CronJobTrimitereController::class, 'trimitereSmsRevizieUleiFiltre']);
+Route::any('/cron-jobs/trimitere-sms-cerere-recenzie/{key}', [CronJobTrimitereController::class, 'trimitereSmsCerereRecenzie']);
 Route::any('/cron-jobs/inchidere-pontaje/{key}', [PontajController::class, 'cronjobInchiderePontaje']);
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/acasa', 'acasa');

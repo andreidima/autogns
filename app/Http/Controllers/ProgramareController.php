@@ -467,4 +467,13 @@ class ProgramareController extends Controller
         // return $pdf->download('AutoGNS Manopere ' . \Carbon\Carbon::parse($search_data)->isoFormat('DD.MM.YYYY') . '.pdf');
         return $pdf->stream();
     }
+
+    public function recenzieClient($key = null)
+    {
+        $programare = Programare::where('cheie_unica', $key)->first();
+
+        // dd($)
+
+        return view('programari.diverse.recenzie', compact('programare'));
+    }
 }

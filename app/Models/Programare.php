@@ -72,4 +72,9 @@ class Programare extends Model
     {
         return $this->hasMany(Pontaj::class, 'programare_id', 'id');
     }
+
+    public function smsCerereRecenzie()
+    {
+        return $this->hasOne(MesajTrimisSms::class, 'referinta_id', 'id')->where('categorie', 'programari')->where('subcategorie', 'cerere recenzie');
+    }
 }
