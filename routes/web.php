@@ -30,7 +30,7 @@ Route::redirect('/', '/acasa');
 
 Route::get('status-programare/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'statusProgramare']);
 
-Route::get('recenzie-programare/{programare:cheie_unica}', [ProgramareController::class, 'recenzieClient']);
+Route::get('recenzie-programare/chestionar/{programare:cheie_unica}', [ProgramareController::class, 'recenzieClient']);
 Route::post('recenzie-programare/{programare:cheie_unica}', [ProgramareController::class, 'postRecenzieClient']);
 
 

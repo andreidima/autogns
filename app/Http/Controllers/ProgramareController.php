@@ -470,7 +470,7 @@ class ProgramareController extends Controller
 
     public function recenzieClient($key = null)
     {
-        $programare = Programare::where('cheie_unica', $key)->first();
+        $programare = Programare::with('manopere')->where('cheie_unica', $key)->first();
 
         // dd($)
 

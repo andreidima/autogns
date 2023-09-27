@@ -166,3 +166,26 @@ manopereFormularProgramare.component('vue-datepicker-next', VueDatepickerNext);
 if (document.getElementById('manopereFormularProgramare') != null) {
     manopereFormularProgramare.mount('#manopereFormularProgramare');
 }
+
+// Formular chestionar
+const chestionar = createApp({
+    el: '#chestionar',
+    data() {
+        return {
+            manopere: manopere,
+        }
+    },
+    watch: {
+    },
+    created: function () {
+        // this.adaugaManoperaGoalaInArray();
+    },
+    methods: {
+        // adaugaManoperaGoalaInArray() {
+        //     this.manopere.push({ id: '', mecanic_id: '', denumire: '', pret: '', bonus_mecanic: '', observatii: '', constatare_atelier: '', mecanic_consumabile: '', mecanic_observatii: '' });
+        // },
+    }
+});
+if (document.getElementById('chestionar') != null) {
+    chestionar.mount('#chestionar');
+}

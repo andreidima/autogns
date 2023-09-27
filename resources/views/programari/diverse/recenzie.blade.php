@@ -4,6 +4,10 @@
     use \Carbon\Carbon;
 @endphp
 
+<script type="application/javascript">
+    manopere = {!! json_encode($programare->manopere) !!}
+</script>
+
 @section('content')
 <div class="container">
     <div class="row my-0 justify-content-center">
@@ -13,7 +17,7 @@
                 >
                     <div class="row m-0">
                         <div class="col-lg-12 d-flex justify-content-center">
-                            <h3 class="my-2 text-center"><i class="fa-solid fa-calendar-check me-1 fs-3"></i>Programarea ta la AutoGNS</h3>
+                            <h3 class="my-2 text-center">Recomanzi AutoGNS?</h3>
                         </div>
                     </div>
                 </div>
@@ -44,7 +48,7 @@
                         </div>
                     </div>
 
-                    <div class="row mb-4 mx-0 px-3">
+                    {{-- <div class="row mb-4 mx-0 px-3">
                         <div class="col-lg-7 my-2 py-3 mx-auto rounded-3 text-black align-items-center shadow-sm border" style="background-color:rgb(212, 231, 248)">
                             <h5 class="ps-3 mb-2 text-center">
                                 Te invităm să ne oferi o recenzie Google
@@ -55,7 +59,7 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     @if (Carbon::parse($programare->data_ora_finalizare)->gt(Carbon::now()->addMonth()))
                         <div class="row mx-0 px-3">
                             <div class="col-lg-7 py-2 mx-auto">
@@ -68,19 +72,26 @@
                     @else
                         @if ($programare->manopere)
                             <div class="row mx-0 px-3">
-                                <div class="col-lg-7 mx-auto bg-light shadow-sm border border-1 border-dark">
+                                {{-- <div class="col-lg-7 mx-auto rounded-3 shadow-sm border border-1" style="background-color:rgb(212, 231, 248)">
                                     <h5 class="my-2 text-center">
                                         Chestionar intern AutoGNS
                                     </h5>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-lg-7 px-2 mx-auto">
+                                <div class="col-lg-7 px-2 mx-auto" id="chestionar">
 
                                     <form class="needs-validation d-grid px-1" novalidate method="GET" action="/status-programare/{{$programare->cheie_unica}}">
-                                        @foreach ($programare->manopere as $manopera)
-                                            <div class="row mb-0 bg-light shadow-sm border border-dark">
+                                        {{-- @foreach ($programare->manopere as $manopera)
+                                            <div class="row mb-3 rounded-3 shadow-sm border" style="background-color:rgb(212, 231, 248)">
                                                 <div class="col-lg-12 py-2 text-center mx-auto">
-                                                    Manopera „{{ $manopera->denumire }}”
+                                                    {{ $loop->iteration }}. {{ $manopera->denumire }}
+                                                </div>
+                                                <div class="col-lg-12 mb-2 mx-auto d-flex justify-content-center" style="">
+                                                    <button class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold">1</button>
+                                                    <button class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold">2</button>
+                                                    <button class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold">3</button>
+                                                    <button class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold">4</button>
+                                                    <button class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold">5</button>
                                                 </div>
                                                 <div class="col-lg-12 mb-2 mx-auto">
                                                     <label for="recenzie" class="mb-0 ps-3">Recenzie</label>
@@ -88,7 +99,46 @@
                                                         name="recenzie" rows="3">{{ old('recenzie', $manopera->recenzie) }}</textarea>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        @endforeach --}}
+
+                                        <div v-for="(manopera, index) in manopere" :key="index"  class="row mb-3 rounded-3 shadow-sm border" style="background-color:rgb(212, 231, 248)">
+                                            <div class="col-lg-12 py-2 text-center mx-auto">
+                                                @{{ index+1 }}. @{{ manopera.denumire }}
+                                            </div>
+                                            <div class="col-lg-12 mb-2 mx-auto d-flex justify-content-center" style="">
+                                                <button type="button" class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold"
+                                                    v-bind:class="[(manopera['rating'] === 1) ? 'bg-info text-white' : '']"
+                                                    @click="manopera['rating'] = 1">1</button>
+                                                <button type="button" class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold"
+                                                    v-bind:class="[(manopera['rating'] === 2) ? 'bg-info text-white' : '']"
+                                                    @click="manopera['rating'] = 2">2</button>
+                                                <button type="button" class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold"
+                                                    v-bind:class="[(manopera['rating'] === 3) ? 'bg-info text-white' : '']"
+                                                    @click="manopera['rating'] = 3">3</button>
+                                                <button type="button" class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold"
+                                                    v-bind:class="[(manopera['rating'] === 4) ? 'bg-info text-white' : '']"
+                                                    @click="manopera['rating'] = 4">4</button>
+                                                <button type="button" class="mx-1 rounded-3 text-center border border-info text-info" style="width: 40px; background-color:white; font-weight:bold"
+                                                    v-bind:class="[(manopera['rating'] === 5) ? 'bg-info text-white' : '']"
+                                                    @click="manopera['rating'] = 5">5</button>
+                                            </div>
+                                            <div class="col-lg-12 mb-2 mx-auto d-flex justify-content-center align-items-center" style="">
+                                                Dacă vrei, poți apăsa&nbsp;
+                                                <span
+                                                    {{-- v-if="!manopera['comentariu'] || (manopera['comentariu'] === 'nu')"  --}}
+                                                    class="btn px-0 rounded-3 text-primary d-flex align-items-center" style="line-height: 80%; height:80%; font-size:100%; font-weight:bold" @click="(manopera['comentariu'] === 'da') ? (manopera['comentariu'] = 'nu') : (manopera['comentariu'] = 'da')">
+                                                    aici
+                                                </span>
+                                                {{-- <span v-if="manopera['comentariu'] === 'da'" class="btn px-1 rounded-3 bg-danger text-white d-flex align-items-center" style="line-height: 80%; height:80%" @click="(manopera['comentariu'] === 'da') ? (manopera['comentariu'] = 'nu') : (manopera['comentariu'] = 'da')">
+                                                    aici
+                                                </span> --}}
+                                                &nbsp;ca să lași și un comentariu.
+                                            </div>
+                                            <div v-if="manopera['comentariu'] === 'da'" class="col-lg-8 mb-2 mx-auto">
+                                                <textarea class="form-control bg-white {{ $errors->has('comentariu') ? 'is-invalid' : '' }}"
+                                                    name="comentariu" rows="3"></textarea>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
