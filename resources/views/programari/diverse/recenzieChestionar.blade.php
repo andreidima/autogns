@@ -98,7 +98,9 @@
 
                                         <div v-for="(manopera, index) in manopere" :key="index"  class="row mb-3 rounded-3 shadow-sm border" style="background-color:rgb(212, 231, 248)">
                                             <div class="col-lg-12 py-2 text-center mx-auto">
-                                                {{-- @{{ index+1 }}.  --}}
+                                                <span v-if="manopere && (manopere.length > 1)">
+                                                    @{{ index+1 }}.
+                                                </span>
                                                 @{{ manopera.denumire }}
                                             </div>
                                             <div class="col-lg-12 mb-0 mx-auto d-flex justify-content-center" style="">
@@ -122,10 +124,10 @@
                                                     v-bind:class="[(manopera['nota'] == 5) ? 'bg-info text-white' : '']"
                                                     @click="manopera['nota'] = 5">5</button>
                                             </div>
-                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="">
+                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="font-size:90%">
                                                 1 = nu am fost deloc mulțumit, 5 = foarte mulțumit
                                             </div>
-                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="">
+                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="font-size:90%">
                                                 Dacă vrei, apasă
                                                 <a href="#"
                                                     {{-- v-if="!manopera['comentariuAfisare'] || (manopera['comentariuAfisare'] === 'nu')"  --}}
