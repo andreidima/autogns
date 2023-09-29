@@ -124,10 +124,12 @@
                                                     v-bind:class="[(manopera['nota'] == 5) ? 'bg-info text-white' : '']"
                                                     @click="manopera['nota'] = 5">5</button>
                                             </div>
-                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="font-size:90%">
-                                                1 = nu am fost deloc mulțumit, 5 = foarte mulțumit
+                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="font-size:100%">
+                                                1 = nu am fost deloc mulțumit
+                                                <br>
+                                                5 = foarte mulțumit
                                             </div>
-                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="font-size:90%">
+                                            <div class="col-lg-12 mb-2 mx-auto text-center" style="font-size:100%">
                                                 Dacă vrei, apasă
                                                 <a href="#"
                                                     {{-- v-if="!manopera['comentariuAfisare'] || (manopera['comentariuAfisare'] === 'nu')"  --}}
