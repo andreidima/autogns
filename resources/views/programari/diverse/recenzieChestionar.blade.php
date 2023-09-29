@@ -131,10 +131,10 @@
                                             </div>
                                             <div class="col-lg-12 mb-2 mx-auto text-center" style="font-size:100%">
                                                 Dacă vrei, apasă
-                                                <a href="#"
+                                                <span href=""
                                                     {{-- v-if="!manopera['comentariuAfisare'] || (manopera['comentariuAfisare'] === 'nu')"  --}}
-                                                    class="" style="line-height: 80%; height:80%; font-size:100%; font-weight:bold" @click="(manopera['comentariuAfisare'] === 'da') ? (manopera['comentariuAfisare'] = 'nu') : (manopera['comentariuAfisare'] = 'da')">
-                                                    aici</a>
+                                                    class="" style="line-height: 80%; height:80%; font-size:100%; font-weight:bold; color:blue; text-decoration: underline;" @click="(manopera['comentariuAfisare'] === 'da') ? (manopera['comentariuAfisare'] = 'nu') : (manopera['comentariuAfisare'] = 'da')">
+                                                    aici</span>
                                                 {{-- <span v-if="manopera['comentariuAfisare'] === 'da'" class="btn px-1 rounded-3 bg-danger text-white d-flex align-items-center" style="line-height: 80%; height:80%" @click="(manopera['comentariuAfisare'] === 'da') ? (manopera['comentariu'] = 'nu') : (manopera['comentariu'] = 'da')">
                                                     aici
                                                 </span> --}}
