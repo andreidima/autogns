@@ -125,11 +125,18 @@
                                                     <br>
                                                 @endif
                                                 <div class="d-flex justify-content-between">
-                                                    <span class="px-1 py-0 me-4 rounded-3 bg-primary text-white text-center" style="">
-                                                        <a class="text-white text-decoration-none" href="/mecanici/programari-mecanici/modificare-manopera/{{ $manopera->id }}" style="font-size:90%;">
-                                                            Adaugă informații
-                                                        </a>
-                                                    </span>
+                                                    {{-- Mecanicul poate adauga informatii doar daca masina nu a fost finalizata --}}
+                                                    @if ($programare->stare_masina != 3)
+                                                        <span class="px-1 py-0 me-4 rounded-3 bg-primary text-white text-center" style="">
+                                                            <a class="text-white text-decoration-none" href="/mecanici/programari-mecanici/modificare-manopera/{{ $manopera->id }}" style="font-size:90%;">
+                                                                Adaugă informații
+                                                            </a>
+                                                        </span>
+                                                    @elseif ($programare->stare_masina == 3)
+                                                        <span class="px-1 py-0 me-4 rounded-3 text-secondary text-center" style="">
+                                                            Progr. finalizată
+                                                        </span>
+                                                    @endif
                                                     @if (Carbon::parse($search_data)->addDays(2)->gte(Carbon::today()))
                                                         <form class="needs-validation me-1" novalidate method="GET" action="{{ route('pontaje.create')  }}">
                                                             @csrf

@@ -85,6 +85,11 @@ class MecanicProgramareController extends Controller
             dd();
         }
 
+        if ($manopera->programare->stare_masina == 3){
+            return redirect(session('programariMecaniciReturnUrl') ?? ('/mecanici/programari-mecanici'))
+                ->with('error', 'Programare pentru mașina „' . ($manopera->programare->masina ?? '') . '” este deja finalizată. Nu se mai pot adăuga sau modifica informații!');
+        }
+
         $request->session()->get('programariMecaniciReturnUrl') ?? $request->session()->put('programariMecaniciReturnUrl', url()->previous());
 
         return view('mecanici.programari.modificareManopera', compact('manopera'));
@@ -92,6 +97,11 @@ class MecanicProgramareController extends Controller
 
     public function postModificareManopera(Request $request, Manopera $manopera)
     {
+        if ($manopera->programare->stare_masina == 3){
+            return redirect(session('programariMecaniciReturnUrl') ?? ('/mecanici/programari-mecanici'))
+                ->with('error', 'Programare pentru mașina „' . ($manopera->programare->masina ?? '') . '” este deja finalizată. Nu se mai pot adăuga sau modifica informații!');
+        }
+
         $manopera->update($request->validate(
             [
                 'constatare_atelier' => 'nullable|max:2000',
