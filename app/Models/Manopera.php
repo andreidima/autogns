@@ -26,4 +26,9 @@ class Manopera extends Model
     {
         return $this->belongsTo(Programare::class, 'programare_id');
     }
+
+    public function recenzii()
+    {
+        return $this->hasMany(Recenzie::class, 'manopera_id', 'id');
+    }
 }

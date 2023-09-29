@@ -11,6 +11,7 @@ use App\Models\Manopera;
 use App\Models\Pontaj;
 use App\Models\User;
 use App\Models\Concediu;
+use App\Models\Recenzie;
 
 use Carbon\Carbon;
 
@@ -173,7 +174,7 @@ class ProgramareController extends Controller
     public function store(Request $request)
     {
         $this->validateRequest($request);
-// dd($request);
+
         $programare = Programare::make($request->except('manopere', 'date'));
         // Daca este bifata ca este finalizata, se trece si data ora finalizare ca fiind acum
         if ($programare->stare_masina == "3"){
@@ -468,12 +469,40 @@ class ProgramareController extends Controller
         return $pdf->stream();
     }
 
-    public function recenzieClient($key = null)
+    public function recenzieClientChestionar($key = null)
     {
         $programare = Programare::with('manopere')->where('cheie_unica', $key)->first();
 
-        // dd($)
+        return view('programari.diverse.recenzieChestionar', compact('programare'));
+    }
 
-        return view('programari.diverse.recenzie', compact('programare'));
+    public function postRecenzieClientChestionar(Request $request, $key = null)
+    {
+        $request->validate([
+                'manopere.*.nota' => 'required',
+                'manopere.*.comentariu' => 'nullable|max:2000'
+            ],
+            [
+                'manopere.*.nota.required' => 'Manopera #:position are nevoie de o notă',
+                'manopere.*.comentariu.max' => 'Comentariul pentru manopera #:position nu poate depăși 2000 de caractere',
+            ]
+        );
+
+        foreach ($request->manopere as $manopera){
+            $recenzie = new Recenzie;
+            $recenzie->manopera_id = $manopera['id'];
+            $recenzie->nota = $manopera['nota'];
+            $recenzie->comentariu = $manopera['comentariu'] ?? null;
+            $recenzie->save();
+        }
+
+        return redirect('recenzie-programare/chestionarGoogle/' . $key);
+    }
+
+    public function recenzieClientGoogle($key = null)
+    {
+        $programare = Programare::where('cheie_unica', $key)->first();
+
+        return view('programari.diverse.recenzieGoogle', compact('programare'));
     }
 }

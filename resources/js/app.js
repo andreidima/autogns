@@ -178,12 +178,13 @@ const chestionar = createApp({
     watch: {
     },
     created: function () {
-        // this.adaugaManoperaGoalaInArray();
+        this.manopere.forEach(manopera => {
+            if (manopera.comentariu){
+                manopera.comentariuAfisare = "da";
+            }
+        });
     },
     methods: {
-        // adaugaManoperaGoalaInArray() {
-        //     this.manopere.push({ id: '', mecanic_id: '', denumire: '', pret: '', bonus_mecanic: '', observatii: '', constatare_atelier: '', mecanic_consumabile: '', mecanic_observatii: '' });
-        // },
     }
 });
 if (document.getElementById('chestionar') != null) {
