@@ -496,10 +496,10 @@ class ProgramareController extends Controller
             $recenzie->save();
         }
 
-        return redirect('recenzie-programare/chestionarGoogle/' . $key);
+        return redirect('recenzie/recenzie-google/' . $key);
     }
 
-    public function recenzieClientGoogle($key = null)
+    public function recenzieClientRecenzieGoogle($key = null)
     {
         $programare = Programare::where('cheie_unica', $key)->first();
 

@@ -30,9 +30,9 @@ Route::redirect('/', '/acasa');
 
 Route::get('status-programare/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'statusProgramare']);
 
-Route::get('recenzie-programare/chestionar/{programare:cheie_unica}', [ProgramareController::class, 'recenzieClientChestionar']);
-Route::post('recenzie-programare/chestionar/{programare:cheie_unica}', [ProgramareController::class, 'postRecenzieClientChestionar']);
-Route::get('recenzie-programare/chestionarGoogle/{programare:cheie_unica}', [ProgramareController::class, 'recenzieClientGoogle']);
+Route::get('recenzie/{programare:cheie_unica}', [ProgramareController::class, 'recenzieClientChestionar']);
+Route::post('recenzie/{programare:cheie_unica}', [ProgramareController::class, 'postRecenzieClientChestionar']);
+Route::get('recenzie/recenzie-google/{programare:cheie_unica}', [ProgramareController::class, 'recenzieClientRecenzieGoogle']);
 
 
 // Trimitere Cron joburi din Cpanel
