@@ -83,7 +83,7 @@ class CronJobTrimitereController extends Controller
 
         $programari = Programare::
             whereDate('data_ora_finalizare', '<', Carbon::today()->todatestring()) // sms-ul sa se trimita cel putin la o zi dupa ce a fost gata lucrarea
-            ->whereDate('data_ora_finalizare', '>=', Carbon::today()->subDays(2)->todatestring()) // se trimite sms la programarile din ultimele 7 zile
+            ->whereDate('data_ora_finalizare', '>=', Carbon::today()->subDays(3)->todatestring()) // se trimite sms la programarile din ultimele 7 zile
             ->where('sms_recenzie', 1) // la cei la care nu se doreste de trimis sms, au sms_recenzie = 0
             ->doesntHave('smsCerereRecenzie') // sms-ul nu a fost deja trimis
             // ->where('client', 'Andrei Dima test')
