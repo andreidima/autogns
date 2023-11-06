@@ -53,9 +53,10 @@
                         <tr class="" style="padding:2rem">
                             <th class="">#</th>
                             <th class="text-center px-3">Mecanic</th>
-                            <th class="text-center px-3">Data</th>
+                            <th class="text-center px-3">Data recenzie</th>
                             <th class="text-center px-3">Nota</th>
                             <th class="text-center px-3">Comentariu</th>
+                            <th class="text-end px-3">Acțiuni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,8 +74,16 @@
                                 <td class="text-center">
                                     {{ $recenzie->nota }}
                                 </td>
-                                <td class="">
+                                <td class="text-center">
                                     {{ $recenzie->comentariu }}
+                                </td>
+                                <td class="">
+                                    <div class="d-flex justify-content-end">
+                                        <a href="{{ $recenzie->path() }}" class="">
+                                            <span class="badge bg-success">
+                                                Vizualizează
+                                            </span></a>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

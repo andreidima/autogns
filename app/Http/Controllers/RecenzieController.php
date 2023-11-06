@@ -22,7 +22,7 @@ class RecenzieController extends Controller
 
         $userId = $request->userId;
 
-        $recenzii = Recenzie::with('manopera')
+        $recenzii = Recenzie::with('manopera.mecanic', 'manopera.programare')
             // ->when($userId, function (Builder $query) use ($userId) {
             //     $query->whereHas('user', function (Builder $query) use ($userId) {
             //         return $query->where('id', $userId);
@@ -33,7 +33,7 @@ class RecenzieController extends Controller
             //                 ->whereDate('sfarsit', '>=', $data);
             // })
             ->latest()
-            ->simplePaginate(25);
+            ->simplePaginate(100);
 
         $useri = User::where('role', 'mecanic')
             ->whereNotIn('id', [18, 20]) // Andrei Dima Mecanic, Viorel Mecanic
