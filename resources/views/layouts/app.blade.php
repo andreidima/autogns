@@ -133,7 +133,15 @@
                                             Zile nelucrătoare
                                         </a>
                                     </li>
-                                </div>
+                                    @if ((auth()->user()->name === "Andrei Dima") || (auth()->user()->name === "Viorel Admin"))
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('recenzii.index') }}">
+                                                Recenzii
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
                             </li>
                         @elseif (auth()->user()->role === 'mecanic')
 

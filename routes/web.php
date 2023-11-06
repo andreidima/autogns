@@ -13,6 +13,7 @@ use App\Http\Controllers\ManoperaController;
 use App\Http\Controllers\PontajController;
 use App\Http\Controllers\NecesarController;
 use App\Http\Controllers\ConcediuController;
+use App\Http\Controllers\RecenzieController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,6 +66,8 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::get('programare-cerere-confirmare-sms/{programare:cheie_unica}', [ProgramareConfirmareController::class, 'cerereConfirmareSms']);
 
     Route::get('/manopere/export', [ManoperaController::class, 'export']);
+
+    Route::resource('recenzii', RecenzieController::class)->parameters(['recenzii' => 'recenzie']);
 });
 
 
