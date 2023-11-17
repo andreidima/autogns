@@ -68,6 +68,30 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::get('/manopere/export', [ManoperaController::class, 'export']);
 
     Route::resource('recenzii', RecenzieController::class)->parameters(['recenzii' => 'recenzie']);
+
+    Route::get('/actualizare-bife-sms-revizie-ulei-si-filtre', function () {
+        // $programari = App\Models\Programare::whereDate('data_ora_programare', '>', Carbon\Carbon::now()->subYear())
+        //             ->where('sms_revizie_ulei_filtre', 1)
+        //             ->where(function($query){
+        //                 $query->whereNotNull('vin')->orWhereNotNull('nr_auto');
+        //             })
+        //             ->latest();
+        // $programari = $programari->groupBy('vin');
+        $programari = App\Models\Programare::whereDate('data_ora_programare', '>', Carbon\Carbon::now()->subYear())
+                    ->where('sms_revizie_ulei_filtre', 1)
+                    ->whereNotNull('nr_auto')
+                    ->latest()
+                    ->get();
+        // $programari = $programari->groupBy('vin');
+        foreach ($programari->groupBy('nr_auto') as $programariGrupateDupaNrAuto){
+            if ($programariGrupateDupaNrAuto->count() > 1){
+                echo $programariGrupateDupaNrAuto->first()->nr_auto;
+            echo '<br>';
+            }
+            // echo $programariGrupateDupaNrAuto->count();
+        }
+        // dd($programariGroupByVin);
+    });
 });
 
 
