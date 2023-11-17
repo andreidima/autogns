@@ -176,10 +176,29 @@ class ProgramareController extends Controller
         $this->validateRequest($request);
 
         $programare = Programare::make($request->except('manopere', 'date'));
+
         // Daca este bifata ca este finalizata, se trece si data ora finalizare ca fiind acum
         if ($programare->stare_masina == "3"){
             $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
         }
+
+        // Daca are bifa pentru sms_revizie_ulei_filtre, se cauta in spate daca masina a mai avut in ultimul an o astfel de bifa, si se scoate, ca sa nu se mai trimita sms pentru aceea
+        if ($programare->sms_revizie_ulei_filtre == "1"){
+            if ($programare->vin || $programare->nr_auto){ // sa fie vin sau nr_auto trecute, caci dupa acestea se cauta
+                Programare::whereDate('data_ora_programare', '>', Carbon::now()->subYear())
+                    ->where('sms_revizie_ulei_filtre', 1)
+                    ->where(function ($query) use($programare){
+                        $query->when($programare->vin, function ($query, $vin) {
+                            return $query->where('vin', $vin);
+                            })
+                            ->when($programare->nr_auto, function ($query, $nr_auto) {
+                                return $query->orWhere('nr_auto', $nr_auto);
+                            });
+                    })
+                ->update(['sms_revizie_ulei_filtre' => 0]);
+            }
+        }
+
         $programare->save();
 
         // Salvare in istoric
@@ -307,6 +326,25 @@ class ProgramareController extends Controller
         if (($programare->stare_masina == "3") && ($programare->wasChanged ('stare_masina'))){
             $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
         }
+
+        // Daca are bifa pentru sms_revizie_ulei_filtre, se cauta in spate daca masina a mai avut in ultimul an o astfel de bifa, si se scoate, ca sa nu se mai trimita sms pentru aceea
+        if ($programare->sms_revizie_ulei_filtre == "1"){
+            if ($programare->vin || $programare->nr_auto){ // sa fie vin sau nr_auto trecute, caci dupa acestea se cauta
+                Programare::whereDate('data_ora_programare', '>', Carbon::now()->subYear())
+                    ->whereNot('id', $programare->id) // se sare peste programarea in cauza
+                    ->where('sms_revizie_ulei_filtre', 1)
+                    ->where(function ($query) use($programare){
+                        $query->when($programare->vin, function ($query, $vin) {
+                            return $query->where('vin', $vin);
+                            })
+                            ->when($programare->nr_auto, function ($query, $nr_auto) {
+                                return $query->orWhere('nr_auto', $nr_auto);
+                            });
+                    })
+                ->update(['sms_revizie_ulei_filtre' => 0]);
+            }
+        }
+
         $programare->save();
 
 
