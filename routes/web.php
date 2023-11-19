@@ -67,6 +67,7 @@ Route::group(['middleware' => 'role:admin'], function () {
 
     Route::get('/manopere/export', [ManoperaController::class, 'export']);
 
+    Route::get('/recenzii/programari-excluse', [RecenzieController::class, 'programariExcluse']);
     Route::resource('recenzii', RecenzieController::class)->parameters(['recenzii' => 'recenzie']);
 
     Route::get('/actualizare-bife-sms-revizie-ulei-si-filtre', function () {

@@ -140,6 +140,11 @@
                                                 Recenzii
                                             </a>
                                         </li>
+                                        <li>
+                                            <a class="dropdown-item" href="/recenzii/programari-excluse">
+                                                Recenzii - Programări excluse
+                                            </a>
+                                        </li>
                                     @endif
                                 </ul>
                             </li>
