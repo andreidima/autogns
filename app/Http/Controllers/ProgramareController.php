@@ -12,6 +12,7 @@ use App\Models\Pontaj;
 use App\Models\User;
 use App\Models\Concediu;
 use App\Models\Recenzie;
+use App\Models\Notificare;
 
 use Carbon\Carbon;
 
@@ -93,7 +94,13 @@ class ProgramareController extends Controller
                     ->get();
             }
 
-            return view('programari.index', compact('programari', 'concedii', 'search_client', 'search_telefon', 'search_data', 'search_nr_auto'));
+            // Se incarca si notificarile pentru ziua respectiva ca sa le vada operatorul programarilor
+            $notificari = null;
+            if ($search_data){
+                $notificari = Notificare::whereDate('data', $search_data)->get();
+            }
+
+            return view('programari.index', compact('programari', 'concedii', 'notificari', 'search_client', 'search_telefon', 'search_data', 'search_nr_auto'));
         } else if ($request->route()->getName() === "programari.afisareCalendar"){
             $search_data_inceput = \Request::get('search_data_inceput') ?? \Carbon\Carbon::now()->startOfWeek()->toDateString();
             $search_data_sfarsit = \Request::get('search_data_sfarsit') ?? \Carbon\Carbon::now()->endOfWeek()->toDateString();

@@ -14,6 +14,7 @@ use App\Http\Controllers\PontajController;
 use App\Http\Controllers\NecesarController;
 use App\Http\Controllers\ConcediuController;
 use App\Http\Controllers\RecenzieController;
+use App\Http\Controllers\NotificareController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -70,28 +71,44 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::get('/recenzii/programari-excluse', [RecenzieController::class, 'programariExcluse']);
     Route::resource('recenzii', RecenzieController::class)->parameters(['recenzii' => 'recenzie']);
 
-    Route::get('/actualizare-bife-sms-revizie-ulei-si-filtre', function () {
-        // $programari = App\Models\Programare::whereDate('data_ora_programare', '>', Carbon\Carbon::now()->subYear())
-        //             ->where('sms_revizie_ulei_filtre', 1)
-        //             ->where(function($query){
-        //                 $query->whereNotNull('vin')->orWhereNotNull('nr_auto');
-        //             })
-        //             ->latest();
-        // $programari = $programari->groupBy('vin');
-        $programari = App\Models\Programare::whereDate('data_ora_programare', '>', Carbon\Carbon::now()->subYear())
-                    ->where('sms_revizie_ulei_filtre', 1)
-                    ->whereNotNull('nr_auto')
-                    ->latest()
-                    ->get();
-        // $programari = $programari->groupBy('vin');
-        foreach ($programari->groupBy('nr_auto') as $programariGrupateDupaNrAuto){
-            if ($programariGrupateDupaNrAuto->count() > 1){
-                echo $programariGrupateDupaNrAuto->first()->nr_auto;
-            echo '<br>';
-            }
-            // echo $programariGrupateDupaNrAuto->count();
+    Route::resource('notificari', NotificareController::class)->parameters(['notificari' => 'notificare']);
+
+    // Route::get('/actualizare-bife-sms-revizie-ulei-si-filtre', function () {
+    //     $programari = App\Models\Programare::whereDate('data_ora_programare', '>', Carbon\Carbon::now()->subYear())
+    //                 ->where('sms_revizie_ulei_filtre', 1)
+    //                 ->whereNotNull('nr_auto')
+    //                 ->latest()
+    //                 ->get();
+
+    //     foreach ($programari->groupBy('nr_auto') as $programariGrupateDupaNrAuto){
+    //         if ($programariGrupateDupaNrAuto->count() > 1){
+    //             echo $programariGrupateDupaNrAuto->first()->nr_auto;
+    //         echo '<br>';
+    //         }
+    //     }
+    // });
+
+    Route::get('/creare-notificari-program-salariati-sambata', function () {
+        $notificare1 = "La program azi: SILE, LALI, MARIAN";
+        $notificare2 = "La program azi: EMILIA, VALI, IONEL, VASILE, MARICEL, COSMIN";
+        $data = Carbon\Carbon::create("2024-01-20");
+        for ($i = 0; $i < 100; $i++){
+            $notificare = App\Models\Notificare::make([
+                "nume" => $notificare1,
+                "data" => $data
+            ]);
+            echo $notificare->data . ' -> ' . $notificare->nume . '<br>';
+
+            $data->addDays(7);
+
+            $notificare = App\Models\Notificare::make([
+                "nume" => $notificare2,
+                "data" => $data
+            ]);
+            echo $notificare->data . ' -> ' . $notificare->nume . '<br><br>';
+
+            $data->addDays(7);
         }
-        // dd($programariGroupByVin);
     });
 });
 

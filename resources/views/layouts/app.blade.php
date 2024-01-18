@@ -123,6 +123,12 @@
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
+                                        <a class="dropdown-item" href="/notificari">
+                                            Notificări
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
                                         <a class="dropdown-item" href="{{ route('mesaje-trimise-sms.index') }}">
                                             SMS trimise
                                         </a>

@@ -140,28 +140,42 @@
             @include ('errors')
 
             @if (Route::currentRouteName() === "programari.index")
-                @if ($concedii)
-                    @foreach ($concedii as $concediu)
-                        @if ($loop->first)
-                            <div class="text-center mb-2">
-                                <span class="text-black px-1 rounded-3 border border-2" style="background-color: #fff700; font-size:100%">
-                                    <b>Concedii</b>:
-                        @endif
-                        <span style="color:rgb(187, 7, 7); font-weight:bold; font-size:120%">
-                            {{ $concediu->user->name ?? '' }}
-                        </span>
-                        @if ($concediu->observatii)
-                            ({{ $concediu->observatii }})
-                        @endif
-                        @if (!$loop->last)
-                            &nbsp;&nbsp;|&nbsp;&nbsp;
-                        @endif
-                        @if ($loop->last)
+                <div class="row">
+                    @if ($concedii)
+                        <div class="col-lg-6 mx-auto">
+                            @foreach ($concedii as $concediu)
+                                @if ($loop->first)
+                                    <div class="text-center mb-2">
+                                        <span class="text-black px-1 rounded-3 border border-2" style="background-color: #fff700; font-size:100%">
+                                            <b>Concedii</b>:
+                                @endif
+                                <span style="color:rgb(187, 7, 7); font-weight:bold; font-size:120%">
+                                    {{ $concediu->user->name ?? '' }}
                                 </span>
-                            </div>
-                        @endif
-                    @endforeach
-                @endif
+                                @if ($concediu->observatii)
+                                    ({{ $concediu->observatii }})
+                                @endif
+                                @if (!$loop->last)
+                                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                                @endif
+                                @if ($loop->last)
+                                        </span>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    @endif
+
+                    @if ($notificari)
+                        <div class="col-lg-6 text-center mb-2">
+                        @foreach ($notificari as $notificare)
+                            <span class="text-black px-1 rounded-3 border border-2" style="background-color: #fff700; font-size:100%">
+                                {{ $notificare->nume }}
+                            </span>
+                        @endforeach
+                        </div>
+                    @endif
+
                 <div class="table-responsive rounded">
                     <table class="table table-striped table-hover rounded">
                         <thead class="text-white rounded culoare2">
