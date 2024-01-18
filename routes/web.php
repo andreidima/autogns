@@ -98,6 +98,7 @@ Route::group(['middleware' => 'role:admin'], function () {
                 "data" => $data
             ]);
             echo $notificare->data . ' -> ' . $notificare->nume . '<br>';
+            $notificare->save();
 
             $data->addDays(7);
 
@@ -106,6 +107,7 @@ Route::group(['middleware' => 'role:admin'], function () {
                 "data" => $data
             ]);
             echo $notificare->data . ' -> ' . $notificare->nume . '<br><br>';
+            $notificare->save();
 
             $data->addDays(7);
         }
