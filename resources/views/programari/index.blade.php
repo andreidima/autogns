@@ -141,7 +141,7 @@
 
             @if (Route::currentRouteName() === "programari.index")
                 <div class="row justify-content-center">
-                    @if ($concedii->count() > 0)
+                    @if ($concedii && ($concedii->count() > 0))
                         <div class="col-lg-6">
                             @foreach ($concedii as $concediu)
                                 @if ($loop->first)
@@ -166,7 +166,7 @@
                         </div>
                     @endif
 
-                    @if ($notificari->count() > 0)
+                    @if ($notificari && ($notificari->count() > 0))
                         <div class="col-lg-6 text-center mb-2">
                         @foreach ($notificari as $notificare)
                             <span class="text-black px-1 rounded-3 border border-2" style="background-color: #fff700; font-size:100%">
