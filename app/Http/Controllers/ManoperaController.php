@@ -27,7 +27,8 @@ class ManoperaController extends Controller
 
                 $manopere = Manopera::with('mecanic', 'programare')
                     ->whereHas('programare', function($query) use($search_data){
-                        return $query->whereDate('data_ora_finalizare', '=', $search_data);
+                        return $query->whereDate('data_ora_finalizare', '=', $search_data)
+                                ->where('stare_masina', 3);
                     })
                     ->get();
 
@@ -50,7 +51,8 @@ class ManoperaController extends Controller
                 $manopere = Manopera::with('mecanic', 'programare')
                     ->whereHas('programare', function($query) use($search_data){
                         return $query->whereMonth('data_ora_finalizare', $search_data)
-                                    ->whereYear('data_ora_finalizare', $search_data);
+                                    ->whereYear('data_ora_finalizare', $search_data)
+                                    ->where('stare_masina', 3);
                     })
                     ->get()
                     ->sortBy('programare.data');
