@@ -46,6 +46,7 @@ class PontajController extends Controller
         $mecanici = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
             ->where('id', '<>', 20) // Viorel Mecanic
+            ->where('activ', 1) //
             ->orderBy('name')->get();
 
         return view('pontaje.index', compact('pontaje', 'mecanici', 'mecanicId', 'nrAuto', 'data'));

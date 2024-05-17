@@ -127,6 +127,11 @@
                                             Notificări
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/notificari/modificari-in-masa">
+                                            Notificări - modificări în masă
+                                        </a>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('mesaje-trimise-sms.index') }}">
@@ -137,6 +142,12 @@
                                     <li>
                                         <a class="dropdown-item" href="{{ route('zile-nelucratoare.index') }}">
                                             Zile nelucrătoare
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('clienti-neseriosi.index') }}">
+                                            Clienți neserioși
                                         </a>
                                     </li>
                                     @if ((auth()->user()->name === "Andrei Dima") || (auth()->user()->name === "Viorel Admin"))

@@ -9,6 +9,7 @@ use App\Models\User;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class NotificareController extends Controller
 {
@@ -127,5 +128,48 @@ class NotificareController extends Controller
 
             ]
         );
+    }
+
+    public function modificariInMasa(Request $request)
+    {
+        return view('notificari.diverse.notificariInMasa');
+    }
+
+    public function postModificariInMasa(Request $request)
+    {
+        $request->validate(
+            [
+                'text_vechi' => 'required|max:500',
+                'text_nou' => 'nullable|max:500',
+            ]
+        );
+
+        $text_vechi = $request->text_vechi;
+        $text_nou = $request->text_nou;
+
+        $notificariViitoareToate = Notificare::whereDate('data', '>', Carbon::today())->get();
+        $notificariViitoareSelectate = Notificare::whereDate('data', '>', Carbon::today())
+            ->when($text_vechi, function ($query, $text_vechi) {
+                return $query->where('nume', 'like', '%' . $text_vechi . '%');
+            })
+            ->get();
+
+        if ($request->action == 'Cauta') {
+            return back()->with('status', 'Au fost găsite ' . $notificariViitoareSelectate->count() . ', dintr-un total de ' . $notificariViitoareToate->count() . ' de notificări.');
+        } else if ($request->action == 'Modifica') {
+                DB::update(
+                    'update notificari set nume = replace(nume, ?, ?) where nume like ? and data > ?',
+                    [
+                        $text_vechi,
+                        $text_nou,
+                        '%' . $text_vechi . '%',
+                        Carbon::today()->isoFormat('YYYY-MM-DD')
+                    ]
+                );
+            return back()->with('status', 'Au fost modificate ' . $notificariViitoareSelectate->count() . ', dintr-un total de ' . $notificariViitoareToate->count() . ' de notificări.');
+        } else {
+            //invalid action!
+        }
+
     }
 }

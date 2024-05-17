@@ -23,11 +23,23 @@ class CronJobTrimitereController extends Controller
             $programari = Programare::
                 // whereNotNull('data_ora_programare')
                 whereDate('data_ora_programare', '=', Carbon::tomorrow()->todatestring())
-                ->whereDate('created_at', '<', Carbon::today()->todatestring())
+                ->whereDate('created_at', '<', Carbon::today()->todatestring()) // if it was created today for tommorow, no need for confirmation sms
                 ->where('stare_masina', 0) // masina nu este deja in service
-                ->doesntHave('sms_confirmare') // sms-ul nu a fost deja trimis
+
+                // 15.05.2024 - this check was commented, because if „data_ora_programare” was changed after the sms was allready sent, the client would'nt get next date message anymore.
+                // ->doesntHave('sms_confirmare') // sms-ul nu a fost deja trimis
+
                 ->whereNull('confirmare') // confirmate deja de administratorii aplicatiei
                 ->get();
+
+
+            // foreach ($programari as $programare) {
+            //     echo $programare->masina . ' - ' . $programare->telefon;
+            //     echo '<br>';
+            // }
+            // echo '<br>';
+            // dd('stop');
+
 
             foreach ($programari as $programare){
                 // echo $programare->id . '<br>';

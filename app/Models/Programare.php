@@ -77,4 +77,13 @@ class Programare extends Model
     {
         return $this->hasOne(MesajTrimisSms::class, 'referinta_id', 'id')->where('categorie', 'programari')->where('subcategorie', 'cerere recenzie');
     }
+
+    public function clientNeseriosDupaClient()
+    {
+        return $this->hasOne(ClientNeserios::class, 'client', 'client');
+    }
+    public function clientNeseriosDupaNrAuto()
+    {
+        return $this->hasOne(ClientNeserios::class, 'nr_auto', 'nr_auto');
+    }
 }

@@ -210,6 +210,13 @@
                                         {{ $programare->data_ora_programare ? \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') : '' }}
                                     </td>
                                     <td class="px-3">
+                                        @if ($programare->clientNeseriosDupaClient || $programare->clientNeseriosDupaNrAuto)
+                                            <a href="/clienti-neseriosi/{{ $programare->clientNeseriosDupaClient->id ?? $programare->clientNeseriosDupaNrAuto->id ?? '' }}/modifica"
+                                                title="Adaugă la clienți neserioși">
+                                                <span class="badge bg-danger py-1 px-1">
+                                                <i class="fa-solid fa-user-slash fa-lg"></i>
+                                                </span></a>
+                                        @endif
                                         {{ $programare->masina ?? '' }}
                                         <br>
                                         {{ $programare->telefon ?? '' }}
@@ -371,12 +378,28 @@
                                             <a href="{{ $programare->path() }}/modifica" class="me-1">
                                                 <span class="badge bg-primary">Modifică</span></a>
                                             <a href="#"
+                                                class="me-1"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#stergeProgramarea{{ $programare->id }}"
                                                 title="Șterge Programarea"
                                                 >
-                                                <span class="badge bg-danger">Șterge</span>
+                                                <span class="badge bg-danger py-1 px-2">
+                                                    <i class="far fa-trash-alt fa-lg"></i>
+                                                </span>
                                             </a>
+                                            @if ($programare->clientNeseriosDupaClient || $programare->clientNeseriosDupaNrAuto)
+                                                <a href="/clienti-neseriosi/{{ $programare->clientNeseriosDupaClient->id ?? $programare->clientNeseriosDupaNrAuto->id ?? '' }}/modifica"
+                                                    title="Modifică clientul neserios">
+                                                    <span class="badge bg-danger py-1 px-1">
+                                                    <i class="fa-solid fa-user-slash fa-lg"></i>
+                                                    </span></a>
+                                            @else
+                                                <a href="/clienti-neseriosi/adauga/{{ $programare->id }}"
+                                                    title="Adaugă la clienți neserioși">
+                                                    <span class="badge bg-secondary py-1 px-1">
+                                                    <i class="fa-solid fa-user-slash fa-lg"></i>
+                                                    </span></a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

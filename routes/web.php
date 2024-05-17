@@ -15,6 +15,7 @@ use App\Http\Controllers\NecesarController;
 use App\Http\Controllers\ConcediuController;
 use App\Http\Controllers\RecenzieController;
 use App\Http\Controllers\NotificareController;
+use App\Http\Controllers\ClientNeseriosController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -71,7 +72,12 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::get('/recenzii/programari-excluse', [RecenzieController::class, 'programariExcluse']);
     Route::resource('recenzii', RecenzieController::class)->parameters(['recenzii' => 'recenzie']);
 
+    Route::get('notificari/modificari-in-masa', [NotificareController::class, 'modificariInMasa']);
+    Route::post('notificari/modificari-in-masa', [NotificareController::class, 'postModificariInMasa']);
     Route::resource('notificari', NotificareController::class)->parameters(['notificari' => 'notificare']);
+
+    Route::get('clienti-neseriosi/adauga/{programare}', [ClientNeseriosController::class, 'create']);
+    Route::resource('clienti-neseriosi', ClientNeseriosController::class)->parameters(['clienti-neseriosi' => 'clientNeserios']);
 
     // Route::get('/actualizare-bife-sms-revizie-ulei-si-filtre', function () {
     //     $programari = App\Models\Programare::whereDate('data_ora_programare', '>', Carbon\Carbon::now()->subYear())

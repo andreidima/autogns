@@ -50,7 +50,7 @@ class ProgramareController extends Controller
             }
 
             // $programari = Programare::with('user', 'smsuri', 'programare_istoric')
-            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic')
+            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic', 'clientNeseriosDupaClient', 'clientNeseriosDupaNrAuto')
                 ->with(['pontaje' => function (Builder $query) use ($search_data) {
                     $query->whereDate('inceput', $search_data);
                 }])
@@ -165,6 +165,7 @@ class ProgramareController extends Controller
         $mecanici = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
             ->where('id', '<>', 20) // Viorel Mecanic
+            ->where('activ', 1) //
             ->orderBy('name')->get();
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
@@ -310,6 +311,7 @@ class ProgramareController extends Controller
         $mecanici = User::where('role', 'mecanic')
             ->where('id', '<>', 18) // Andrei Dima Mecanic
             ->where('id', '<>', 20) // Viorel Mecanic
+            ->where('activ', 1) //
             ->orderBy('name')->get();
 
         $request->session()->get('programare_return_url') ?? $request->session()->put('programare_return_url', url()->previous());
@@ -386,8 +388,9 @@ class ProgramareController extends Controller
             }
         }
 
-        // Trimitere sms daca a fost schimbata data_ora_programare
+        // If data_ora_programare was changed, the client get a new notification sms, and his confirm status is deleted
         if ($programare->wasChanged('data_ora_programare')){
+            // The client get a new notification sms
             $mesaj = 'Masina \'' . $programare->nr_auto . '\' a fost reprogramata. ' .
                         'Va asteptam la service in data de ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
                         ', la ora ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') . '. ' .
@@ -395,9 +398,14 @@ class ProgramareController extends Controller
             // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
             $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
             $this->trimiteSms('programari', 'inregistrare', $programare->id, [$programare->telefon], $mesaj);
+
+            // In case that the client allready confirmed/infirmed this Programare, the fields „confirmare” and „confirmare_client_timestamp” are reseted (set to null)
+            $programare->confirmare = null;
+            $programare->confirmare_client_timestamp = null;
+            $programare->save();
         }
 
-        // Trimitere sms daca s-a finalozat lucrarea si nu a fost deja trimis un sms anterior
+        // Trimitere sms daca s-a finalizat lucrarea si nu a fost deja trimis un sms anterior
         if (($request->stare_masina == 3) && (!$programare->sms_finalizare->count())){
             $mesaj = 'Masina dumneavoastra cu numarul ' . $programare->nr_auto . ' este gata si o puteti ridica de la service. Cu stima, AutoGNS +40723114595!';
             // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:

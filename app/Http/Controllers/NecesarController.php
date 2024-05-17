@@ -35,7 +35,9 @@ class NecesarController extends Controller
             ->latest()
             ->simplePaginate(25);
 
-        $useri = User::where('name', 'not like', "%Andrei Dima%")->orderBy('name')->get();
+        $useri = User::where('name', 'not like', "%Andrei Dima%")
+            ->where('activ', 1)
+            ->orderBy('name')->get();
 
         return view('necesare.index', compact('necesare', 'useri', 'userId'));
     }
