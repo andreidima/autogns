@@ -470,7 +470,7 @@ class ProgramareController extends Controller
                 'stare_masina' => ($request->_method === "PATCH") ?
                         function ($attribute, $value, $fail) use ($request, $programare) {
                             if ($value == "3"){ // Daca se bifeaza ca programarea este finalizata
-                                foreach ($programare->manopere->whereNotNull('mecanic_id')->whereNotIn('mecanic_id', [10,17]) as $manopera) { // Daca au lucrat si alti mecanici in afara de Cosmin si Iulian
+                                foreach ($programare->manopere->whereNotNull('mecanic_id')->whereNotIn('mecanic_id', [10,15,17]) as $manopera) { // Daca au lucrat si alti mecanici in afara de Cosmin, Razvan sau Iulian
                                     if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->count() === 0) {
                                         $fail('Mecanicul ' . ($manopera->mecanic->name ?? '') . ' nu are pontajul adăugat.');
                                     } else if (Pontaj::where('programare_id', $programare->id)->where('mecanic_id', $manopera->mecanic_id)->whereNull('sfarsit')->count() > 0) {
