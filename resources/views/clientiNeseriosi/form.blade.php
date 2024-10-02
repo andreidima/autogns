@@ -16,7 +16,7 @@
                     placeholder=""
                     value="{{ old('client', $clientNeserios->client) }}">
             </div>
-            <div class="col-lg-6 mb-4">
+            {{-- <div class="col-lg-6 mb-4">
                 <label for="nr_auto" class="mb-0 ps-3">Nr. auto</label>
                 <input
                     type="text"
@@ -24,6 +24,15 @@
                     name="nr_auto"
                     placeholder=""
                     value="{{ old('nr_auto', $clientNeserios->nr_auto) }}">
+            </div> --}}
+            <div class="col-lg-6 mb-4">
+                <label for="telefon" class="mb-0 ps-3">Telefon</label>
+                <input
+                    type="text"
+                    class="form-control bg-white rounded-3 {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
+                    name="telefon"
+                    placeholder=""
+                    value="{{ old('telefon', $clientNeserios->telefon) }}">
             </div>
             <div class="col-lg-6 mb-4">
                 <label for="descriere" class="mb-0 ps-3">Descriere</label>

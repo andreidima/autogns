@@ -20,8 +20,11 @@
                         <div class="col-lg-6">
                             <input type="text" class="form-control rounded-3" id="client" name="client" placeholder="Nr auto" value="{{ $client }}">
                         </div>
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <input type="text" class="form-control rounded-3" id="nr_auto" name="nr_auto" placeholder="Telefon" value="{{ $nr_auto }}">
+                        </div> --}}
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control rounded-3" id="telefon" name="telefon" placeholder="Telefon" value="{{ $telefon }}">
                         </div>
                     </div>
                     <div class="row custom-search-form justify-content-center">
@@ -51,7 +54,8 @@
                         <tr class="" style="padding:2rem">
                             <th class="">#</th>
                             <th class="px-3">Client</th>
-                            <th class="px-3">Nr. auto</th>
+                            {{-- <th class="px-3">Nr. auto</th> --}}
+                            <th class="px-3">Telefon</th>
                             <th class="px-3">Descriere</th>
                             <th class="px-3">Observații</th>
                             <th class="text-end">Acțiuni</th>
@@ -66,8 +70,11 @@
                                 <td>
                                     {{ $clientNeserios->client }}
                                 </td>
-                                <td>
+                                {{-- <td>
                                     {{ $clientNeserios->nr_auto }}
+                                </td> --}}
+                                <td>
+                                    {{ $clientNeserios->telefon }}
                                 </td>
                                 <td>
                                     {{ $clientNeserios->descriere }}
@@ -114,7 +121,8 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header bg-danger">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Client Neserios: {{ $clientNeserios->client }} / {{ $clientNeserios->nr_auto }}</h5>
+                    {{-- <h5 class="modal-title text-white" id="exampleModalLabel">Client Neserios: {{ $clientNeserios->client }} / {{ $clientNeserios->nr_auto }}</h5> --}}
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Client Neserios: {{ $clientNeserios->client }} / {{ $clientNeserios->telefon }}</h5>
                     <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="text-align:left;">

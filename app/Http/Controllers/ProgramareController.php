@@ -50,7 +50,8 @@ class ProgramareController extends Controller
             }
 
             // $programari = Programare::with('user', 'smsuri', 'programare_istoric')
-            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic', 'clientNeseriosDupaClient', 'clientNeseriosDupaNrAuto')
+            // $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic', 'clientNeseriosDupaClient', 'clientNeseriosDupaNrAuto')
+            $programari = Programare::with('user', 'smsuri', 'programare_istoric:id_pk,id,confirmare,confirmare_client_timestamp', 'manopere.mecanic', 'clientNeseriosDupaClient', 'clientNeseriosDupaTelefon')
                 ->with(['pontaje' => function (Builder $query) use ($search_data) {
                     $query->whereDate('inceput', $search_data);
                 }])

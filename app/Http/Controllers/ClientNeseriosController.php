@@ -23,19 +23,23 @@ class ClientNeseriosController extends Controller
         $request->session()->forget('clientNeseriosReturnUrl');
 
         $client = $request->client;
-        $nr_auto = $request->nr_auto;
+        // $nr_auto = $request->nr_auto;
+        $telefon = $request->telefon;
 
         $clientiNeseriosi = ClientNeserios::
             when($client, function (Builder $query) use ($client) {
                 return $query->where('client', $client);
             })
-            ->when($nr_auto, function (Builder $query) use ($nr_auto) {
-                return $query->where('nr_auto', $nr_auto);
+            // ->when($nr_auto, function (Builder $query) use ($nr_auto) {
+            //     return $query->where('nr_auto', $nr_auto);
+            // })
+            ->when($telefon, function (Builder $query) use ($telefon) {
+                return $query->where('telefon', $telefon);
             })
             ->latest()
             ->simplePaginate(25);
 
-        return view('clientiNeseriosi.index', compact('clientiNeseriosi', 'client', 'nr_auto'));
+        return view('clientiNeseriosi.index', compact('clientiNeseriosi', 'client', 'telefon'));
     }
 
     /**
@@ -51,7 +55,8 @@ class ClientNeseriosController extends Controller
 
         // If the clientNeserios is added from programari, we autocomplete some values
         $clientNeserios->client = $programare->client ?? '';
-        $clientNeserios->nr_auto = $programare->nr_auto ?? '';
+        // $clientNeserios->nr_auto = $programare->nr_auto ?? '';
+        $clientNeserios->telefon = $programare->telefon ?? '';
 
         return view('clientiNeseriosi.create', compact('clientNeserios'));
     }
@@ -132,7 +137,8 @@ class ClientNeseriosController extends Controller
         return $request->validate(
             [
                 'client' => 'nullable|max:500',
-                'nr_auto' => 'nullable|max:500',
+                // 'nr_auto' => 'nullable|max:500',
+                'telefon' => 'nullable|max:500',
                 'descriere' => 'nullable|max:2000',
                 'observatii' => 'nullable|max:2000',
             ],

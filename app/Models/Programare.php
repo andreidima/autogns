@@ -82,8 +82,12 @@ class Programare extends Model
     {
         return $this->hasOne(ClientNeserios::class, 'client', 'client');
     }
-    public function clientNeseriosDupaNrAuto()
+    // public function clientNeseriosDupaNrAuto()
+    // {
+    //     return $this->hasOne(ClientNeserios::class, 'nr_auto', 'nr_auto');
+    // }
+    public function clientNeseriosDupaTelefon()
     {
-        return $this->hasOne(ClientNeserios::class, 'nr_auto', 'nr_auto');
+        return $this->hasOne(ClientNeserios::class, 'telefon', 'telefon');
     }
 }
