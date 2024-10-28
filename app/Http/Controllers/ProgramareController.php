@@ -187,9 +187,9 @@ class ProgramareController extends Controller
         $programare = Programare::make($request->except('manopere', 'date'));
 
         // Daca este bifata ca este finalizata, se trece si data ora finalizare ca fiind acum
-        if ($programare->stare_masina == "3"){
-            $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
-        }
+        // if ($programare->stare_masina == "3"){
+        //     $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
+        // }
 
         // Daca are bifa pentru sms_revizie_ulei_filtre, se cauta in spate daca masina a mai avut in ultimul an o astfel de bifa, si se scoate, ca sa nu se mai trimita sms pentru aceea
         if ($programare->sms_revizie_ulei_filtre == "1"){
@@ -331,12 +331,17 @@ class ProgramareController extends Controller
     {
         $this->validateRequest($request, $programare);
 
+        // When 'programare' is set as finalized, 'data_ora_finalizare' is automatically set to the current time
+        // if (($programare->stare_masina != $request->stare_masina) && ($request->stare_masina == 3)){
+        //     $request['data_ora_finalizare'] = Carbon::now()->toDateTimeString();
+        // }
         $programare->update($request->except('manopere', 'date'));
+
         // Daca este bifata acum ca este finalizata, se trece si data ora finalizare ca fiind acum
-        if (($programare->stare_masina == "3") && ($programare->wasChanged ('stare_masina'))){
-            $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
-            $programare->save();
-        }
+        // if (($programare->stare_masina == "3") && ($programare->wasChanged ('stare_masina'))){
+        //     $programare->data_ora_finalizare = Carbon::now()->toDateTimeString();
+        //     $programare->save();
+        // }
 
         // Daca are bifa pentru sms_revizie_ulei_filtre, se cauta in spate daca masina a mai avut in ultimul an o astfel de bifa, si se scoate, ca sa nu se mai trimita sms pentru aceea
         if ($programare->wasChanged('sms_revizie_ulei_filtre') && $programare->sms_revizie_ulei_filtre == "1"){
@@ -407,7 +412,10 @@ class ProgramareController extends Controller
         }
 
         // Trimitere sms daca s-a finalizat lucrarea si nu a fost deja trimis un sms anterior
-        if (($request->stare_masina == 3) && (!$programare->sms_finalizare->count())){
+        // if (($request->stare_masina == 3) && (!$programare->sms_finalizare->count())){
+        // If "stare_masina" was changed, and is number 3, then will be sent the sms that the work is finished. "stare_masina" can be changed back to "in_lucru" or something similar, so when it will be changed again to 3, a new sms has to be sent
+        // dd($programare, $programare->stare_masina);
+        if ($programare->wasChanged('stare_masina') && ($programare->stare_masina == 3)){
             $mesaj = 'Masina dumneavoastra cu numarul ' . $programare->nr_auto . ' este gata si o puteti ridica de la service. Cu stima, AutoGNS +40723114595!';
             // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
             $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
@@ -450,6 +458,15 @@ class ProgramareController extends Controller
         if ($request->isMethod('post')) {
             $request->request->add(['user_id' => $request->user()->id]);
             $request->request->add(['cheie_unica' => uniqid()]);
+        }
+
+        // When 'programare' is set as finalized, 'data_ora_finalizare' is automatically set to the current time
+        if (!$programare) { // store method doesn't have 'programare' set yet
+            if ($request->stare_masina == 3){
+                $request['data_ora_finalizare'] = Carbon::now()->toDateTimeString();
+            }
+        } else if (($programare->stare_masina != $request->stare_masina) && ($request->stare_masina == 3)){ // update method
+            $request['data_ora_finalizare'] = Carbon::now()->toDateTimeString();
         }
 
         return $request->validate(
