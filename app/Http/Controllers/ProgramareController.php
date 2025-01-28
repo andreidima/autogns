@@ -238,15 +238,13 @@ class ProgramareController extends Controller
                     'Va asteptam la service in data de ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
                     ', la ora ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') . '. ' .
                     'Cu stima, AutoGNS +40723114595!';
-        // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-        $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
         $this->trimiteSms('programari', 'inregistrare', $programare->id, [$programare->telefon], $mesaj);
 
         // Trimitere sms la finalozare lucrare
         if (($request->stare_masina == 3) && (!$programare->sms_finalizare->count())){
             $mesaj = 'Masina dumneavoastra este gata si o puteti ridica de la service. Cu stima, AutoGNS +40723114595!';
-            // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-            $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
             $this->trimiteSms('programari', 'finalizare', $programare->id, [$programare->telefon], $mesaj);
         }
 
@@ -401,8 +399,7 @@ class ProgramareController extends Controller
                         'Va asteptam la service in data de ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
                         ', la ora ' . \Carbon\Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') . '. ' .
                         'Cu stima, AutoGNS +40723114595!';
-            // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-            $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
             $this->trimiteSms('programari', 'inregistrare', $programare->id, [$programare->telefon], $mesaj);
 
             // In case that the client allready confirmed/infirmed this Programare, the fields „confirmare” and „confirmare_client_timestamp” are reseted (set to null)
@@ -417,8 +414,7 @@ class ProgramareController extends Controller
         // dd($programare, $programare->stare_masina);
         if ($programare->wasChanged('stare_masina') && ($programare->stare_masina == 3)){
             $mesaj = 'Masina dumneavoastra cu numarul ' . $programare->nr_auto . ' este gata si o puteti ridica de la service. Cu stima, AutoGNS +40723114595!';
-            // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-            $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
             $this->trimiteSms('programari', 'finalizare', $programare->id, [$programare->telefon], $mesaj);
         }
 

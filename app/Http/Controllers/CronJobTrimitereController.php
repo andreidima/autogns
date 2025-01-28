@@ -46,8 +46,7 @@ class CronJobTrimitereController extends Controller
                 $mesaj = 'Accesati ' . url('/status-programare/' . $programare->cheie_unica) . ', pentru a confirma sau anula programarea din ' . Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
                             ', ora ' . Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') .
                             '. AutoGNS +40723114595!';
-                // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-                $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
                 $this->trimiteSms('programari', 'confirmare', $programare->id, [$programare->telefon], $mesaj);
             }
 
@@ -73,8 +72,7 @@ class CronJobTrimitereController extends Controller
                 // echo $programare->id . '<br>';
                 $mesaj = 'Buna ziua! Pe ' . Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
                         ', masina ' . $programare->nr_auto . ' va implini 1 an de la ultima revizie de ulei si filtre. Va reasteptam la service. Cu stima, AutoGNS  +40723114595!';
-                // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-                $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
                 $this->trimiteSms('programari', 'sms_revizie_ulei_filtre', $programare->id, [$programare->telefon], $mesaj);
             }
 
@@ -108,8 +106,7 @@ class CronJobTrimitereController extends Controller
 
             $mesaj = 'Cat de multumit ai fost de experienta cu AutoGNS? Te invitam sa ne oferi o recenzie la ' . url('/recenzie' . '/' . $programare->cheie_unica) . '. Multumim!';
                         // 'Multumim! AutoGNS +40723114595!';
-            // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-            $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
             $this->trimiteSms('programari', 'cerere recenzie', $programare->id, [$programare->telefon], $mesaj);
         }
 

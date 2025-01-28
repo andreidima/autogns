@@ -20,8 +20,7 @@ class ProgramareConfirmareController extends Controller
         $mesaj = 'Accesati ' . url('/status-programare/' . $programare->cheie_unica) . ', pentru a confirma sau anula programarea din ' . Carbon::parse($programare->data_ora_programare)->isoFormat('DD.MM.YYYY') .
                     ', ora ' . Carbon::parse($programare->data_ora_programare)->isoFormat('HH:mm') .
                     '. AutoGNS!';
-        // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
-        $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
+
         $this->trimiteSms('programari', 'confirmare', $programare->id, [$programare->telefon], $mesaj);
 
         return back();
