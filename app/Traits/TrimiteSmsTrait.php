@@ -9,9 +9,33 @@ trait TrimiteSmsTrait {
         // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
         // $mesaj = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD)->transliterate($mesaj);
         // New version to remove diacritics
-        $transliterated = iconv('UTF-8', 'ASCII//TRANSLIT', $mesaj);
+        // $transliterated = iconv('UTF-8', 'ASCII//TRANSLIT', $mesaj);
         // Allow letters, numbers, spaces, and common punctuation marks
-        $mesaj = preg_replace('/[^A-Za-z0-9 .,!?;:]/', '', $transliterated); // Remove non-ASCII characters
+        // $mesaj = preg_replace('/[^A-Za-z0-9 .,!?;:]/', '', $transliterated); // Remove non-ASCII characters
+        // New version to remove diacritics
+        // Step 1: Replace known diacritics (including both comma and cedilla variants)
+        $diacriticsMap = [
+            'ă' => 'a', 'â' => 'a', 'î' => 'i',
+            'ș' => 's', 'ş' => 's', // Both comma and cedilla variants of 'ș'
+            'ț' => 't', 'ţ' => 't', // Both comma and cedilla variants of 'ț'
+            'Ă' => 'A', 'Â' => 'A', 'Î' => 'I',
+            'Ș' => 'S', 'Ş' => 'S', // Both comma and cedilla variants of 'Ș'
+            'Ț' => 'T', 'Ţ' => 'T', // Both comma and cedilla variants of 'Ț'
+            'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+            'á' => 'a', 'à' => 'a', 'ä' => 'a', 'ã' => 'a',
+            'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'õ' => 'o',
+            'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u',
+            'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+            'Á' => 'A', 'À' => 'A', 'Ä' => 'A', 'Ã' => 'A',
+            'Ó' => 'O', 'Ò' => 'O', 'Ö' => 'O', 'Õ' => 'O',
+            'Ú' => 'U', 'Ù' => 'U', 'Ü' => 'U', 'Û' => 'U',
+            'ç' => 'c', 'Ç' => 'C', 'ñ' => 'n', 'Ñ' => 'N',
+            // Add more mappings if necessary
+        ];
+        // Replace known diacritics
+        $mesaj = strtr($mesaj, $diacriticsMap);
+        // Step 2: Replace any remaining non-ASCII characters with a question mark
+        $mesaj = preg_replace('/[^\x20-\x7E]/', '?', $mesaj);
 
         // Setarea trimiterii live sau testarea sms-ului
         // $test = 1; // sms-ul nu se trimite
