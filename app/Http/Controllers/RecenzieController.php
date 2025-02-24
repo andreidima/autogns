@@ -40,6 +40,7 @@ class RecenzieController extends Controller
 
         $useri = User::where('role', 'mecanic')
             ->whereNotIn('id', [18, 20]) // Andrei Dima Mecanic, Viorel Mecanic
+            ->where('activ', 1) //
             ->orderBy('name')->get();
 
         return view('recenzii.index', compact('recenzii', 'useri', 'userId'));
